@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hero Compass - The Seeker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #0a0a1f 0%, #1a1a2e 50%, #16213e 100%);
+            color: #f4f4f4;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Navigation */
+        .navigation-bar {
+            background: rgba(255,255,255,0.05);
+            padding: 15px 0;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            color: #4ecdc4;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: bold;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: rgba(78, 205, 196, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .nav-link.active {
+            color: #ffd700;
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        /* Hero Section */
+        .hero-section {
+            text-align: center;
+            padding: 60px 0;
+            background: radial-gradient(circle at center, rgba(106, 90, 205, 0.1) 0%, transparent 70%);
+            border-radius: 20px;
+            margin-bottom: 50px;
+        }
+
+        .hero-content {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        /* Portrait Section */
+        .portrait-section {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .hero-portrait {
+            width: 500px;
+            height: 500px;
+            border-radius: 20px;
+            object-fit: cover;
+            border: 4px solid rgba(106, 90, 205, 0.4);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            transition: all 0.3s ease;
+            display: block;
+            margin: 0 auto;
+            max-width: 90vw;
+        }
+
+        .hero-portrait:hover {
+            transform: scale(1.02);
+            border-color: rgba(106, 90, 205, 0.7);
+            box-shadow: 0 25px 80px rgba(106, 90, 205, 0.3);
+        }
+
+        .type-name {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            background: linear-gradient(45deg, #6A5ACD, #9370DB, #8A2BE2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .type-tagline {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #b8b8b8;
+            font-style: italic;
+        }
+
+        .type-blend {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            color: #4ecdc4;
+            font-weight: bold;
+        }
+
+        .type-overview {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            color: rgba(255,255,255,0.9);
+        }
+
+        /* Core Profile Section */
+        .core-profile {
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 50px;
+            backdrop-filter: blur(10px);
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: #ffd700;
+            text-align: center;
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .profile-item {
+            background: rgba(255,255,255,0.03);
+            border-radius: 10px;
+            padding: 25px;
+            border-left: 4px solid #6A5ACD;
+        }
+
+        .profile-label {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #ffd700;
+            margin-bottom: 10px;
+        }
+
+        .profile-content {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: rgba(255,255,255,0.9);
+        }
+
+        /* Random Subtitle Generator */
+        .subtitle-generator {
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 50px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .generator-title {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #4ecdc4;
+        }
+
+        .generated-subtitle {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: #ffd700;
+            font-weight: bold;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            padding: 20px;
+            font-style: italic;
+        }
+
+        .generate-button {
+            background: linear-gradient(45deg, #6A5ACD, #9370DB);
+            color: #fff;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .generate-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(106, 90, 205, 0.3);
+        }
+
+        /* Content Sections */
+        .content-section {
+            background: rgba(255,255,255,0.03);
+            border-radius: 15px;
+            padding: 35px;
+            margin-bottom: 40px;
+        }
+
+        .content-title {
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+            color: #4ecdc4;
+            border-bottom: 2px solid rgba(78, 205, 196, 0.3);
+            padding-bottom: 10px;
+        }
+
+        .content-text {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 15px;
+        }
+
+        .content-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .content-list li {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: rgba(255,255,255,0.85);
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .content-list li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #ffd700;
+            font-weight: bold;
+        }
+
+        /* Related Types */
+        .related-types {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .related-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            text-decoration: none;
+            color: inherit;
+            cursor: pointer;
+        }
+
+        .related-card:hover {
+            transform: translateY(-3px);
+            background: rgba(255,255,255,0.08);
+        }
+
+        .related-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .related-description {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.8);
+            line-height: 1.5;
+        }
+
+        /* Similar Types */
+        .related-card.similar {
+            border-color: rgba(78, 205, 196, 0.3);
+        }
+
+        .related-card.similar:hover {
+            border-color: rgba(78, 205, 196, 0.7);
+        }
+
+        .related-card.similar .related-name {
+            color: #4ecdc4;
+        }
+
+        /* Opposite Type */
+        .related-card.opposite {
+            border-color: rgba(255, 215, 0, 0.3);
+        }
+
+        .related-card.opposite:hover {
+            border-color: rgba(255, 215, 0, 0.7);
+        }
+
+        .related-card.opposite .related-name {
+            color: #ffd700;
+        }
+
+        /* Foil Type */
+        .related-card.foil {
+            border-color: rgba(255, 107, 107, 0.3);
+        }
+
+        .related-card.foil:hover {
+            border-color: rgba(255, 107, 107, 0.7);
+        }
+
+        .related-card.foil .related-name {
+            color: #ff6b6b;
+        }
+
+        /* Quiz CTA */
+        .quiz-cta {
+            text-align: center;
+            padding: 50px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            margin-top: 50px;
+        }
+
+        .cta-title {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: #ffd700;
+        }
+
+        .cta-description {
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+            color: rgba(255,255,255,0.9);
+            line-height: 1.6;
+        }
+
+        .cta-button {
+            background: linear-gradient(45deg, #ffd700, #ff6b6b, #4ecdc4);
+            color: #000;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255,215,0,0.3);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .related-types {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .hero-portrait {
+                width: 400px;
+                height: 400px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .type-name {
+                font-size: 2.2rem;
+            }
+            
+            .generated-subtitle {
+                font-size: 1.5rem;
+            }
+            
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .related-types {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero-portrait {
+                width: 350px;
+                height: 350px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-portrait {
+                width: 280px;
+                height: 280px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="navigation-bar">
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="take_quiz.html" class="nav-link">Take Quiz</a>
+                <a href="framework.html" class="nav-link">Framework</a>
+                <a href="all_types.html" class="nav-link">All Types</a>
+                <a href="compare_types.html" class="nav-link">Compare Types</a>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="hero-content">
+                <h1 class="type-name">The Seeker</h1>
+                <p class="type-tagline">Independent Seeker of Truth</p>
+                <p class="type-blend">Moderate Pirate + High Wizard</p>
+                <p class="type-overview">
+                    The Seeker is the intellectually independent soul who values understanding over conformity. They are the quiet rebels who question through deep study rather than loud protest, maintaining their freedom to think independently while pursuing profound truths. Like solitary scholars charting unknown territories of knowledge, they seek wisdom on their own terms.
+                </p>
+            </div>
+        </section>
+
+        <!-- Portrait Section -->
+        <section class="portrait-section">
+            <img src="images/seeker.jpeg" alt="The Seeker - Independent Seeker of Truth" class="hero-portrait">
+        </section>
+
+        <!-- Core Profile -->
+        <section class="core-profile">
+            <h2 class="section-title">Core Profile</h2>
+            <div class="profile-grid">
+                <div class="profile-item">
+                    <div class="profile-label">Core Traits</div>
+                    <div class="profile-content">Intellectually independent, values understanding over conformity, quietly rebellious, contemplative questioner</div>
+                </div>
+                <div class="profile-item">
+                    <div class="profile-label">Approach</div>
+                    <div class="profile-content">Maintains independence through deep knowledge, questions through study, thinks for themselves first</div>
+                </div>
+                <div class="profile-item">
+                    <div class="profile-label">Strengths</div>
+                    <div class="profile-content">Intellectual integrity, thoughtful independence, deep understanding, original thinking</div>
+                </div>
+                <div class="profile-item">
+                    <div class="profile-label">Challenges</div>
+                    <div class="profile-content">Can become too isolated in research, may avoid practical application, tendency toward analysis paralysis</div>
+                </div>
+                <div class="profile-item">
+                    <div class="profile-label">Drainers</div>
+                    <div class="profile-content">Intellectual conformity pressure, shallow thinking environments, being rushed to conclusions</div>
+                </div>
+                <div class="profile-item">
+                    <div class="profile-label">Motivation</div>
+                    <div class="profile-content">Driven by curiosity and the need to understand truth independent of social pressure</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Random Subtitle Generator -->
+        <section class="subtitle-generator">
+            <h2 class="generator-title">I am the...</h2>
+            <div class="generated-subtitle" id="generatedSubtitle">Student of Forgotten Philosophical Debates</div>
+            <button class="generate-button" onclick="generateSubtitle()">Generate New Title</button>
+        </section>
+
+        <!-- In Action -->
+        <section class="content-section">
+            <h2 class="content-title">The Seeker in Action</h2>
+            <p class="content-text">
+                Seekers are the people who read the original sources rather than summaries, who spend hours researching topics that fascinate them, and who form their own opinions through careful study. They're the ones asking deeper questions and pursuing understanding for its own sake.
+            </p>
+            <p class="content-text">
+                You'll find them in libraries and archives, following intellectual threads wherever they lead, and developing unique perspectives through independent research. They measure success by the depth of their understanding and the authenticity of their conclusions.
+            </p>
+        </section>
+
+        <!-- Career Paths -->
+        <section class="content-section">
+            <h2 class="content-title">Career Paths</h2>
+            <ul class="content-list">
+                <li>Independent researcher or scholar</li>
+                <li>Graduate student or academic researcher</li>
+                <li>Freelance writer or intellectual content creator</li>
+                <li>Philosophy professor or humanities scholar</li>
+                <li>Archivist or historical researcher</li>
+                <li>Translator or language specialist</li>
+                <li>Book editor or literary critic</li>
+                <li>Think tank researcher or policy analyst</li>
+            </ul>
+        </section>
+
+        <!-- Growth Journey -->
+        <section class="content-section">
+            <h2 class="content-title">Growth Journey</h2>
+            <p class="content-text">
+                Seekers grow by learning to balance their love of pure research with practical application of their insights. Their challenge is to share their discoveries in ways that benefit others without compromising their intellectual independence.
+            </p>
+            <p class="content-text">
+                Development involves finding communities of fellow thinkers and learning to translate their deep understanding into accessible wisdom. The most evolved Seekers become bridges between academic knowledge and practical wisdom, helping others think more independently.
+            </p>
+        </section>
+
+        <!-- Relationships -->
+        <section class="content-section">
+            <h2 class="content-title">In Relationships</h2>
+            <p class="content-text">
+                Seekers need relationships with people who respect their need for intellectual space and deep thinking time. They're drawn to partners who either share their love of learning or who appreciate and support their scholarly pursuits.
+            </p>
+            <p class="content-text">
+                They thrive with people who enjoy meaningful conversations and don't pressure them to conform to popular opinions. They struggle with those who dismiss intellectual pursuits or who expect them to adopt beliefs without careful consideration.
+            </p>
+        </section>
+
+        <!-- Decision Making -->
+        <section class="content-section">
+            <h2 class="content-title">Decision Making</h2>
+            <p class="content-text">
+                Seekers make decisions through extensive research and careful consideration of multiple perspectives. They prefer to understand all aspects of a situation before choosing and often take longer to decide because they want to be thoroughly informed.
+            </p>
+            <p class="content-text">
+                They trust their own analysis over popular opinion and are willing to choose unpopular paths if their research supports it. Their decisions prioritize intellectual integrity and long-term understanding over quick solutions or social acceptance.
+            </p>
+        </section>
+
+        <!-- Related Types -->
+        <section class="content-section">
+            <h2 class="content-title">Related Types</h2>
+            <div class="related-types">
+                <a href="the_mapmaker.html" class="related-card similar">
+                    <div class="related-name">The Mapmaker</div>
+                    <div class="related-description">Shares the deep knowledge pursuit but with more radical independence</div>
+                </a>
+                <a href="the_wayfinder.html" class="related-card similar">
+                    <div class="related-name">The Wayfinder</div>
+                    <div class="related-description">Similar balance of independence and wisdom seeking</div>
+                </a>
+                <a href="the_crusader.html" class="related-card opposite">
+                    <div class="related-name">The Crusader</div>
+                    <div class="related-description">Opposite type - immediate action versus contemplative study</div>
+                </a>
+                <a href="the_paladin.html" class="related-card foil">
+                    <div class="related-name">The Paladin</div>
+                    <div class="related-description">Foil - Ultimate action and duty complements the Seeker's deep contemplation</div>
+                </a>
+            </div>
+        </section>
+
+        <!-- Famous Examples -->
+        <section class="content-section">
+            <h2 class="content-title">Famous Seekers</h2>
+            <ul class="content-list">
+                <li><strong>Carl Jung</strong> - Psychologist who developed original theories through independent research</li>
+                <li><strong>Susan Sontag</strong> - Intellectual who pursued understanding across multiple disciplines</li>
+                <li><strong>Aristotle</strong> - Ancient philosopher who systematically studied everything independently</li>
+                <li><strong>Luna Lovegood</strong> - Fictional character who maintains independent thinking despite social pressure</li>
+            </ul>
+        </section>
+
+        <!-- Quiz CTA -->
+        <section class="quiz-cta">
+            <h2 class="cta-title">Not Sure If This Is You?</h2>
+            <p class="cta-description">
+                Take our comprehensive assessment to discover your true heroic archetype and see how you compare to The Seeker and the other 15 types.
+            </p>
+            <a href="take_quiz.html" class="cta-button">Take The Quiz</a>
+        </section>
+    </div>
+
+    <script>
+        // Random subtitle generator for The Seeker
+        const adjectives = [
+            "Forgotten", "Ancient", "Lost", "Hidden", "Secret", "Mysterious", "Obscure", "Esoteric",
+            "Deep", "Profound", "Complex", "Intricate", "Subtle", "Nuanced", "Layered", "Multifaceted",
+            "Original", "Primary", "Foundational", "Core", "Essential", "Fundamental", "Root", "Source",
+            "Controversial", "Disputed", "Debated", "Questioned", "Challenging", "Provocative", "Radical", "Revolutionary",
+            "Timeless", "Eternal", "Universal", "Cosmic", "Infinite", "Boundless", "Limitless", "Endless",
+            "Scholarly", "Academic", "Intellectual", "Theoretical", "Philosophical", "Metaphysical", "Existential", "Spiritual"
+        ];
+
+        const nouns = [
+            "Philosophical Debates", "Scientific Theories", "Mathematical Proofs", "Literary Analyses", "Historical Records", "Cultural Studies",
+            "Language Origins", "Symbol Systems", "Thought Patterns", "Belief Structures", "Knowledge Frameworks", "Understanding Methods",
+            "Research Methodologies", "Learning Approaches", "Study Techniques", "Analysis Methods", "Investigation Strategies", "Inquiry Processes",
+            "Ancient Texts", "Original Manuscripts", "Primary Sources", "Archived Documents", "Historical Accounts", "Scholarly Works",
+            "Truth Searches", "Wisdom Quests", "Knowledge Pursuits", "Understanding Journeys", "Discovery Paths", "Insight Explorations",
+            "Question Formations", "Problem Definitions", "Hypothesis Development", "Theory Construction", "Concept Formation", "Idea Generation",
+            "Meditation Practices", "Contemplation Methods", "Reflection Techniques", "Mindfulness Approaches", "Awareness Exercises", "Consciousness Studies",
+            "Library Collections", "Archive Systems", "Database Structures", "Information Networks", "Knowledge Repositories", "Learning Resources"
+        ];
+
+        function generateSubtitle() {
+            const randomAdjective = adjectives[Math.floor(Math.random() * adjectives.length)];
+            const randomNoun = nouns[Math.floor(Math.random() * nouns.length)];
+            const titles = [
+                `Student of ${randomAdjective} ${randomNoun}`,
+                `Scholar of ${randomAdjective} ${randomNoun}`,
+                `Researcher of ${randomAdjective} ${randomNoun}`,
+                `Explorer of ${randomAdjective} ${randomNoun}`,
+                `Investigator of ${randomAdjective} ${randomNoun}`,
+                `Analyst of ${randomAdjective} ${randomNoun}`,
+                `Examiner of ${randomAdjective} ${randomNoun}`,
+                `Pursuer of ${randomAdjective} ${randomNoun}`,
+                `Seeker of ${randomAdjective} ${randomNoun}`,
+                `Contemplator of ${randomAdjective} ${randomNoun}`
+            ];
+            
+            const randomTitle = titles[Math.floor(Math.random() * titles.length)];
+            document.getElementById('generatedSubtitle').textContent = randomTitle;
+        }
+
+        // Generate initial subtitle when page loads
+        window.addEventListener('DOMContentLoaded', generateSubtitle);
+    </script>
+</body>
+</html>

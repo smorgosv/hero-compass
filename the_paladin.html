@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hero Compass - The Paladin</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #0a0a1f 0%, #1a1a2e 50%, #16213e 100%);
+            color: #f4f4f4;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Navigation */
+        .navigation-bar {
+            background: rgba(255,255,255,0.05);
+            padding: 15px 0;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            color: #4ecdc4;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: bold;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: rgba(78, 205, 196, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .nav-link.active {
+            color: #ffd700;
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        /* Hero Section */
+        .hero-section {
+            text-align: center;
+            padding: 60px 0;
+            background: radial-gradient(circle at center, rgba(178, 34, 34, 0.1) 0%, transparent 70%);
+            border-radius: 20px;
+            margin-bottom: 50px;
+        }
+
+        .hero-content {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        /* Portrait Section */
+        .portrait-section {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .hero-portrait {
+            width: 500px;
+            height: 500px;
+            border-radius: 20px;
+            object-fit: cover;
+            border: 4px solid rgba(178, 34, 34, 0.4);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            transition: all 0.3s ease;
+            display: block;
+            margin: 0 auto;
+            max-width: 90vw;
+        }
+
+        .hero-portrait:hover {
+            transform: scale(1.02);
+            border-color: rgba(178, 34, 34, 0.7);
+            box-shadow: 0 25px 80px rgba(178, 34, 34, 0.3);
+        }
+
+        .type-name {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            background: linear-gradient(45deg, #B22222, #DC143C, #FF6347);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .type-tagline {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #b8b8b8;
+            font-style: italic;
+        }
+
+        .type-blend {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            color: #4ecdc4;
+            font-weight: bold;
+        }
+
+        .type-overview {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            color: rgba(255,255,255,0.9);
+        }
+
+        /* Core Profile Section */
+        .core-profile {
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 50px;
+            backdrop-filter: blur(10px);
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: #ffd700;
+            text-align: center;
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .profile-item {
+            background: rgba(255,255,255,0.03);
+            border-radius: 10px;
+            padding: 25px;
+            border-left: 4px solid #B22222;
+        }
+
+        .profile-label {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #ffd700;
+            margin-bottom: 10px;
+        }
+
+        .profile-content {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: rgba(255,255,255,0.9);
+        }
+
+        /* Random Subtitle Generator */
+        .subtitle-generator {
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 50px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .generator-title {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #4ecdc4;
+        }
+
+        .generated-subtitle {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: #ffd700;
+            font-weight: bold;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            padding: 20px;
+            font-style: italic;
+        }
+
+        .generate-button {
+            background: linear-gradient(45deg, #B22222, #DC143C);
+            color: #fff;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .generate-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(178, 34, 34, 0.3);
+        }
+
+        /* Content Sections */
+        .content-section {
+            background: rgba(255,255,255,0.03);
+            border-radius: 15px;
+            padding: 35px;
+            margin-bottom: 40px;
+        }
+
+        .content-title {
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+            color: #4ecdc4;
+            border-bottom: 2px solid rgba(78, 205, 196, 0.3);
+            padding-bottom: 10px;
+        }
+
+        .content-text {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 15px;
+        }
+
+        .content-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .content-list li {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: rgba(255,255,255,0.85);
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .content-list li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #ffd700;
+            font-weight: bold;
+        }
+
+        /* Related Types */
+        .related-types {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .related-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            text-decoration: none;
+            color: inherit;
+            cursor: pointer;
+        }
+
+        .related-card:hover {
+            transform: translateY(-3px);
+            background: rgba(255,255,255,0.08);
+        }
+
+        .related-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .related-description {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.8);
+            line-height: 1.5;
+        }
+
+        /* Similar Types */
+        .related-card.similar {
+            border-color: rgba(78, 205, 196, 0.3);
+        }
+
+        .related-card.similar:hover {
+            border-color: rgba(78, 205, 196, 0.7);
+        }
+
+        .related-card.similar .related-name {
+            color: #4ecdc4;
+        }
+
+        /* Opposite Type */
+        .related-card.opposite {
+            border-color: rgba(255, 215, 0, 0.3);
+        }
+
+        .related-card.opposite:hover {
+            border-color: rgba(255, 215, 0, 0.7);
+        }
+
+        .related-card.opposite .related-name {
+            color: #ffd700;
+        }
+
+        /* Foil Type */
+        .related-card.foil {
+            border-color: rgba(255, 107, 107, 0.3);
+        }
+
+        .related-card.foil:hover {
+            border-color: rgba(255, 107, 107, 0.7);
+        }
+
+        .related-card.foil .related-name {
+            color: #ff6b6b;
+        }
+
+        /* Quiz CTA */
+        .quiz-cta {
+            text-align: center;
+            padding: 50px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            margin-top: 50px;
+        }
+
+        .cta-title {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: #ffd700;
+        }
+
+        .cta-description {
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+            color: rgba(255,255,255,0.9);
+            line-height: 1.6;
+        }
+
+        .cta-button {
+            background: linear-gradient(45deg, #ffd700, #ff6b6b, #4ecdc4);
+            color: #000;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255,215,0,0.3);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .related-types {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .hero-portrait {
+                width: 400px;
+                height: 400px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .type-name {
+                font-size: 2.2rem;
+            }
+            
+            .generated-subtitle {
+                font-size: 1.5rem;
+            }
+            
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .related-types {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero-portrait {
+                width: 350px;
+                height: 350px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-portrait {
+                width: 280px;
+                height: 280px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="navigation-bar">
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="take_quiz.html" class="nav-link">Take Quiz</a>
+                <a href="framework.html" class="nav-link">Framework</a>
+                <a href="all_types.html" class="nav-link">All Types</a>
+                <a href="compare_types.html" class="nav-link">Compare Types</a>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="hero-content">
+                <h1 class="type-name">The Paladin</h1>
+                <p class="type-tagline">Ultimate Warrior of Light</p>
+                <p class="type-blend">Maximum Knight + Maximum Cowboy</p>
+                <p class="type-overview">
+                    The Paladin is the ultimate protector-warrior who combines maximum duty with fearless action, living to serve others with unlimited courage. They are the shining exemplars who instantly act on moral imperatives, charging fearlessly toward righteous causes. Like legendary heroes of myth, they embody the perfect fusion of noble purpose and warrior spirit.
+                </p>
+            </div>
+        </section>
+
+        <!-- Portrait Section -->
+        <section class="portrait-section">
+            <img src="images/paladin.jpeg" alt="The Paladin - Ultimate Warrior of Light" class="hero-portrait">
+        </section>
+
+        <!-- Core Profile -->
+        <section class="core-profile">
+            <h2 class="section-title">Core Profile</h2>
+            <div class="profile-grid">
+                <div class="profile-item">
+                    <div class="profile-label">Core Traits</div>
+                    <div class="profile-content">Ultimate protector-warrior, maximum duty with fearless action, lives to serve others, moral exemplar</div>
+                </div>
+                <div class="profile-item">
+                    <div class="profile-label">Approach</div>
+                    <div class="profile-content">Instantly acts on moral imperatives, charges fearlessly toward righteous causes, leads by heroic example</div>
+                </div>
+                <div class="profile-item">
+                    <div class="profile-label">Strengths</div>
+                    <div class="profile-content">Unlimited courage, total dedication, inspiring leadership, ability to rally others to noble causes</div>
+                </div>
+                <div class="profile-item">
+                    <div class="profile-label">Challenges</div>
+                    <div class="profile-content">Can be overly self-sacrificing, prone to burnout from total commitment, may expect too much from others</div>
+                </div>
+                <div class="profile-item">
+                    <div class="profile-label">Drainers</div>
+                    <div class="profile-content">Moral compromises, selfish environments, being prevented from helping others, corruption and injustice</div>
+                </div>
+                <div class="profile-item">
+                    <div class="profile-label">Motivation</div>
+                    <div class="profile-content">Driven by an unshakeable commitment to protect and serve others, regardless of personal cost</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Random Subtitle Generator -->
+        <section class="subtitle-generator">
+            <h2 class="generator-title">I am the...</h2>
+            <div class="generated-subtitle" id="generatedSubtitle">Eternal Guardian of Lost Library Books</div>
+            <button class="generate-button" onclick="generateSubtitle()">Generate New Title</button>
+        </section>
+
+        <!-- In Action -->
+        <section class="content-section">
+            <h2 class="content-title">The Paladin in Action</h2>
+            <p class="content-text">
+                Paladins are the people who dedicate their entire lives to causes greater than themselves, who run toward danger to protect others, and who inspire everyone around them to be better. They're the ones who never give up, never compromise their values, and never stop fighting for what's right.
+            </p>
+            <p class="content-text">
+                You'll find them leading humanitarian missions, founding organizations dedicated to helping others, and making personal sacrifices for the greater good. They measure success by how many lives they've protected and how much suffering they've prevented.
+            </p>
+        </section>
+
+        <!-- Career Paths -->
+        <section class="content-section">
+            <h2 class="content-title">Career Paths</h2>
+            <ul class="content-list">
+                <li>Military leader or special forces operator</li>
+                <li>Emergency services chief or first responder</li>
+                <li>Human rights leader or international aid director</li>
+                <li>Social justice lawyer or public defender</li>
+                <li>Healthcare leader in crisis situations</li>
+                <li>Non-profit founder or humanitarian director</li>
+                <li>Environmental protection leader</li>
+                <li>Community organizer or activist leader</li>
+            </ul>
+        </section>
+
+        <!-- Growth Journey -->
+        <section class="content-section">
+            <h2 class="content-title">Growth Journey</h2>
+            <p class="content-text">
+                Paladins grow by learning to balance their total commitment with sustainable practices that prevent burnout. Their challenge is to maintain their heroic spirit while building systems that can continue their work even when they need rest.
+            </p>
+            <p class="content-text">
+                Development involves learning to inspire and develop other leaders rather than carrying every burden themselves. The most evolved Paladins become legendary figures who create lasting institutions and inspire generations of future heroes.
+            </p>
+        </section>
+
+        <!-- Relationships -->
+        <section class="content-section">
+            <h2 class="content-title">In Relationships</h2>
+            <p class="content-text">
+                Paladins bring total loyalty and protection to relationships, but need partners who understand that their mission extends beyond personal relationships. They're most compatible with people who either share their dedication to service or who support their heroic calling.
+            </p>
+            <p class="content-text">
+                They thrive with partners who admire their commitment and don't compete with their sense of duty. They struggle with those who expect them to prioritize personal comfort over moral imperatives or who try to diminish their heroic nature.
+            </p>
+        </section>
+
+        <!-- Decision Making -->
+        <section class="content-section">
+            <h2 class="content-title">Decision Making</h2>
+            <p class="content-text">
+                Paladins make decisions based on unwavering moral principles and immediate assessment of how to best serve others. They act quickly when they see clear moral imperatives and are willing to sacrifice personal interests for the greater good.
+            </p>
+            <p class="content-text">
+                They trust their moral instincts completely and prefer action over analysis when people need help. Their decisions prioritize protecting others and upholding justice over personal safety, comfort, or conventional wisdom.
+            </p>
+        </section>
+
+        <!-- Related Types -->
+        <section class="content-section">
+            <h2 class="content-title">Related Types</h2>
+            <div class="related-types">
+                <a href="the_crusader.html" class="related-card similar">
+                    <div class="related-name">The Crusader</div>
+                    <div class="related-description">Shares the heroic drive but with less ultimate duty and more individual action</div>
+                </a>
+                <a href="the_guardian.html" class="related-card similar">
+                    <div class="related-name">The Guardian</div>
+                    <div class="related-description">Similar protective instincts but with more thoughtful, sustainable approach</div>
+                </a>
+                <a href="the_mapmaker.html" class="related-card opposite">
+                    <div class="related-name">The Mapmaker</div>
+                    <div class="related-description">Opposite type - complete independence versus total service commitment</div>
+                </a>
+                <a href="the_seeker.html" class="related-card foil">
+                    <div class="related-name">The Seeker</div>
+                    <div class="related-description">Foil - Deep contemplation and study complements the Paladin's immediate heroic action</div>
+                </a>
+            </div>
+        </section>
+
+        <!-- Famous Examples -->
+        <section class="content-section">
+            <h2 class="content-title">Famous Paladins</h2>
+            <ul class="content-list">
+                <li><strong>Mother Teresa</strong> - Dedicated her entire life to serving the poorest of the poor</li>
+                <li><strong>Martin Luther King Jr.</strong> - Fought tirelessly for justice despite personal danger</li>
+                <li><strong>Wonder Woman</strong> - Fictional warrior who embodies perfect duty and fearless action</li>
+                <li><strong>Nelson Mandela</strong> - Sacrificed decades of his life for freedom and justice</li>
+            </ul>
+        </section>
+
+        <!-- Quiz CTA -->
+        <section class="quiz-cta">
+            <h2 class="cta-title">Not Sure If This Is You?</h2>
+            <p class="cta-description">
+                Take our comprehensive assessment to discover your true heroic archetype and see how you compare to The Paladin and the other 15 types.
+            </p>
+            <a href="take_quiz.html" class="cta-button">Take The Quiz</a>
+        </section>
+    </div>
+
+    <script>
+        // Random subtitle generator for The Paladin
+        const adjectives = [
+            "Eternal", "Divine", "Sacred", "Holy", "Blessed", "Righteous", "Noble", "Pure",
+            "Unwavering", "Steadfast", "Resolute", "Determined", "Dedicated", "Committed", "Loyal", "Faithful",
+            "Shining", "Radiant", "Glorious", "Magnificent", "Majestic", "Heroic", "Legendary", "Epic",
+            "Protective", "Guardian", "Sentinel", "Watchful", "Vigilant", "Defending", "Shielding", "Safeguarding",
+            "Ancient", "Timeless", "Enduring", "Everlasting", "Immortal", "Infinite", "Boundless", "Ultimate",
+            "Golden", "Silver", "Crystal", "Diamond", "Platinum", "Celestial", "Stellar", "Cosmic"
+        ];
+
+        const nouns = [
+            "Lost Library Books", "Forgotten Homework", "Abandoned Coffee Cups", "Misplaced Keys", "Stray Shopping Carts", "Dropped Ice Cream",
+            "School Crossing Guards", "Parking Meter Coins", "Lost Pet Posters", "Broken Shoelaces", "Empty Vending Machines", "Dying Phone Batteries",
+            "Weekend Plans", "Monday Meetings", "Lunch Break Sanctity", "Office Plant Health", "Elevator Music", "WiFi Passwords",
+            "Birthday Candles", "Wedding Flowers", "Baby Shoes", "Graduation Caps", "Anniversary Dinners", "Holiday Traditions",
+            "Garden Gnomes", "Picnic Tables", "Playground Swings", "Park Benches", "Walking Trails", "Community Centers",
+            "Bus Stop Schedules", "Traffic Light Timing", "Crosswalk Safety", "Bicycle Paths", "Parking Spaces", "Street Lights",
+            "Recipe Collections", "Family Photos", "Childhood Memories", "Bedtime Stories", "Lullaby Melodies", "Comfort Blankets",
+            "Hope and Dreams", "Peace and Quiet", "Truth and Justice", "Love and Kindness", "Faith and Courage", "Honor and Glory"
+        ];
+
+        function generateSubtitle() {
+            const randomAdjective = adjectives[Math.floor(Math.random() * adjectives.length)];
+            const randomNoun = nouns[Math.floor(Math.random() * nouns.length)];
+            const titles = [
+                `Eternal Guardian of ${randomAdjective} ${randomNoun}`,
+                `Divine Protector of ${randomAdjective} ${randomNoun}`,
+                `Sacred Defender of ${randomAdjective} ${randomNoun}`,
+                `Noble Champion of ${randomAdjective} ${randomNoun}`,
+                `Righteous Shield of ${randomAdjective} ${randomNoun}`,
+                `Holy Warrior for ${randomAdjective} ${randomNoun}`,
+                `Blessed Sentinel of ${randomAdjective} ${randomNoun}`,
+                `Pure Keeper of ${randomAdjective} ${randomNoun}`,
+                `Radiant Guardian of ${randomAdjective} ${randomNoun}`,
+                `Heroic Defender of ${randomAdjective} ${randomNoun}`
+            ];
+            
+            const randomTitle = titles[Math.floor(Math.random() * titles.length)];
+            document.getElementById('generatedSubtitle').textContent = randomTitle;
+        }
+
+        // Generate initial subtitle when page loads
+        window.addEventListener('DOMContentLoaded', generateSubtitle);
+    </script>
+</body>
+</html>

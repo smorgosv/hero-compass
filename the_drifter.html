@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hero Compass - The Drifter</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #0a0a1f 0%, #1a1a2e 50%, #16213e 100%);
+            color: #f4f4f4;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Navigation */
+        .navigation-bar {
+            background: rgba(255,255,255,0.05);
+            padding: 15px 0;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            color: #4ecdc4;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: bold;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: rgba(78, 205, 196, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .nav-link.active {
+            color: #ffd700;
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        /* Hero Section */
+        .hero-section {
+            text-align: center;
+            padding: 60px 0;
+            background: radial-gradient(circle at center, rgba(160, 82, 45, 0.1) 0%, transparent 70%);
+            border-radius: 20px;
+            margin-bottom: 50px;
+        }
+
+        .hero-content {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        /* Portrait Section */
+        .portrait-section {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .hero-portrait {
+            width: 500px;
+            height: 500px;
+            border-radius: 20px;
+            object-fit: cover;
+            border: 4px solid rgba(160, 82, 45, 0.4);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            transition: all 0.3s ease;
+            display: block;
+            margin: 0 auto;
+            max-width: 90vw;
+        }
+
+        .hero-portrait:hover {
+            transform: scale(1.02);
+            border-color: rgba(160, 82, 45, 0.7);
+            box-shadow: 0 25px 80px rgba(160, 82, 45, 0.3);
+        }
+
+        .type-name {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            background: linear-gradient(45deg, #A0522D, #D2691E, #CD853F);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .type-tagline {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #b8b8b8;
+            font-style: italic;
+        }
+
+        .type-blend {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            color: #4ecdc4;
+            font-weight: bold;
+        }
+
+        .type-overview {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            color: rgba(255,255,255,0.9);
+        }
+
+        /* Core Profile Section */
+        .core-profile {
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 50px;
+            backdrop-filter: blur(10px);
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: #ffd700;
+            text-align: center;
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .profile-item {
+            background: rgba(255,255,255,0.03);
+            border-radius: 10px;
+            padding: 25px;
+            border-left: 4px solid #A0522D;
+        }
+
+        .profile-label {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #ffd700;
+            margin-bottom: 10px;
+        }
+
+        .profile-content {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: rgba(255,255,255,0.9);
+        }
+
+        /* Random Subtitle Generator */
+        .subtitle-generator {
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 50px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .generator-title {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #4ecdc4;
+        }
+
+        .generated-subtitle {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: #ffd700;
+            font-weight: bold;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            padding: 20px;
+            font-style: italic;
+        }
+
+        .generate-button {
+            background: linear-gradient(45deg, #A0522D, #D2691E);
+            color: #fff;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .generate-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(160, 82, 45, 0.3);
+        }
+
+        /* Content Sections */
+        .content-section {
+            background: rgba(255,255,255,0.03);
+            border-radius: 15px;
+            padding: 35px;
+            margin-bottom: 40px;
+        }
+
+        .content-title {
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+            color: #4ecdc4;
+            border-bottom: 2px solid rgba(78, 205, 196, 0.3);
+            padding-bottom: 10px;
+        }
+
+        .content-text {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 15px;
+        }
+
+        .content-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .content-list li {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: rgba(255,255,255,0.85);
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .content-list li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #ffd700;
+            font-weight: bold;
+        }
+
+        /* Related Types */
+        .related-types {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .related-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            text-decoration: none;
+            color: inherit;
+            cursor: pointer;
+        }
+
+        .related-card:hover {
+            transform: translateY(-3px);
+            background: rgba(255,255,255,0.08);
+        }
+
+        .related-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .related-description {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.8);
+            line-height: 1.5;
+        }
+
+        /* Similar Types */
+        .related-card.similar {
+            border-color: rgba(78, 205, 196, 0.3);
+        }
+
+        .related-card.similar:hover {
+            border-color: rgba(78, 205, 196, 0.7);
+        }
+
+        .related-card.similar .related-name {
+            color: #4ecdc4;
+        }
+
+        /* Opposite Type */
+        .related-card.opposite {
+            border-color: rgba(255, 215, 0, 0.3);
+        }
+
+        .related-card.opposite:hover {
+            border-color: rgba(255, 215, 0, 0.7);
+        }
+
+        .related-card.opposite .related-name {
+            color: #ffd700;
+        }
+
+        /* Foil Type */
+        .related-card.foil {
+            border-color: rgba(255, 107, 107, 0.3);
+        }
+
+        .related-card.foil:hover {
+            border-color: rgba(255, 107, 107, 0.7);
+        }
+
+        .related-card.foil .related-name {
+            color: #ff6b6b;
+        }
+
+        /* Quiz CTA */
+        .quiz-cta {
+            text-align: center;
+            padding: 50px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            margin-top: 50px;
+        }
+
+        .cta-title {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: #ffd700;
+        }
+
+        .cta-description {
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+            color: rgba(255,255,255,0.9);
+            line-height: 1.6;
+        }
+
+        .cta-button {
+            background: linear-gradient(45deg, #ffd700, #ff6b6b, #4ecdc4);
+            color: #000;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255,215,0,0.3);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .related-types {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .hero-portrait {
+                width: 400px;
+                height: 400px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .type-name {
+                font-size: 2.2rem;
+            }
+            
+            .generated-subtitle {
+                font-size: 1.5rem;
+            }
+            
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .related-types {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero-portrait {
+                width: 350px;
+                height: 350px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-portrait {
+                width: 280px;
+                height: 280px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="navigation-bar">
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="take_quiz.html" class="nav-link">Take Quiz</a>
+                <a href="framework.html" class="nav-link">Framework</a>
+                <a href="all_types.html" class="nav-link">All Types</a>
+                <a href="compare_types.html" class="nav-link">Compare Types</a>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="hero-content">
+                <h1 class="type-name">The Drifter</h1>
+                <p class="type-tagline">Wandering Soul with Purpose</p>
+                <p class="type-blend">Moderate Pirate + High Cowboy</p>
+                <p class="type-overview">
+                    The Drifter is the action-oriented individualist who finds freedom through experience and movement. They are the spontaneous adventurers who trust the journey more than the destination, learning life's lessons through direct engagement with the world. Like tumbleweeds that somehow always find the most interesting places, they drift with purpose.
+                </p>
+            </div>
+        </section>
+
+        <!-- Portrait Section -->
+        <section class="portrait-section">
+            <img src="images/drifter.jpeg" alt="The Drifter - Wandering Soul with Purpose" class="hero-portrait">
+        </section>
+
+        <!-- Core Profile -->
+        <section class="core-profile">
+            <h2 class="section-title">Core Profile</h2>
+            <div class="profile-grid">
+                <div class="profile-item">
+                    <div class="profile-label">Core Traits</div>
+                    <div class="profile-content">Action-oriented individualist, spontaneous adventurer, values freedom through experience, restless wanderer</div>
+                </div>
+                <div class="profile-item">
+                    <div class="profile-label">Approach</div>
+                    <div class="profile-content">Takes bold action while maintaining independence, learns through trial and error, follows intuitive paths</div>
+                </div>
+                <div class="profile-item">
+                    <div class="profile-label">Strengths</div>
+                    <div class="profile-content">Quick decision-making, experiential learning, inspiring spontaneity, adaptability to new situations</div>
+                </div>
+                <div class="profile-item">
+                    <div class="profile-label">Challenges</div>
+                    <div class="profile-content">Difficulty with long-term commitments, may avoid deep responsibilities, restlessness in stable situations</div>
+                </div>
+                <div class="profile-item">
+                    <div class="profile-label">Drainers</div>
+                    <div class="profile-content">Being tied down, repetitive routines, long-term planning requirements, staying in one place too long</div>
+                </div>
+                <div class="profile-item">
+                    <div class="profile-label">Motivation</div>
+                    <div class="profile-content">Driven by curiosity about what's around the next corner and the need to experience life directly</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Random Subtitle Generator -->
+        <section class="subtitle-generator">
+            <h2 class="generator-title">I am the...</h2>
+            <div class="generated-subtitle" id="generatedSubtitle">Explorer of Forgotten Coffee Shops</div>
+            <button class="generate-button" onclick="generateSubtitle()">Generate New Title</button>
+        </section>
+
+        <!-- In Action -->
+        <section class="content-section">
+            <h2 class="content-title">The Drifter in Action</h2>
+            <p class="content-text">
+                Drifters are the people who take the scenic route, who say yes to unexpected invitations, and who somehow stumble into the most interesting experiences. They're the ones with stories from every corner of the world and skills picked up from a dozen different adventures.
+            </p>
+            <p class="content-text">
+                You'll find them traveling light, changing direction when something interesting catches their eye, and learning new things through hands-on experience. They measure success by the richness of their experiences and the freedom to follow their curiosity.
+            </p>
+        </section>
+
+        <!-- Career Paths -->
+        <section class="content-section">
+            <h2 class="content-title">Career Paths</h2>
+            <ul class="content-list">
+                <li>Travel writer or adventure photographer</li>
+                <li>Freelance contractor or gig economy worker</li>
+                <li>Tour guide or cultural interpreter</li>
+                <li>Location scout or field researcher</li>
+                <li>Seasonal worker or festival organizer</li>
+                <li>Digital nomad or remote consultant</li>
+                <li>Wilderness guide or outdoor instructor</li>
+                <li>Cultural anthropologist or documentary filmmaker</li>
+            </ul>
+        </section>
+
+        <!-- Growth Journey -->
+        <section class="content-section">
+            <h2 class="content-title">Growth Journey</h2>
+            <p class="content-text">
+                Drifters grow by learning to find meaning in their wandering and to create value from their diverse experiences. Their challenge is to channel their restless energy into purposeful exploration that benefits both themselves and others.
+            </p>
+            <p class="content-text">
+                Development involves finding ways to share their unique perspectives and experiences without sacrificing their essential freedom. The most evolved Drifters become bridges between different worlds, using their wandering to connect diverse communities and ideas.
+            </p>
+        </section>
+
+        <!-- Relationships -->
+        <section class="content-section">
+            <h2 class="content-title">In Relationships</h2>
+            <p class="content-text">
+                Drifters bring excitement and fresh perspectives to relationships, but need partners who understand their need for movement and change. They're most compatible with people who either share their wanderlust or who are secure enough to support their journeys.
+            </p>
+            <p class="content-text">
+                They thrive with partners who can either travel with them or who create a welcoming home base they can return to. They struggle with those who demand constant presence or who try to limit their natural tendency to explore and wander.
+            </p>
+        </section>
+
+        <!-- Decision Making -->
+        <section class="content-section">
+            <h2 class="content-title">Decision Making</h2>
+            <p class="content-text">
+                Drifters make decisions based on what feels right in the moment and what will lead to the most interesting experiences. They prefer to keep options open and make choices that preserve their freedom to change direction.
+            </p>
+            <p class="content-text">
+                They trust their instincts over detailed planning and are comfortable making decisions with incomplete information. Their choices prioritize experience, learning, and maintaining their ability to follow new opportunities as they arise.
+            </p>
+        </section>
+
+        <!-- Related Types -->
+        <section class="content-section">
+            <h2 class="content-title">Related Types</h2>
+            <div class="related-types">
+                <a href="the_wildcard.html" class="related-card similar">
+                    <div class="related-name">The Wildcard</div>
+                    <div class="related-description">Shares the spontaneous adventurous spirit but with more chaotic energy</div>
+                </a>
+                <a href="the_maverick.html" class="related-card similar">
+                    <div class="related-name">The Maverick</div>
+                    <div class="related-description">Similar balance of independence and action but more strategically focused</div>
+                </a>
+                <a href="the_oracle.html" class="related-card opposite">
+                    <div class="related-name">The Oracle</div>
+                    <div class="related-description">Opposite type - stationary wisdom keeper versus wandering experiencer</div>
+                </a>
+                <a href="the_archon.html" class="related-card foil">
+                    <div class="related-name">The Archon</div>
+                    <div class="related-description">Foil - Stable wise ruler complements the Drifter's mobile exploration</div>
+                </a>
+            </div>
+        </section>
+
+        <!-- Famous Examples -->
+        <section class="content-section">
+            <h2 class="content-title">Famous Drifters</h2>
+            <ul class="content-list">
+                <li><strong>Jack Kerouac</strong> - Writer who embodied the wandering spirit of the Beat Generation</li>
+                <li><strong>Anthony Bourdain</strong> - Chef and traveler who explored the world through food and culture</li>
+                <li><strong>Cheryl Strayed</strong> - Author who found herself through solo wilderness hiking</li>
+                <li><strong>Han Solo</strong> - Fictional smuggler who lives by his wits and wandering instincts</li>
+            </ul>
+        </section>
+
+        <!-- Quiz CTA -->
+        <section class="quiz-cta">
+            <h2 class="cta-title">Not Sure If This Is You?</h2>
+            <p class="cta-description">
+                Take our comprehensive assessment to discover your true heroic archetype and see how you compare to The Drifter and the other 15 types.
+            </p>
+            <a href="take_quiz.html" class="cta-button">Take The Quiz</a>
+        </section>
+    </div>
+
+    <script>
+        // Random subtitle generator for The Drifter
+        const adjectives = [
+            "Forgotten", "Hidden", "Secret", "Abandoned", "Remote", "Undiscovered", "Lost", "Mysterious",
+            "Ancient", "Timeless", "Weathered", "Rustic", "Vintage", "Historic", "Legendary", "Mythical",
+            "Wandering", "Roaming", "Nomadic", "Traveling", "Migrating", "Drifting", "Floating", "Moving",
+            "Distant", "Faraway", "Exotic", "Foreign", "Unknown", "Unexplored", "Uncharted", "Untamed",
+            "Sunrise", "Sunset", "Moonlit", "Starlit", "Dawn", "Twilight", "Midnight", "Golden",
+            "Mountain", "Desert", "Ocean", "Forest", "River", "Valley", "Prairie", "Coastal"
+        ];
+
+        const nouns = [
+            "Coffee Shops", "Bookstores", "Markets", "Diners", "Cafes", "Bakeries", "Tea Houses", "Pubs",
+            "Trails", "Paths", "Roads", "Routes", "Bridges", "Crossroads", "Stations", "Ports",
+            "Villages", "Towns", "Neighborhoods", "Districts", "Quarters", "Communities", "Settlements", "Outposts",
+            "Gardens", "Parks", "Meadows", "Fields", "Forests", "Groves", "Springs", "Streams",
+            "Stories", "Legends", "Tales", "Memories", "Dreams", "Songs", "Melodies", "Rhythms",
+            "Festivals", "Gatherings", "Celebrations", "Markets", "Fairs", "Concerts", "Performances", "Shows",
+            "Workshops", "Studios", "Galleries", "Museums", "Libraries", "Archives", "Collections", "Treasures",
+            "Conversations", "Friendships", "Connections", "Encounters", "Meetings", "Exchanges", "Moments", "Experiences"
+        ];
+
+        function generateSubtitle() {
+            const randomAdjective = adjectives[Math.floor(Math.random() * adjectives.length)];
+            const randomNoun = nouns[Math.floor(Math.random() * nouns.length)];
+            const titles = [
+                `Explorer of ${randomAdjective} ${randomNoun}`,
+                `Wanderer of ${randomAdjective} ${randomNoun}`,
+                `Seeker of ${randomAdjective} ${randomNoun}`,
+                `Discoverer of ${randomAdjective} ${randomNoun}`,
+                `Traveler of ${randomAdjective} ${randomNoun}`,
+                `Roamer of ${randomAdjective} ${randomNoun}`,
+                `Navigator of ${randomAdjective} ${randomNoun}`,
+                `Pilgrim of ${randomAdjective} ${randomNoun}`,
+                `Journeyer to ${randomAdjective} ${randomNoun}`,
+                `Finder of ${randomAdjective} ${randomNoun}`
+            ];
+            
+            const randomTitle = titles[Math.floor(Math.random() * titles.length)];
+            document.getElementById('generatedSubtitle').textContent = randomTitle;
+        }
+
+        // Generate initial subtitle when page loads
+        window.addEventListener('DOMContentLoaded', generateSubtitle);
+    </script>
+</body>
+</html>

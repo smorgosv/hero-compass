@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hero Compass - Framework</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #0a0a1f 0%, #1a1a2e 50%, #16213e 100%);
+            color: #f4f4f4;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            background: linear-gradient(45deg, #ffd700, #ff6b6b, #4ecdc4, #45b7d1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            margin-bottom: 50px;
+            color: #b8b8b8;
+            font-style: italic;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 50px;
+            margin: 180px 0;
+            position: relative;
+        }
+
+        .main-axis-h {
+            position: absolute;
+            top: 50%;
+            left: -100px;
+            right: -100px;
+            height: 4px;
+            background: linear-gradient(90deg, transparent 5%, #ff6b6b 20%, #ffd700 50%, #4ecdc4 80%, transparent 95%);
+            transform: translateY(-50%);
+            z-index: 15;
+            border-radius: 2px;
+            box-shadow: 0 2px 8px rgba(255,215,0,0.4);
+        }
+
+        .main-axis-v {
+            position: absolute;
+            left: 50%;
+            top: -100px;
+            bottom: -100px;
+            width: 4px;
+            background: linear-gradient(0deg, transparent 5%, #ff6b6b 20%, #ffd700 50%, #45b7d1 80%, transparent 95%);
+            transform: translateX(-50%);
+            z-index: 15;
+            border-radius: 2px;
+            box-shadow: 0 2px 8px rgba(255,215,0,0.4);
+        }
+
+        .axis-label {
+            position: absolute;
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #ffd700;
+            z-index: 20;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            text-align: center;
+        }
+
+        .cowboy-label { top: 50%; left: -150px; transform: translateY(-50%); }
+        .wizard-label { top: 50%; right: -150px; transform: translateY(-50%); }
+        .pirate-label { top: -130px; left: 50%; transform: translateX(-50%); }
+        .knight-label { bottom: -130px; left: 50%; transform: translateX(-50%); }
+
+        .main-quadrant {
+            border-radius: 20px;
+            overflow: hidden;
+            border: 4px solid #555;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+            transition: transform 0.3s ease;
+        }
+
+        .main-quadrant:hover {
+            transform: translateY(-5px);
+        }
+
+        .quadrant-header {
+            text-align: center;
+            padding: 25px;
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+            border-bottom: 3px solid rgba(255,255,255,0.2);
+        }
+
+        .sub-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 4px;
+            min-height: 450px;
+        }
+
+        .sub-quadrant {
+            padding: 25px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .sub-quadrant:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 30px rgba(255,255,255,0.2);
+            z-index: 10;
+        }
+
+        .sub-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            border-bottom: 2px solid rgba(255,255,255,0.3);
+            padding-bottom: 12px;
+        }
+
+        .trait-section {
+            margin-bottom: 18px;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .trait-header {
+            font-weight: bold;
+            color: #ffd700;
+            margin-bottom: 8px;
+            text-align: center;
+            font-size: 1rem;
+        }
+
+        .trait-content {
+            color: rgba(255,255,255,0.9);
+            text-align: center;
+        }
+
+        /* Maverick quadrant colors */
+        .maverick-main { background: linear-gradient(135deg, #8B4513 0%, #CD853F 50%, #D2691E 100%); }
+        .maverick-pure { background: rgba(139, 69, 19, 0.95); }
+        .maverick-rebel-thinker { background: rgba(160, 82, 45, 0.9); }
+        .maverick-free-spirit { background: rgba(160, 82, 45, 0.9); }
+        .maverick-balanced { background: rgba(205, 133, 63, 0.8); }
+
+        /* Rogue Scholar quadrant colors */
+        .rogue-main { background: linear-gradient(135deg, #4B0082 0%, #8A2BE2 50%, #9370DB 100%); }
+        .rogue-strategic { background: rgba(106, 90, 205, 0.9); }
+        .rogue-pure { background: rgba(75, 0, 130, 0.95); }
+        .rogue-balanced { background: rgba(138, 43, 226, 0.8); }
+        .rogue-individualist { background: rgba(106, 90, 205, 0.9); }
+
+        /* Champion quadrant colors */
+        .champion-main { background: linear-gradient(135deg, #B22222 0%, #DC143C 50%, #FF6347 100%); }
+        .champion-warrior { background: rgba(220, 20, 60, 0.9); }
+        .champion-balanced { background: rgba(205, 92, 92, 0.8); }
+        .champion-pure { background: rgba(178, 34, 34, 0.95); }
+        .champion-activist { background: rgba(220, 20, 60, 0.9); }
+
+        /* Sage Guardian quadrant colors */
+        .sage-main { background: linear-gradient(135deg, #2E8B57 0%, #3CB371 50%, #20B2AA 100%); }
+        .sage-balanced { background: rgba(32, 178, 170, 0.8); }
+        .sage-counselor { background: rgba(60, 179, 113, 0.9); }
+        .sage-advisor { background: rgba(60, 179, 113, 0.9); }
+        .sage-pure { background: rgba(46, 139, 87, 0.95); }
+
+        .description {
+            margin-top: 50px;
+            padding: 30px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .description h3 {
+            color: #ffd700;
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+        }
+
+        .description p {
+            font-size: 1rem;
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+
+        .navigation-bar {
+            background: rgba(255,255,255,0.05);
+            padding: 15px 0;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            color: #4ecdc4;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: bold;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: rgba(78, 205, 196, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .nav-link.active {
+            color: #ffd700;
+            background: rgba(255, 215, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="navigation-bar">
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="take_quiz.html" class="nav-link">Take Quiz</a>
+                <a href="framework.html" class="nav-link active">Framework</a>
+                <a href="all_types.html" class="nav-link">All Types</a>
+                <a href="compare_types.html" class="nav-link">Compare Types</a>
+            </div>
+        </nav>
+
+        <h1 class="title">Hero Compass</h1>
+        <p class="subtitle">16 Heroic Archetypes: Find Your Path to Greatness</p>
+        
+        <div class="main-grid">
+            <!-- Main Axis Lines -->
+            <div class="main-axis-h"></div>
+            <div class="main-axis-v"></div>
+            
+            <!-- Main Axis Labels -->
+            <div class="axis-label cowboy-label">COWBOY</div>
+            <div class="axis-label wizard-label">WIZARD</div>
+            <div class="axis-label pirate-label">PIRATE</div>
+            <div class="axis-label knight-label">KNIGHT</div>
+
+            <!-- The Maverick Quadrant (Pirate + Cowboy) -->
+            <div class="main-quadrant maverick-main">
+                <div class="quadrant-header">THE MAVERICK (Pirate + Cowboy)</div>
+                <div class="sub-grid">
+                    <div class="sub-quadrant maverick-pure">
+                        <div class="sub-title">The Wildcard</div>
+                        <div class="trait-section">
+                            <div class="trait-header">Core Traits:</div>
+                            <div class="trait-content">Wildly independent, impulsive rebel, thrives on chaos and adventure</div>
+                        </div>
+                        <div class="trait-section">
+                            <div class="trait-header">Approach:</div>
+                            <div class="trait-content">Shoots from the hip, breaks rules instinctively, values complete freedom</div>
+                        </div>
+                        <div class="trait-section">
+                            <div class="trait-header">Strengths:</div>
+                            <div class="trait-content">Unmatched adaptability, fearless risk-taking, authentic self-expression</div>
+                        </div>
+                    </div>
+                    <div class="sub-quadrant maverick-rebel-thinker">
+                        <div class="sub-title">The Contrarian</div>
+                        <div class="trait-section">
+                            <div class="trait-header">Core Traits:</div>
+                            <div class="trait-content">Independent contrarian, questions everything, values intellectual freedom</div>
+                        </div>
+                        <div class="trait-section">
+                            <div class="trait-header">Approach:</div>
+                            <div class="trait-content">Challenges systems through analysis, breaks conventional wisdom</div>
+                        </div>
+                        <div class="trait-section">
+                            <div class="trait-header">Strengths:</div>
+                            <div class="trait-content">Critical thinking, innovative solutions, intellectual courage</div>
+                        </div>
+                    </div>
+                    <div class="sub-quadrant maverick-free-spirit">
+                        <div class="sub-title">The Drifter</div>
+                        <div class="trait-section">
+                            <div class="trait-header">Core Traits:</div>
+                            <div class="trait-content">Action-oriented individualist, spontaneous adventurer, values freedom through experience</div>
+                        </div>
+                        <div class="trait-section">
+                            <div class="trait-header">Approach:</div>
+                            <div class="trait-content">Takes bold action while maintaining independence, learns through trial and error</div>
+                        </div>
+                        <div class="trait-section">
+                            <div class="trait-header">Strengths:</div>
+                            <div class="trait-content">Quick decision-making, experiential learning, inspiring spontaneity</div>
+                        </div>
+                    </div>
+                    <div class="sub-quadrant maverick-balanced">
+                        <div class="sub-title">The Maverick</div>
+                        <div class="trait-section">
+                            <div class="trait-header">Core Traits:</div>
+                            <div class="trait-content">Selectively independent, thoughtfully spontaneous, balances freedom with structure</div>
+                        </div>
+                        <div class="trait-section">
+                            <div class="trait-header">Approach:</div>
+                            <div class="trait-content">Chooses when to rebel and act, maintains autonomy while considering consequences</div>
+                        </div>
+                        <div class="trait-section">
+                            <div class="trait-header">Strengths:</div>
+                            <div class="trait-content">Flexible independence, strategic spontaneity, pragmatic freedom</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- The Rogue Scholar Quadrant (Pirate + Wizard) -->
+            <div class="main-quadrant rogue-main">
+                <div class="quadrant-header">THE ROGUE SCHOLAR (Pirate + Wizard)</div>
+                <div class="sub-grid">
+                    <div class="sub-quadrant rogue-strategic">
+                        <div class="sub-title">The Treasure Hunter</div>
+                        <div class="trait-section">
+                            <div class="trait-header">Core Traits:</div>
+                            <div class="trait-content">Calculating individualist, plans rebellion, uses intelligence to maintain independence</div>
+                        </div>
+                        <div class="trait-section">
+                            <div class="trait-header">Approach:</div>
+                            <div class="trait-content">Systematically challenges authority, uses knowledge to subvert systems</div>
+                        </div>
+                        <div class="trait-section">
+                            <div class="trait-header">Strengths:</div>
+                            <div class="trait-content">Intelligent resistance, strategic independence, effective system criticism</div>
+                        </div>
+                    </div>
+                    <div class="sub-quadrant rogue-pure">
+                        <div class="sub-title">The Mapmaker</div>
+                        <div class="trait-section">
+                            <div class="trait-header">Core Traits:</div>
+                            <div class="trait-content">Brilliant individualist, masters forbidden knowledge, completely independent intellectual</div>
+                        </div>
+                        <div class="trait-section">
+                            <div class="trait-header">Approach:</div>
+                            <div class="trait-content">Studies everything to maintain absolute freedom, uses deep understanding to stay unbound</div>
+                        </div>
+                        <div class="trait-section">
+                            <div class="trait-header">Strengths:</div>
+                            <div class="trait-content">Intellectual mastery, complete independence, innovative thinking</div>
+                        </div>
+                    </div>
+                    <div class="sub-quadrant rogue-balanced">
+                        <div class="sub-title">The Wayfinder</div>
+                        <div class="trait-section">
+                            <div class="trait-header">Core Traits:</div>
+                            <div class="trait-content">Thoughtful individualist, balances independence with wisdom, selectively rebellious</div>
+                        </div>
+                        <div class="trait-section">
+                            <div class="trait-header">Approach:</div>
+                            <div class="trait-content">Uses knowledge to maintain appropriate independence, rebels when justified</div>
+                        </div>
+                        <div class="trait-section">
+                            <div class="trait-header">Strengths:</div>
+                            <div class="trait-content">Wise independence, justified rebellion, balanced perspective</div>
+                        </div>
+                    </div>
+                    <div class="sub-quadrant rogue-individualist">
+                        <div class="sub-title">The Seeker</div>
+                        <div class="trait-section">
+                            <div class="trait-header">Core Traits:</div>
+                            <div class="trait-content">Intellectually independent, values understanding over conformity, quietly rebellious</div>
+                        </div>
+                        <div class="trait-section">
+                            <div class="trait-header">Approach:</div>
+                            <div class="trait-content">Maintains independence through deep knowledge, questions through study</div>
+                        </div>
+                        <div class="trait-section">
+                            <div class="trait-header">Strengths:</div>
+                            <div class="trait-content">Intellectual integrity, thoughtful independence, deep understanding</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- The Champion Quadrant (Knight + Cowboy) -->
+            <div class="main-quadrant champion-main">
+                <div class="quadrant-header">THE CHAMPION (Knight + Cowboy)</div>
+                <div class="sub-grid">
+                    <div class="sub-quadrant champion-warrior">
+                        <div class="sub-title">The Crusader</div>
+                        <div class="trait-section">
+                            <div class="trait-header">Core Traits:</div>
+                            <div class="trait-content">Bold protector, instinctively heroic, acts courageously for others without hesitation</div>
+                        </div>
+                        <div class="trait-section">
+                            <div class="trait-header">Approach:</div>
+                            <div class="trait-content">Charges into danger to help others, follows moral instincts, leads by example</div>
+                        </div>
+                        <div class="trait-section">
+                            <div class="trait-header">Strengths:</div>
+                            <div class="trait-content">Natural heroism, inspiring courage, protective instincts</div>
+                        </div>
+                    </div>
+                    <div class="sub-quadrant champion-balanced">
+                        <div class="sub-title">The Guardian</div>
+                        <div class="trait-section">
+                            <div class="trait-header">Core Traits:</div>
+                            <div class="trait-content">Thoughtful protector, balances duty with action, considers impact of heroic deeds</div>
+                        </div>
+                        <div class="trait-section">
+                            <div class="trait-header">Approach:</div>
+                            <div class="trait-content">Acts for others after consideration, balances courage with wisdom</div>
+                        </div>
+                        <div class="trait-section">
+                            <div class="trait-header">Strengths:</div>
+                            <div class="trait-content">Sustainable service, balanced heroism, thoughtful protection</div>
+                        </div>
+                    </div>
+                    <div class="sub-quadrant champion-pure">
+                        <div class="sub-title">The Paladin</div>
+                        <div class="trait-section">
+                            <div class="trait-header">Core Traits:</div>
+                            <div class="trait-content">Ultimate protector-warrior, maximum duty with fearless action, lives to serve others</div>
+                        </div>
+                        <div class="trait-section">
+                            <div class="trait-header">Approach:</div>
+                            <div class="trait-content">Instantly acts on moral imperatives, charges fearlessly toward righteous causes</div>
+                        </div>
+                        <div class="trait-section">
+                            <div class="trait-header">Strengths:</div>
+                            <div class="trait-content">Unlimited courage, total dedication, inspiring leadership</div>
+                        </div>
+                    </div>
+                    <div class="sub-quadrant champion-activist">
+                        <div class="sub-title">The Activist</div>
+                        <div class="trait-section">
+                            <div class="trait-header">Core Traits:</div>
+                            <div class="trait-content">Service-oriented reformer, dedicates life to causes, patient in pursuit of justice</div>
+                        </div>
+                        <div class="trait-section">
+                            <div class="trait-header">Approach:</div>
+                            <div class="trait-content">Systematically works for change, builds movements, persists through obstacles</div>
+                        </div>
+                        <div class="trait-section">
+                            <div class="trait-header">Strengths:</div>
+                            <div class="trait-content">Sustained dedication, movement building, patient activism</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- The Sage Guardian Quadrant (Knight + Wizard) -->
+            <div class="main-quadrant sage-main">
+                <div class="quadrant-header">THE SAGE GUARDIAN (Knight + Wizard)</div>
+                <div class="sub-grid">
+                    <div class="sub-quadrant sage-balanced">
+                        <div class="sub-title">The Mentor</div>
+                        <div class="trait-section">
+                            <div class="trait-header">Core Traits:</div>
+                            <div class="trait-content">Thoughtful server, balances wisdom with duty, considers long-term impact</div>
+                        </div>
+                        <div class="trait-section">
+                            <div class="trait-header">Approach:</div>
+                            <div class="trait-content">Studies how to best serve others, plans for sustainable impact</div>
+                        </div>
+                        <div class="trait-section">
+                            <div class="trait-header">Strengths:</div>
+                            <div class="trait-content">Wise service, sustainable impact, balanced leadership</div>
+                        </div>
+                    </div>
+                    <div class="sub-quadrant sage-counselor">
+                        <div class="sub-title">The Oracle</div>
+                        <div class="trait-section">
+                            <div class="trait-header">Core Traits:</div>
+                            <div class="trait-content">Knowledge-focused helper, serves others through wisdom, teaches and guides</div>
+                        </div>
+                        <div class="trait-section">
+                            <div class="trait-header">Approach:</div>
+                            <div class="trait-content">Uses deep understanding to help others, shares knowledge for collective benefit</div>
+                        </div>
+                        <div class="trait-section">
+                            <div class="trait-header">Strengths:</div>
+                            <div class="trait-content">Wisdom sharing, teaching excellence, thoughtful guidance</div>
+                        </div>
+                    </div>
+                    <div class="sub-quadrant sage-advisor">
+                        <div class="sub-title">The Advisor</div>
+                        <div class="trait-section">
+                            <div class="trait-header">Core Traits:</div>
+                            <div class="trait-content">Service-oriented thinker, dedicates intellect to helping others, loyal counselor</div>
+                        </div>
+                        <div class="trait-section">
+                            <div class="trait-header">Approach:</div>
+                            <div class="trait-content">Studies to better serve, provides thoughtful advice, remains loyal</div>
+                        </div>
+                        <div class="trait-section">
+                            <div class="trait-header">Strengths:</div>
+                            <div class="trait-content">Dedicated counsel, loyal service, thoughtful advice</div>
+                        </div>
+                    </div>
+                    <div class="sub-quadrant sage-pure">
+                        <div class="sub-title">The Archon</div>
+                        <div class="trait-section">
+                            <div class="trait-header">Core Traits:</div>
+                            <div class="trait-content">Philosopher-king, combines ultimate wisdom with complete dedication to others</div>
+                        </div>
+                        <div class="trait-section">
+                            <div class="trait-header">Approach:</div>
+                            <div class="trait-content">Studies everything to better serve humanity, makes decisions for collective good</div>
+                        </div>
+                        <div class="trait-section">
+                            <div class="trait-header">Strengths:</div>
+                            <div class="trait-content">Ultimate wisdom in service, perfect balance, inspiring leadership</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="description">
+            <h3>Understanding the Hero Compass</h3>
+            <p>
+                The Hero Compass expands four core archetypes (Pirate, Knight, Cowboy, Wizard) into 16 distinct heroic personalities. Each main quadrant represents a blend of two primary archetypes, with four gradations showing different intensities of those traits.
+            </p>
+            <p>
+                <strong>The Pure Types</strong> (corner positions) represent maximum expression of both traits, while <strong>Balanced Types</strong> show moderate levels of each characteristic. The Hero Compass provides a nuanced way to understand personality that goes beyond simple categories to capture the full spectrum of heroic behavior and motivation.
+            </p>
+            <p>
+                Each profile includes Core Traits (fundamental characteristics), Approach (how they handle situations), and Strengths (natural advantages), providing a comprehensive view of each heroic archetype focused on positive attributes and capabilities. Every person is the hero of their own story - the Hero Compass simply helps you understand what kind of hero you are.
+            </p>
+        </div>
+    </div>
+</body>
+</html>

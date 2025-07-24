@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hero Compass - Compare Types</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #0a0a1f 0%, #1a1a2e 50%, #16213e 100%);
+            color: #f4f4f4;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Navigation */
+        .navigation-bar {
+            background: rgba(255,255,255,0.05);
+            padding: 15px 0;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            color: #4ecdc4;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: bold;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: rgba(78, 205, 196, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .nav-link.active {
+            color: #ffd700;
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .title {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            background: linear-gradient(45deg, #ffd700, #ff6b6b, #4ecdc4, #45b7d1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #b8b8b8;
+            font-style: italic;
+            margin-bottom: 30px;
+        }
+
+        .description {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            color: rgba(255,255,255,0.9);
+        }
+
+        /* Selection Section */
+        .selection-section {
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+            backdrop-filter: blur(10px);
+        }
+
+        .selection-title {
+            font-size: 1.8rem;
+            color: #ffd700;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .selection-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        .selector-column {
+            text-align: center;
+        }
+
+        .selector-label {
+            font-size: 1.2rem;
+            color: #4ecdc4;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .type-selector {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255,255,255,0.1);
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 1rem;
+            font-family: 'Georgia', serif;
+            backdrop-filter: blur(10px);
+        }
+
+        .type-selector:focus {
+            outline: none;
+            border-color: #ffd700;
+            box-shadow: 0 0 20px rgba(255,215,0,0.3);
+        }
+
+        .type-selector option {
+            background: #1a1a2e;
+            color: #fff;
+        }
+
+        .compare-button {
+            background: linear-gradient(45deg, #ffd700, #ff6b6b, #4ecdc4);
+            color: #000;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 20px auto;
+            display: block;
+        }
+
+        .compare-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255,215,0,0.4);
+        }
+
+        .compare-button:disabled {
+            background: rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.5);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Quick Presets */
+        .presets-section {
+            background: rgba(255,255,255,0.03);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 40px;
+            backdrop-filter: blur(10px);
+        }
+
+        .presets-title {
+            font-size: 1.5rem;
+            color: #ffd700;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .presets-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .preset-button {
+            background: rgba(255,255,255,0.1);
+            border: 2px solid rgba(255,255,255,0.2);
+            color: #fff;
+            padding: 15px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            text-align: center;
+        }
+
+        .preset-button:hover {
+            border-color: #ffd700;
+            background: rgba(255,215,0,0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Comparison Section */
+        .comparison-section {
+            display: none;
+            margin-top: 40px;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .type-comparison-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255,255,255,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .type-comparison-card:hover {
+            border-color: rgba(255,215,0,0.3);
+            transform: translateY(-3px);
+        }
+
+        .comparison-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 15px;
+            object-fit: cover;
+            margin: 0 auto 20px;
+            display: block;
+            border: 3px solid rgba(255,215,0,0.3);
+        }
+
+        .comparison-type-name {
+            font-size: 1.8rem;
+            color: #ffd700;
+            text-align: center;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .comparison-tagline {
+            font-size: 1rem;
+            color: #4ecdc4;
+            text-align: center;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .comparison-blend {
+            font-size: 0.9rem;
+            color: #b8b8b8;
+            text-align: center;
+            margin-bottom: 25px;
+            padding: 8px 16px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+        }
+
+        .comparison-section-title {
+            font-size: 1.2rem;
+            color: #4ecdc4;
+            margin: 20px 0 10px 0;
+            font-weight: bold;
+            border-bottom: 2px solid rgba(78, 205, 196, 0.3);
+            padding-bottom: 5px;
+        }
+
+        .comparison-text {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: rgba(255,255,255,0.85);
+            margin-bottom: 15px;
+        }
+
+        /* Archetypal Forces Comparison */
+        .forces-comparison {
+            background: rgba(255,255,255,0.03);
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .forces-title {
+            font-size: 1.8rem;
+            color: #ffd700;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .forces-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .force-comparison {
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .force-name {
+            font-size: 1.1rem;
+            color: #4ecdc4;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .individual-force-bar {
+            margin-bottom: 25px;
+        }
+
+        .force-spectrum-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .spectrum-left {
+            color: #ff6b6b;
+        }
+
+        .spectrum-right {
+            color: #4ecdc4;
+        }
+
+        .spectrum-bar {
+            height: 12px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 6px;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .spectrum-fill {
+            height: 100%;
+            border-radius: 6px;
+            transition: all 0.8s ease;
+            position: absolute;
+            width: 100%;
+        }
+
+        .spectrum-indicator {
+            position: absolute;
+            top: -2px;
+            bottom: -2px;
+            width: 4px;
+            background: #fff;
+            border-radius: 2px;
+            transition: all 0.8s ease;
+            box-shadow: 0 0 8px rgba(255,255,255,0.8);
+            z-index: 10;
+        }
+
+        .cowboy-wizard-spectrum {
+            background: linear-gradient(90deg, #ff6b6b 0%, rgba(255,255,255,0.1) 50%, #4ecdc4 100%);
+        }
+
+        .pirate-knight-spectrum {
+            background: linear-gradient(90deg, #ffd700 0%, rgba(255,255,255,0.1) 50%, #45b7d1 100%);
+        }
+
+        .spectrum-center-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: rgba(255,255,255,0.4);
+            transform: translateX(-50%);
+        }
+
+        .force-values {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        .cowboy-value { color: #ff6b6b; }
+        .wizard-value { color: #4ecdc4; }
+        .pirate-value { color: #ffd700; }
+        .knight-value { color: #45b7d1; }
+
+        /* Detailed Comparison Sections */
+        .detailed-comparison {
+            background: rgba(255,255,255,0.03);
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .comparison-title {
+            font-size: 1.8rem;
+            color: #ffd700;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .comparison-category {
+            margin-bottom: 30px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 25px;
+        }
+
+        .category-title {
+            font-size: 1.3rem;
+            color: #4ecdc4;
+            margin-bottom: 20px;
+            text-align: center;
+            border-bottom: 2px solid rgba(78, 205, 196, 0.3);
+            padding-bottom: 10px;
+        }
+
+        .comparison-detail {
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            padding: 20px;
+            border-left: 4px solid #ffd700;
+        }
+
+        .detail-type-name {
+            font-size: 1.1rem;
+            color: #ffd700;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .detail-content {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: rgba(255,255,255,0.85);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .selection-grid,
+            .comparison-grid,
+            .forces-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .title {
+                font-size: 2rem;
+            }
+            
+            .presets-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="navigation-bar">
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="take_quiz.html" class="nav-link">Take Quiz</a>
+                <a href="framework.html" class="nav-link">Framework</a>
+                <a href="all_types.html" class="nav-link">All Types</a>
+                <a href="compare_types.html" class="nav-link active">Compare Types</a>
+            </div>
+        </nav>
+
+        <div class="header">
+            <h1 class="title">Compare Heroic Types</h1>
+            <p class="subtitle">Discover the differences and similarities between archetypes</p>
+            <p class="description">
+                Select two heroic archetypes to see how they differ in their core traits, strengths, and archetypal forces. Understanding these comparisons helps you better understand yourself and others.
+            </p>
+        </div>
+
+        <!-- Quick Presets Section -->
+        <div class="presets-section">
+            <h2 class="presets-title">Quick Comparisons</h2>
+            <div class="presets-grid">
+                <button class="preset-button" onclick="compareTypes('wildcard', 'archon')">
+                    Wildcard vs Archon<br><small>Maximum Chaos vs Maximum Order</small>
+                </button>
+                <button class="preset-button" onclick="compareTypes('paladin', 'mapmaker')">
+                    Paladin vs Mapmaker<br><small>Ultimate Service vs Ultimate Independence</small>
+                </button>
+                <button class="preset-button" onclick="compareTypes('guardian', 'mentor')">
+                    Guardian vs Mentor<br><small>Similar Balanced Types</small>
+                </button>
+                <button class="preset-button" onclick="compareTypes('crusader', 'seeker')">
+                    Crusader vs Seeker<br><small>Action vs Contemplation</small>
+                </button>
+                <button class="preset-button" onclick="compareTypes('drifter', 'oracle')">
+                    Drifter vs Oracle<br><small>Spontaneous vs Wise</small>
+                </button>
+                <button class="preset-button" onclick="compareTypes('maverick', 'wayfinder')">
+                    Maverick vs Wayfinder<br><small>Strategic vs Thoughtful Independence</small>
+                </button>
+            </div>
+        </div>
+
+        <!-- Type Selection -->
+        <div class="selection-section">
+            <h2 class="selection-title">Choose Types to Compare</h2>
+            <div class="selection-grid">
+                <div class="selector-column">
+                    <div class="selector-label">First Type</div>
+                    <select id="type1" class="type-selector">
+                        <option value="">Select a type...</option>
+                        <option value="wildcard">The Wildcard</option>
+                        <option value="contrarian">The Contrarian</option>
+                        <option value="drifter">The Drifter</option>
+                        <option value="maverick">The Maverick</option>
+                        <option value="treasure_hunter">The Treasure Hunter</option>
+                        <option value="mapmaker">The Mapmaker</option>
+                        <option value="wayfinder">The Wayfinder</option>
+                        <option value="seeker">The Seeker</option>
+                        <option value="crusader">The Crusader</option>
+                        <option value="guardian">The Guardian</option>
+                        <option value="paladin">The Paladin</option>
+                        <option value="activist">The Activist</option>
+                        <option value="mentor">The Mentor</option>
+                        <option value="oracle">The Oracle</option>
+                        <option value="advisor">The Advisor</option>
+                        <option value="archon">The Archon</option>
+                    </select>
+                </div>
+                <div class="selector-column">
+                    <div class="selector-label">Second Type</div>
+                    <select id="type2" class="type-selector">
+                        <option value="">Select a type...</option>
+                        <option value="wildcard">The Wildcard</option>
+                        <option value="contrarian">The Contrarian</option>
+                        <option value="drifter">The Drifter</option>
+                        <option value="maverick">The Maverick</option>
+                        <option value="treasure_hunter">The Treasure Hunter</option>
+                        <option value="mapmaker">The Mapmaker</option>
+                        <option value="wayfinder">The Wayfinder</option>
+                        <option value="seeker">The Seeker</option>
+                        <option value="crusader">The Crusader</option>
+                        <option value="guardian">The Guardian</option>
+                        <option value="paladin">The Paladin</option>
+                        <option value="activist">The Activist</option>
+                        <option value="mentor">The Mentor</option>
+                        <option value="oracle">The Oracle</option>
+                        <option value="advisor">The Advisor</option>
+                        <option value="archon">The Archon</option>
+                    </select>
+                </div>
+            </div>
+            <button id="compareBtn" class="compare-button" onclick="performComparison()" disabled>
+                Compare These Types
+            </button>
+        </div>
+
+        <!-- Comparison Results -->
+        <div id="comparisonResults" class="comparison-section">
+            <div class="comparison-grid">
+                <div class="type-comparison-card" id="type1Card">
+                    <!-- Type 1 comparison content will be inserted here -->
+                </div>
+                <div class="type-comparison-card" id="type2Card">
+                    <!-- Type 2 comparison content will be inserted here -->
+                </div>
+            </div>
+
+            <!-- Archetypal Forces Comparison -->
+            <div class="forces-comparison">
+                <h3 class="forces-title">Archetypal Forces Breakdown</h3>
+                <div class="forces-grid">
+                    <div class="force-comparison">
+                        <div class="force-name" id="type1ForceName">Type 1 Forces</div>
+                        <div class="individual-force-bar">
+                            <div class="force-spectrum-label">
+                                <span class="spectrum-left">Cowboy (Action)</span>
+                                <span class="spectrum-right">Wizard (Reflection)</span>
+                            </div>
+                            <div class="spectrum-bar">
+                                <div class="spectrum-fill cowboy-wizard-spectrum" id="type1CowboyWizard"></div>
+                                <div class="spectrum-center-line"></div>
+                                <div class="spectrum-indicator" id="type1CowboyWizardIndicator"></div>
+                            </div>
+                            <div class="force-values">
+                                <span class="force-value cowboy-value" id="type1CowboyValue">0%</span>
+                                <span class="force-value wizard-value" id="type1WizardValue">0%</span>
+                            </div>
+                        </div>
+                        <div class="individual-force-bar">
+                            <div class="force-spectrum-label">
+                                <span class="spectrum-left">Pirate (Independence)</span>
+                                <span class="spectrum-right">Knight (Service)</span>
+                            </div>
+                            <div class="spectrum-bar">
+                                <div class="spectrum-fill pirate-knight-spectrum" id="type1PirateKnight"></div>
+                                <div class="spectrum-center-line"></div>
+                                <div class="spectrum-indicator" id="type1PirateKnightIndicator"></div>
+                            </div>
+                            <div class="force-values">
+                                <span class="force-value pirate-value" id="type1PirateValue">0%</span>
+                                <span class="force-value knight-value" id="type1KnightValue">0%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="force-comparison">
+                        <div class="force-name" id="type2ForceName">Type 2 Forces</div>
+                        <div class="individual-force-bar">
+                            <div class="force-spectrum-label">
+                                <span class="spectrum-left">Cowboy (Action)</span>
+                                <span class="spectrum-right">Wizard (Reflection)</span>
+                            </div>
+                            <div class="spectrum-bar">
+                                <div class="spectrum-fill cowboy-wizard-spectrum" id="type2CowboyWizard"></div>
+                                <div class="spectrum-center-line"></div>
+                                <div class="spectrum-indicator" id="type2CowboyWizardIndicator"></div>
+                            </div>
+                            <div class="force-values">
+                                <span class="force-value cowboy-value" id="type2CowboyValue">0%</span>
+                                <span class="force-value wizard-value" id="type2WizardValue">0%</span>
+                            </div>
+                        </div>
+                        <div class="individual-force-bar">
+                            <div class="force-spectrum-label">
+                                <span class="spectrum-left">Pirate (Independence)</span>
+                                <span class="spectrum-right">Knight (Service)</span>
+                            </div>
+                            <div class="spectrum-bar">
+                                <div class="spectrum-fill pirate-knight-spectrum" id="type2PirateKnight"></div>
+                                <div class="spectrum-center-line"></div>
+                                <div class="spectrum-indicator" id="type2PirateKnightIndicator"></div>
+                            </div>
+                            <div class="force-values">
+                                <span class="force-value pirate-value" id="type2PirateValue">0%</span>
+                                <span class="force-value knight-value" id="type2KnightValue">0%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detailed Comparison Sections -->
+            <div class="detailed-comparison">
+                <h3 class="comparison-title">Detailed Comparison</h3>
+                
+                <div class="comparison-category">
+                    <h4 class="category-title">Decision-Making Style</h4>
+                    <div class="comparison-grid">
+                        <div class="comparison-detail" id="type1DecisionMaking">
+                            <!-- Will be populated -->
+                        </div>
+                        <div class="comparison-detail" id="type2DecisionMaking">
+                            <!-- Will be populated -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="comparison-category">
+                    <h4 class="category-title">Leadership Approach</h4>
+                    <div class="comparison-grid">
+                        <div class="comparison-detail" id="type1Leadership">
+                            <!-- Will be populated -->
+                        </div>
+                        <div class="comparison-detail" id="type2Leadership">
+                            <!-- Will be populated -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="comparison-category">
+                    <h4 class="category-title">Growth Areas</h4>
+                    <div class="comparison-grid">
+                        <div class="comparison-detail" id="type1Growth">
+                            <!-- Will be populated -->
+                        </div>
+                        <div class="comparison-detail" id="type2Growth">
+                            <!-- Will be populated -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="comparison-category">
+                    <h4 class="category-title">Relationship Dynamics</h4>
+                    <div class="comparison-grid">
+                        <div class="comparison-detail" id="type1Relationship">
+                            <!-- Will be populated -->
+                        </div>
+                        <div class="comparison-detail" id="type2Relationship">
+                            <!-- Will be populated -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Type data with detailed information
+        const typeData = {
+            wildcard: {
+                name: "The Wildcard",
+                tagline: "Unpredictable Force of Nature",
+                blend: "Maximum Pirate + Maximum Cowboy",
+                image: "images/wildcard.jpeg",
+                coreTraits: "Wildly independent, impulsive rebel, thrives on chaos and adventure",
+                approach: "Shoots from the hip, breaks rules instinctively, values complete freedom",
+                strengths: "Unmatched adaptability, fearless risk-taking, authentic self-expression",
+                forces: { cowboy: 100, wizard: 0, pirate: 100, knight: 0 },
+                decisionMaking: "Makes split-second decisions based on gut instinct and immediate circumstances. Trusts intuition over analysis and adapts quickly when plans change.",
+                leadership: "Leads through authentic charisma and fearless example. Inspires others to break free from constraints and embrace uncertainty.",
+                growth: "Learning to balance spontaneity with occasional planning. Developing patience for others who need more structure and predictability.",
+                relationship: "Brings excitement and authenticity to relationships. May struggle with commitment and routine, but offers genuine freedom and adventure to partners."
+            },
+            contrarian: {
+                name: "The Contrarian",
+                tagline: "Intellectual Freedom Fighter",
+                blend: "High Pirate + Moderate Wizard",
+                image: "images/contrarian.jpeg",
+                coreTraits: "Independent contrarian, questions everything, values intellectual freedom",
+                approach: "Challenges conventional wisdom, thinks independently, debates ideas",
+                strengths: "Critical thinking, innovative solutions, intellectual courage",
+                forces: { cowboy: 25, wizard: 50, pirate: 75, knight: 25 },
+                decisionMaking: "Analyzes decisions through independent research and critical thinking. Questions assumptions and seeks alternative perspectives before choosing.",
+                leadership: "Leads by challenging the status quo and encouraging independent thought. Creates space for debate and intellectual exploration.",
+                growth: "Learning when to build rather than just critique. Developing skills in constructive collaboration while maintaining intellectual independence.",
+                relationship: "Values intellectual connection and debates. Needs partners who appreciate independent thinking and don't require constant agreement."
+            },
+            drifter: {
+                name: "The Drifter",
+                tagline: "Spontaneous Adventurer",
+                blend: "Moderate Pirate + High Cowboy",
+                image: "images/drifter.jpeg",
+                coreTraits: "Action-oriented individualist, spontaneous adventurer, values freedom through experience",
+                approach: "Goes with the flow, learns by doing, keeps options open",
+                strengths: "Quick decision-making, experiential learning, inspiring spontaneity",
+                forces: { cowboy: 75, wizard: 25, pirate: 50, knight: 25 },
+                decisionMaking: "Prefers experiential learning and keeping options open. Makes quick decisions based on immediate opportunities and changing circumstances.",
+                leadership: "Leads through example and shared adventure. Motivates others by showing new possibilities and encouraging experimentation.",
+                growth: "Learning to balance freedom with responsibility. Developing skills in follow-through and commitment to long-term goals.",
+                relationship: "Brings adventure and spontaneity to relationships. May struggle with routine but offers genuine excitement and growth opportunities."
+            },
+            maverick: {
+                name: "The Maverick",
+                tagline: "Strategic Independent",
+                blend: "Moderate Pirate + Moderate Cowboy",
+                image: "images/maverick.jpeg",
+                coreTraits: "Selectively independent, thoughtfully spontaneous, balances freedom with structure",
+                approach: "Picks battles wisely, maintains strategic autonomy, adapts to circumstances",
+                strengths: "Flexible independence, strategic spontaneity, pragmatic freedom",
+                forces: { cowboy: 50, wizard: 25, pirate: 50, knight: 25 },
+                decisionMaking: "Balances independence with practical considerations. Makes strategic choices about when to conform and when to rebel.",
+                leadership: "Leads through strategic thinking and selective non-conformity. Shows others how to maintain autonomy within systems.",
+                growth: "Learning to deepen commitments while maintaining flexibility. Developing stronger collaborative skills without losing independence.",
+                relationship: "Offers balanced independence and connection. Maintains autonomy while building meaningful partnerships based on mutual respect."
+            },
+            treasure_hunter: {
+                name: "The Treasure Hunter",
+                tagline: "Strategic Rebel",
+                blend: "High Pirate + Moderate Wizard",
+                image: "images/treasure_hunter.jpeg",
+                coreTraits: "Calculating individualist, plans rebellion, uses intelligence to maintain independence",
+                approach: "Plans strategic resistance, gathers information, targets system weaknesses",
+                strengths: "Intelligent resistance, strategic independence, effective system criticism",
+                forces: { cowboy: 25, wizard: 50, pirate: 75, knight: 25 },
+                decisionMaking: "Uses strategic thinking to maintain independence. Plans carefully to avoid unnecessary constraints and maximize personal freedom.",
+                leadership: "Leads resistance efforts and challenges unjust systems. Helps others recognize and overcome limiting structures.",
+                growth: "Learning to build positive alternatives, not just tear down existing systems. Developing collaborative skills while maintaining independence.",
+                relationship: "Values intellectual connection and shared resistance to conformity. Needs partners who support their independence and critical thinking."
+            },
+            mapmaker: {
+                name: "The Mapmaker",
+                tagline: "Master of Forbidden Knowledge",
+                blend: "Maximum Pirate + Maximum Wizard",
+                image: "images/mapmaker.jpeg",
+                coreTraits: "Brilliant individualist, masters forbidden knowledge, completely independent intellectual",
+                approach: "Charts unknown territories, pursues forbidden knowledge, maintains complete autonomy",
+                strengths: "Intellectual mastery, complete independence, innovative thinking",
+                forces: { cowboy: 0, wizard: 100, pirate: 100, knight: 0 },
+                decisionMaking: "Makes decisions based on deep research and independent analysis. Pursues truth regardless of social pressure or conventional wisdom.",
+                leadership: "Leads through intellectual innovation and breakthrough discoveries. Shows others new ways of understanding reality.",
+                growth: "Learning to share knowledge and connect with others without compromising independence. Developing practical applications for insights.",
+                relationship: "Seeks intellectual equals who respect their need for mental freedom. May struggle with emotional intimacy but offers profound understanding."
+            },
+            wayfinder: {
+                name: "The Wayfinder",
+                tagline: "Balanced Guide Between Worlds",
+                blend: "Moderate Pirate + Moderate Wizard",
+                image: "images/wayfinder.jpeg",
+                coreTraits: "Thoughtful individualist, balances independence with wisdom, selectively rebellious",
+                approach: "Finds balanced paths, considers multiple perspectives, guides others thoughtfully",
+                strengths: "Wise independence, justified rebellion, balanced perspective",
+                forces: { cowboy: 25, wizard: 50, pirate: 50, knight: 25 },
+                decisionMaking: "Seeks balance between independence and collaboration. Makes thoughtful decisions that honor both personal freedom and collective wisdom.",
+                leadership: "Guides others toward balanced solutions and thoughtful independence. Helps people find their own authentic paths.",
+                growth: "Learning to take stronger stands when necessary. Developing confidence in their unique perspective and wisdom.",
+                relationship: "Offers balanced partnership with space for individual growth. Creates relationships based on mutual respect and intellectual connection."
+            },
+            seeker: {
+                name: "The Seeker",
+                tagline: "Questioner of Deep Truths",
+                blend: "Moderate Pirate + High Wizard",
+                image: "images/seeker.jpeg",
+                coreTraits: "Intellectually independent, values understanding over conformity, quietly rebellious",
+                approach: "Seeks deep understanding, questions established truths, pursues wisdom independently",
+                strengths: "Intellectual integrity, thoughtful independence, deep understanding",
+                forces: { cowboy: 25, wizard: 75, pirate: 50, knight: 25 },
+                decisionMaking: "Prioritizes deep understanding over quick action. Makes decisions based on thorough research and contemplation of long-term consequences.",
+                leadership: "Leads through wisdom and thoughtful questioning. Helps others develop deeper understanding and intellectual independence.",
+                growth: "Learning to take action on their insights. Developing confidence to share their wisdom more actively with the world.",
+                relationship: "Values deep intellectual and spiritual connection. Seeks partners who appreciate contemplation and support their quest for understanding."
+            },
+            crusader: {
+                name: "The Crusader",
+                tagline: "Bold Protector",
+                blend: "Moderate Knight + High Cowboy",
+                image: "images/crusader.jpeg",
+                coreTraits: "Bold protector, instinctively heroic, acts courageously for others without hesitation",
+                approach: "Acts on moral imperatives, protects the vulnerable, takes immediate action",
+                strengths: "Natural heroism, inspiring courage, protective instincts",
+                forces: { cowboy: 75, wizard: 25, pirate: 25, knight: 50 },
+                decisionMaking: "Acts quickly on moral imperatives without extensive analysis. Trusts gut instincts about right and wrong and responds immediately.",
+                leadership: "Leads through courageous example and moral clarity. Inspires others to stand up for what's right and protect the vulnerable.",
+                growth: "Learning to balance immediate action with strategic thinking. Developing patience for collaborative approaches to justice.",
+                relationship: "Brings passionate protection and moral clarity to relationships. May need to balance heroic impulses with partner's autonomy."
+            },
+            guardian: {
+                name: "The Guardian",
+                tagline: "Steadfast Shield of Others",
+                blend: "Moderate Knight + Moderate Cowboy",
+                image: "images/guardian.jpeg",
+                coreTraits: "Thoughtful protector, balances duty with action, considers impact of heroic deeds",
+                approach: "Builds sustainable protection, balances wisdom with action, provides steady support",
+                strengths: "Sustainable service, balanced heroism, thoughtful protection",
+                forces: { cowboy: 50, wizard: 25, pirate: 25, knight: 50 },
+                decisionMaking: "Balances immediate protective instincts with long-term strategic thinking. Considers sustainable impact of protective actions.",
+                leadership: "Leads through steady, reliable protection and balanced judgment. Creates lasting safety and stability for others.",
+                growth: "Learning to trust their instincts more while maintaining thoughtful approach. Developing confidence in quick decisive action when needed.",
+                relationship: "Provides steady, reliable support and protection. Creates secure foundation for partners while respecting their independence."
+            },
+            paladin: {
+                name: "The Paladin",
+                tagline: "Ultimate Warrior of Light",
+                blend: "Maximum Knight + Maximum Cowboy",
+                image: "images/paladin.jpeg",
+                coreTraits: "Ultimate protector-warrior, maximum duty with fearless action, lives to serve others",
+                approach: "Charges fearlessly toward righteous causes, acts on moral imperatives instantly",
+                strengths: "Unlimited courage, total dedication, inspiring leadership",
+                forces: { cowboy: 100, wizard: 0, pirate: 0, knight: 100 },
+                decisionMaking: "Acts immediately on clear moral imperatives without hesitation. Prioritizes service to others above personal safety or comfort.",
+                leadership: "Leads through fearless example and unwavering dedication to noble causes. Inspires total commitment and moral courage in others.",
+                growth: "Learning to balance heroic impulses with strategic wisdom. Developing sustainable approaches to service and protection.",
+                relationship: "Brings total dedication and protection to relationships. May need to balance service to others with attention to partner's needs."
+            },
+            activist: {
+                name: "The Activist",
+                tagline: "Patient Builder of Change",
+                blend: "High Knight + Moderate Cowboy",
+                image: "images/activist.jpeg",
+                coreTraits: "Service-oriented reformer, dedicates life to causes, patient in pursuit of justice",
+                approach: "Builds movements systematically, persists through obstacles, organizes communities",
+                strengths: "Sustained dedication, movement building, patient activism",
+                forces: { cowboy: 50, wizard: 25, pirate: 25, knight: 75 },
+                decisionMaking: "Makes decisions based on long-term impact for causes and communities. Balances immediate needs with strategic movement building.",
+                leadership: "Leads through persistent dedication and community organizing. Builds lasting movements for social change and justice.",
+                growth: "Learning to balance cause dedication with personal well-being. Developing skills in inspiring others without burning out.",
+                relationship: "Brings passionate commitment to shared values and causes. May need to balance activism with personal relationship needs."
+            },
+            mentor: {
+                name: "The Mentor",
+                tagline: "Wise Guide",
+                blend: "Moderate Knight + Moderate Wizard",
+                image: "images/mentor.jpeg",
+                coreTraits: "Thoughtful server, balances wisdom with duty, considers long-term impact",
+                approach: "Guides others' growth, shares wisdom thoughtfully, builds sustainable impact",
+                strengths: "Wise service, sustainable impact, balanced leadership",
+                forces: { cowboy: 25, wizard: 50, pirate: 25, knight: 50 },
+                decisionMaking: "Balances wisdom with service to others. Makes thoughtful decisions that support long-term growth and development.",
+                leadership: "Leads through patient guidance and wisdom sharing. Develops others' potential while serving collective good.",
+                growth: "Learning to trust their wisdom more fully. Developing confidence to take stronger leadership roles when needed.",
+                relationship: "Provides wise counsel and patient support. Creates relationships based on mutual growth and shared wisdom."
+            },
+            oracle: {
+                name: "The Oracle",
+                tagline: "Keeper of Wisdom",
+                blend: "Moderate Knight + High Wizard",
+                image: "images/oracle.jpeg",
+                coreTraits: "Knowledge-focused helper, serves others through wisdom, teaches and guides",
+                approach: "Shares deep understanding, teaches others, provides thoughtful guidance",
+                strengths: "Wisdom sharing, teaching excellence, thoughtful guidance",
+                forces: { cowboy: 25, wizard: 75, pirate: 25, knight: 50 },
+                decisionMaking: "Makes decisions based on deep wisdom and understanding. Prioritizes sharing knowledge that serves collective benefit.",
+                leadership: "Leads through teaching and wisdom sharing. Helps others develop deeper understanding and make wiser choices.",
+                growth: "Learning to take more direct action on their insights. Developing skills in practical application of wisdom.",
+                relationship: "Offers deep wisdom and understanding. Seeks partners who appreciate learning and intellectual growth."
+            },
+            advisor: {
+                name: "The Advisor",
+                tagline: "Loyal Counselor",
+                blend: "High Knight + Moderate Wizard",
+                image: "images/advisor.jpeg",
+                coreTraits: "Service-oriented thinker, dedicates intellect to helping others, loyal counselor",
+                approach: "Provides dedicated counsel, serves others through careful thinking, offers loyal advice",
+                strengths: "Dedicated counsel, loyal service, thoughtful advice",
+                forces: { cowboy: 25, wizard: 50, pirate: 25, knight: 75 },
+                decisionMaking: "Uses careful analysis to serve others' best interests. Makes decisions based on loyalty and dedication to those they counsel.",
+                leadership: "Leads through dedicated service and thoughtful counsel. Provides wise advice and loyal support to others.",
+                growth: "Learning to balance service with independent thinking. Developing confidence in their own wisdom and judgment.",
+                relationship: "Provides loyal support and thoughtful counsel. Creates relationships based on service and mutual care."
+            },
+            archon: {
+                name: "The Archon",
+                tagline: "Ultimate Wisdom in Service of All",
+                blend: "Maximum Knight + Maximum Wizard",
+                image: "images/archon.jpeg",
+                coreTraits: "Philosopher-king, combines ultimate wisdom with complete dedication to others",
+                approach: "Seeks solutions for greatest good, consults multiple sources, considers long-term consequences",
+                strengths: "Ultimate wisdom in service, perfect balance, inspiring leadership",
+                forces: { cowboy: 0, wizard: 100, pirate: 0, knight: 100 },
+                decisionMaking: "Makes decisions based on comprehensive wisdom and complete dedication to collective good. Considers all perspectives and long-term consequences.",
+                leadership: "Leads through perfect synthesis of wisdom and service. Inspires others toward highest collective potential and shared wisdom.",
+                growth: "Learning to balance idealistic vision with practical implementation. Developing patience with others' different approaches to growth.",
+                relationship: "Offers profound wisdom and complete dedication. May need to balance service to humanity with attention to personal relationships."
+            }
+        };
+
+        // Enable compare button when both types are selected
+        function updateCompareButton() {
+            const type1 = document.getElementById('type1').value;
+            const type2 = document.getElementById('type2').value;
+            const compareBtn = document.getElementById('compareBtn');
+            
+            if (type1 && type2 && type1 !== type2) {
+                compareBtn.disabled = false;
+                compareBtn.textContent = 'Compare These Types';
+            } else if (type1 && type2 && type1 === type2) {
+                compareBtn.disabled = true;
+                compareBtn.textContent = 'Please select different types';
+            } else {
+                compareBtn.disabled = true;
+                compareBtn.textContent = 'Select both types to compare';
+            }
+        }
+
+        // Add event listeners to selectors
+        document.getElementById('type1').addEventListener('change', updateCompareButton);
+        document.getElementById('type2').addEventListener('change', updateCompareButton);
+
+        // Compare types function for presets
+        function compareTypes(type1Key, type2Key) {
+            document.getElementById('type1').value = type1Key;
+            document.getElementById('type2').value = type2Key;
+            updateCompareButton();
+            performComparison();
+        }
+
+        // Perform the comparison
+        function performComparison() {
+            const type1Key = document.getElementById('type1').value;
+            const type2Key = document.getElementById('type2').value;
+            
+            if (!type1Key || !type2Key || type1Key === type2Key) return;
+            
+            const type1Data = typeData[type1Key];
+            const type2Data = typeData[type2Key];
+            
+            // Populate comparison cards
+            populateComparisonCard('type1Card', type1Data);
+            populateComparisonCard('type2Card', type2Data);
+            
+            // Update force bars
+            updateForceBars(type1Data.forces, type2Data.forces);
+            
+            // Populate detailed comparisons
+            populateDetailedComparison(type1Key, type2Key);
+            
+            // Show comparison section
+            document.getElementById('comparisonResults').style.display = 'block';
+            
+            // Scroll to results
+            document.getElementById('comparisonResults').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Populate individual comparison card
+        function populateComparisonCard(cardId, typeData) {
+            const card = document.getElementById(cardId);
+            card.innerHTML = `
+                <img src="${typeData.image}" alt="${typeData.name}" class="comparison-image">
+                <h3 class="comparison-type-name">${typeData.name}</h3>
+                <p class="comparison-tagline">${typeData.tagline}</p>
+                <div class="comparison-blend">${typeData.blend}</div>
+                
+                <div class="comparison-section-title">Core Traits</div>
+                <div class="comparison-text">${typeData.coreTraits}</div>
+                
+                <div class="comparison-section-title">Approach</div>
+                <div class="comparison-text">${typeData.approach}</div>
+                
+                <div class="comparison-section-title">Strengths</div>
+                <div class="comparison-text">${typeData.strengths}</div>
+            `;
+        }
+
+        // Update force comparison bars
+        function updateForceBars(forces1, forces2) {
+            const type1Name = typeData[document.getElementById('type1').value].name;
+            const type2Name = typeData[document.getElementById('type2').value].name;
+            
+            // Update type names in force sections
+            document.getElementById('type1ForceName').textContent = `${type1Name} Forces`;
+            document.getElementById('type2ForceName').textContent = `${type2Name} Forces`;
+            
+            // Update Type 1 forces
+            updateIndividualForces('type1', forces1);
+            
+            // Update Type 2 forces  
+            updateIndividualForces('type2', forces2);
+        }
+
+        function updateIndividualForces(typePrefix, forces) {
+            // Calculate spectrum positions (0-100 scale where 50 is center)
+            const cowboyWizardTotal = forces.cowboy + forces.wizard;
+            const pirateKnightTotal = forces.pirate + forces.knight;
+            
+            // Calculate positions as percentages (0% = far left, 100% = far right)
+            const cowboyWizardPosition = cowboyWizardTotal > 0 ? (forces.cowboy / cowboyWizardTotal) * 100 : 50;
+            const pirateKnightPosition = pirateKnightTotal > 0 ? (forces.pirate / pirateKnightTotal) * 100 : 50;
+            
+            // Update spectrum indicators to show actual position
+            const cowboyWizardIndicator = document.getElementById(`${typePrefix}CowboyWizardIndicator`);
+            const pirateKnightIndicator = document.getElementById(`${typePrefix}PirateKnightIndicator`);
+            
+            cowboyWizardIndicator.style.left = `calc(${cowboyWizardPosition}% - 2px)`;
+            pirateKnightIndicator.style.left = `calc(${pirateKnightPosition}% - 2px)`;
+            
+            // Update force values
+            document.getElementById(`${typePrefix}CowboyValue`).textContent = `${forces.cowboy}%`;
+            document.getElementById(`${typePrefix}WizardValue`).textContent = `${forces.wizard}%`;
+            document.getElementById(`${typePrefix}PirateValue`).textContent = `${forces.pirate}%`;
+            document.getElementById(`${typePrefix}KnightValue`).textContent = `${forces.knight}%`;
+        }
+
+        // Populate detailed comparison sections
+        function populateDetailedComparison(type1Key, type2Key) {
+            const type1Data = typeData[type1Key];
+            const type2Data = typeData[type2Key];
+            
+            // Decision Making
+            populateDetailSection('type1DecisionMaking', type1Data.name, type1Data.decisionMaking);
+            populateDetailSection('type2DecisionMaking', type2Data.name, type2Data.decisionMaking);
+            
+            // Leadership
+            populateDetailSection('type1Leadership', type1Data.name, type1Data.leadership);
+            populateDetailSection('type2Leadership', type2Data.name, type2Data.leadership);
+            
+            // Growth Areas
+            populateDetailSection('type1Growth', type1Data.name, type1Data.growth);
+            populateDetailSection('type2Growth', type2Data.name, type2Data.growth);
+            
+            // Relationship Dynamics
+            populateDetailSection('type1Relationship', type1Data.name, type1Data.relationship);
+            populateDetailSection('type2Relationship', type2Data.name, type2Data.relationship);
+        }
+
+        function populateDetailSection(elementId, typeName, content) {
+            const element = document.getElementById(elementId);
+            element.innerHTML = `
+                <div class="detail-type-name">${typeName}</div>
+                <div class="detail-content">${content}</div>
+            `;
+        }
+    </script>
+</body>
+</html>

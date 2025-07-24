@@ -1,0 +1,1273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Heroic Archetype Results</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #0a0a1f 0%, #1a1a2e 50%, #16213e 100%);
+            color: #f4f4f4;
+            min-height: 100vh;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Navigation Bar */
+        .navigation-bar {
+            background: rgba(255,255,255,0.05);
+            padding: 15px 0;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            color: #4ecdc4;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: bold;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: rgba(78, 205, 196, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .nav-link.active {
+            color: #ffd700;
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        /* Header Section */
+        .results-header {
+            text-align: center;
+            padding: 40px 0;
+            border-bottom: 2px solid rgba(255,215,0,0.3);
+            margin-bottom: 40px;
+        }
+
+        .archetype-name {
+            font-size: 3rem;
+            color: #ffd700;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            background: linear-gradient(45deg, #ffd700, #ff6b6b, #4ecdc4, #45b7d1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .archetype-tagline {
+            font-size: 1.5rem;
+            color: #4ecdc4;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+
+        .archetype-portrait {
+            margin: 30px 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .portrait-image {
+            width: 400px;
+            height: 400px;
+            border-radius: 20px;
+            object-fit: cover;
+            border: 4px solid #ffd700;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transition: all 0.3s ease;
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
+        }
+
+        .portrait-image:hover {
+            transform: scale(1.02);
+            border-color: #ff6b6b;
+            box-shadow: 0 15px 40px rgba(255,107,107,0.3);
+        }
+
+        .title-generator {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .generator-label {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: #ffd700;
+        }
+
+        .generated-title {
+            font-size: 1.5rem;
+            color: #f4f4f4;
+            margin-bottom: 15px;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .btn {
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #ffd700, #ff6b6b);
+            color: #000;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(45deg, #4ecdc4, #45b7d1);
+            color: #fff;
+        }
+
+        .btn-tertiary {
+            background: linear-gradient(45deg, #9370DB, #8A2BE2);
+            color: #fff;
+        }
+
+        /* Section Styles */
+        .section {
+            background: rgba(255,255,255,0.05);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            backdrop-filter: blur(10px);
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: #ffd700;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        /* FIXED GRID LAYOUTS - Only 1, 2, or 4 columns allowed */
+        .force-grid {
+            display: grid;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        /* Force grid: Always 4 columns on large screens, 2 on medium, 1 on small */
+        .force-grid {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        @media (max-width: 1024px) {
+            .force-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .force-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Prediction and Survival grids: 2 columns on large screens, 1 on small */
+        .prediction-grid, .survival-grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        .prediction-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .survival-grid {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        @media (max-width: 900px) {
+            .prediction-grid {
+                grid-template-columns: 1fr;
+            }
+            .survival-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .survival-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Mixer controls: 4 columns on large screens, 2 on medium, 1 on small */
+        .mixer-controls {
+            display: grid;
+            gap: 25px;
+            margin-bottom: 30px;
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        @media (max-width: 900px) {
+            .mixer-controls {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .mixer-controls {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .force-item {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .force-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .force-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            display: block;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .force-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .force-percentage {
+            font-size: 2rem;
+            color: #ffd700;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .force-bar {
+            width: 100%;
+            height: 12px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 6px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .force-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ffd700, #ff6b6b, #4ecdc4);
+            transition: width 1.5s ease;
+            border-radius: 6px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .force-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .force-description {
+            text-align: center;
+            color: rgba(255,255,255,0.8);
+            font-style: italic;
+            font-size: 1.1rem;
+            margin-top: 20px;
+        }
+
+        /* Attribute Spectrums */
+        .attribute-item {
+            margin-bottom: 30px;
+            padding: 25px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .attribute-item:hover {
+            background: rgba(255,255,255,0.15);
+            transform: translateY(-2px);
+        }
+
+        .attribute-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .attribute-icon {
+            font-size: 1.8rem;
+            margin-right: 15px;
+        }
+
+        .attribute-name {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #ffd700;
+        }
+
+        .spectrum-container {
+            margin-bottom: 15px;
+        }
+
+        .spectrum-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 1rem;
+            color: rgba(255,255,255,0.8);
+            font-weight: 500;
+        }
+
+        .spectrum-bar {
+            width: 100%;
+            height: 24px;
+            background: linear-gradient(90deg, #ff6b6b, #ffd700, #4ecdc4);
+            border-radius: 12px;
+            position: relative;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .spectrum-indicator {
+            width: 24px;
+            height: 24px;
+            background: #f4f4f4;
+            border: 4px solid #ffd700;
+            border-radius: 50%;
+            position: absolute;
+            top: 0;
+            transform: translateX(-50%);
+            box-shadow: 0 3px 15px rgba(0,0,0,0.4);
+            transition: all 0.3s ease;
+        }
+
+        .spectrum-indicator:hover {
+            transform: translateX(-50%) scale(1.1);
+            border-color: #ff6b6b;
+        }
+
+        .attribute-description {
+            font-style: italic;
+            color: rgba(255,255,255,0.9);
+            text-align: center;
+            font-size: 1.1rem;
+            line-height: 1.5;
+        }
+
+        .prediction-item, .survival-item {
+            background: rgba(255,255,255,0.1);
+            padding: 25px;
+            border-radius: 12px;
+            border-left: 4px solid #ffd700;
+            transition: all 0.3s ease;
+        }
+
+        .prediction-item:hover, .survival-item:hover {
+            background: rgba(255,255,255,0.15);
+            transform: translateY(-3px);
+            border-left-color: #ff6b6b;
+        }
+
+        .survival-item {
+            text-align: center;
+            border-left: none;
+            border-top: 4px solid #ffd700;
+        }
+
+        .survival-item:hover {
+            border-top-color: #ff6b6b;
+        }
+
+        .prediction-icon, .survival-icon {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+
+        .survival-icon {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .prediction-title, .survival-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #ffd700;
+            margin-bottom: 12px;
+        }
+
+        .survival-title {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+        }
+
+        .prediction-text, .survival-text {
+            color: rgba(255,255,255,0.9);
+            line-height: 1.6;
+        }
+
+        /* Force Mixer */
+        .mixer-control {
+            text-align: center;
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .mixer-label {
+            font-size: 1.1rem;
+            color: #ffd700;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .mixer-slider {
+            width: 100%;
+            height: 10px;
+            border-radius: 5px;
+            background: rgba(255,255,255,0.2);
+            outline: none;
+            margin-bottom: 15px;
+            cursor: pointer;
+        }
+
+        .mixer-slider::-webkit-slider-thumb {
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #ffd700;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .mixer-slider::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #ffd700;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .mixer-value {
+            font-size: 1.3rem;
+            color: #f4f4f4;
+            font-weight: bold;
+        }
+
+        .mixer-result {
+            background: rgba(255,255,255,0.1);
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            border: 2px dashed rgba(255,215,0,0.3);
+        }
+
+        .mixer-result-text {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: rgba(255,255,255,0.9);
+        }
+
+        /* Responsive adjustments for very small screens */
+        @media (max-width: 480px) {
+            .archetype-name {
+                font-size: 2.2rem;
+            }
+            
+            .portrait-image {
+                width: 280px;
+                height: 280px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background: white;
+                color: black;
+            }
+            
+            .btn {
+                display: none;
+            }
+            
+            .force-mixer {
+                display: none;
+            }
+            
+            .section-title, .archetype-name {
+                color: black;
+            }
+            
+            .attribute-description, .prediction-text, .survival-text {
+                color: #333;
+            }
+            
+            .section {
+                background: transparent;
+                border: 1px solid #ddd;
+            }
+            
+            .portrait-image {
+                border-color: #333;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            text-align: center;
+            padding: 60px 0;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 5px solid rgba(255,215,0,0.3);
+            border-top: 5px solid #ffd700;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 30px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            font-size: 1.3rem;
+            color: #ffd700;
+        }
+
+        /* Error State */
+        .error-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .error-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .error-title {
+            font-size: 1.5rem;
+            color: #ff6b6b;
+            margin-bottom: 15px;
+        }
+
+        .error-text {
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Navigation Bar -->
+        <nav class="navigation-bar">
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="take_quiz.html" class="nav-link">Take Quiz</a>
+                <a href="framework.html" class="nav-link">Framework</a>
+                <a href="all_types.html" class="nav-link">All Types</a>
+                <a href="compare_types.html" class="nav-link">Compare Types</a>
+            </div>
+        </nav>
+
+        <!-- Loading State -->
+        <div id="loadingState" class="loading">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">Loading your heroic profile...</div>
+        </div>
+
+        <!-- Error State -->
+        <div id="errorState" class="error-state" style="display: none;">
+            <div class="error-icon">🤔</div>
+            <div class="error-title">No Quiz Results Found</div>
+            <div class="error-text">It looks like you haven't taken the quiz yet, or your results have expired.</div>
+            <a href="take_quiz.html" class="btn btn-primary">Take the Quiz</a>
+        </div>
+
+        <!-- Main Results -->
+        <div id="mainResults" style="display: none;">
+            <!-- Header Section -->
+            <div class="results-header">
+                <h1 class="archetype-name" id="archetypeName">The Maverick</h1>
+                <p class="archetype-tagline" id="archetypeTagline">Strategic Independent</p>
+                
+                <!-- Archetype Portrait -->
+                <div class="archetype-portrait">
+                    <img src="" alt="" id="archetypeImage" class="portrait-image">
+                </div>
+                
+                <div class="title-generator">
+                    <div class="generator-label">🎲 Today you are the:</div>
+                    <div class="generated-title" id="generatedTitle">Strategic Corporate Culture Disruptor</div>
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" onclick="generateRandomTitle()">Generate New Mission</button>
+                        <button class="btn btn-secondary" onclick="window.print()">📄 Print Results</button>
+                        <a href="take_quiz.html" class="btn btn-tertiary">🔄 Retake Quiz</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Force Visualization -->
+            <section class="section">
+                <h2 class="section-title">Your Heroic Force Profile</h2>
+                <div class="force-grid">
+                    <div class="force-item">
+                        <span class="force-icon">🤠</span>
+                        <div class="force-name">Cowboy</div>
+                        <div class="force-percentage" id="cowboyPercentage">65%</div>
+                        <div class="force-bar">
+                            <div class="force-fill" id="cowboyBar" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div class="force-item">
+                        <span class="force-icon">🧙‍♂️</span>
+                        <div class="force-name">Wizard</div>
+                        <div class="force-percentage" id="wizardPercentage">35%</div>
+                        <div class="force-bar">
+                            <div class="force-fill" id="wizardBar" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div class="force-item">
+                        <span class="force-icon">🏴‍☠️</span>
+                        <div class="force-name">Pirate</div>
+                        <div class="force-percentage" id="piratePercentage">80%</div>
+                        <div class="force-bar">
+                            <div class="force-fill" id="pirateBar" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div class="force-item">
+                        <span class="force-icon">⚔️</span>
+                        <div class="force-name">Knight</div>
+                        <div class="force-percentage" id="knightPercentage">20%</div>
+                        <div class="force-bar">
+                            <div class="force-fill" id="knightBar" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="force-description" id="forceDescription">
+                    "You're feeling 80% rebellious and 65% action-ready!"
+                </div>
+            </section>
+
+            <!-- Quirky Attribute Spectrums -->
+            <section class="section">
+                <h2 class="section-title">Your Behavioral Spectrums</h2>
+                <div id="attributeContainer">
+                    <!-- Attributes will be populated by JavaScript -->
+                </div>
+            </section>
+
+            <!-- Behavioral Predictions -->
+            <section class="section">
+                <h2 class="section-title">Your Heroic Habits</h2>
+                <div class="prediction-grid" id="predictionContainer">
+                    <!-- Predictions will be populated by JavaScript -->
+                </div>
+            </section>
+
+            <!-- Survival Guide -->
+            <section class="section">
+                <h2 class="section-title">Your Heroic Survival Guide</h2>
+                <div class="survival-grid" id="survivalContainer">
+                    <!-- Survival guide will be populated by JavaScript -->
+                </div>
+            </section>
+
+            <!-- Interactive Force Mixer -->
+            <section class="section force-mixer">
+                <h2 class="section-title">🎛️ Force Mixer: What If You Were Different?</h2>
+                <p style="text-align: center; margin-bottom: 30px; color: rgba(255,255,255,0.8);">
+                    Experiment with different force combinations to see how your heroic approach would change!
+                </p>
+                
+                <div class="mixer-controls">
+                    <div class="mixer-control">
+                        <div class="mixer-label">🤠 Cowboy</div>
+                        <input type="range" min="0" max="100" value="65" class="mixer-slider" id="mixerCowboy">
+                        <div class="mixer-value" id="mixerCowboyValue">65%</div>
+                    </div>
+                    <div class="mixer-control">
+                        <div class="mixer-label">🧙‍♂️ Wizard</div>
+                        <input type="range" min="0" max="100" value="35" class="mixer-slider" id="mixerWizard">
+                        <div class="mixer-value" id="mixerWizardValue">35%</div>
+                    </div>
+                    <div class="mixer-control">
+                        <div class="mixer-label">🏴‍☠️ Pirate</div>
+                        <input type="range" min="0" max="100" value="80" class="mixer-slider" id="mixerPirate">
+                        <div class="mixer-value" id="mixerPirateValue">80%</div>
+                    </div>
+                    <div class="mixer-control">
+                        <div class="mixer-label">⚔️ Knight</div>
+                        <input type="range" min="0" max="100" value="20" class="mixer-slider" id="mixerKnight">
+                        <div class="mixer-value" id="mixerKnightValue">20%</div>
+                    </div>
+                </div>
+                
+                <div class="mixer-result">
+                    <div class="mixer-result-text" id="mixerPrediction">
+                        With more Wizard energy, you'd probably overthink your rebellions and create elaborate strategic plans for disruption instead of just winging it.
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        // Complete archetype data with all 16 types
+        const archetypeData = {
+            // Maverick Quadrant (Pirate + Cowboy)
+            'maverick-pure': {
+                name: "The Wildcard",
+                tagline: "Maximum Pirate + Maximum Cowboy",
+                titleAdjectives: ["Chaotic", "Unpredictable", "Spontaneous", "Wild", "Free-spirited", "Anarchic", "Random", "Hurricane", "Tornado", "Lightning"],
+                titleNouns: ["Adventure Generator", "Chaos Theory", "Random Events", "Surprise Parties", "Impulse Decisions", "Spontaneous Combustion", "Plot Twists", "Wild Cards"],
+                attributes: [
+                    { icon: "🎲", name: "Life Randomizer", left: "Scheduled Chaos", right: "Pure Hurricane", position: 95, description: "Your calendar looks like a toddler drew it" },
+                    { icon: "⚡", name: "Impulse Purchase Probability", left: "Budgeting Master", right: "Cart Full of Regrets", position: 90, description: "You own at least three things you bought at 2 AM" },
+                    { icon: "🎪", name: "Party Catalyst Level", left: "Quiet Observer", right: "Human Fireworks Show", position: 95, description: "You're the reason parties either become legendary or get shut down" },
+                    { icon: "🌪️", name: "Chaos Comfort Level", left: "Need Structure", right: "Thrive in Madness", position: 98, description: "You're most productive when everything is falling apart" },
+                    { icon: "🎯", name: "Planning Approach", left: "Detailed Itinerary", right: "Wing It Completely", position: 95, description: "Your idea of planning is checking if your phone is charged" }
+                ],
+                predictions: [
+                    { icon: "🌪️", title: "Daily Life", text: "Your day plans are more like gentle suggestions to the universe" },
+                    { icon: "🎯", title: "Decision Making", text: "You flip coins for major life decisions and somehow it works out" },
+                    { icon: "🚀", title: "Adventures", text: "Your friends call you when they want to try something completely crazy" },
+                    { icon: "💡", title: "Ideas", text: "You have brilliant ideas at 3 AM that seem questionable by morning" },
+                    { icon: "🎭", title: "Social Events", text: "You're the person who suggests karaoke at a funeral (and somehow makes it work)" },
+                    { icon: "🗺️", title: "Travel Style", text: "You book flights to random destinations just because they're cheap" }
+                ],
+                survival: {
+                    kryptonite: "Boring routines and people who ask 'what's your five-year plan?'",
+                    superpower: "Turning any situation into an unexpected adventure",
+                    warning: "You're planning your next spontaneous trip during a work meeting",
+                    emergency: "When feeling trapped, book a random trip or try something you've never done before"
+                }
+            },
+            'maverick-rebel-thinker': {
+                name: "The Contrarian",
+                tagline: "Independent Contrarian + High Wizard",
+                titleAdjectives: ["Conventional", "Popular", "Mainstream", "Accepted", "Traditional", "Standard", "Typical", "Common"],
+                titleNouns: ["Pizza Wisdom", "Coffee Rules", "Meeting Protocols", "Parking Strategies", "Email Etiquette", "Dress Codes"],
+                attributes: [
+                    { icon: "🧠", name: "Contrarian Mode", left: "Go With Flow", right: "Question Everything", position: 85, description: "You automatically look for flaws in popular ideas" },
+                    { icon: "📚", name: "Research Intensity", left: "Accept Surface", right: "Dig for Truth", position: 80, description: "You fact-check memes before sharing them" },
+                    { icon: "🎭", name: "Devil's Advocate", left: "Agreeable", right: "Professional Skeptic", position: 90, description: "You argue the opposite side even when you agree" },
+                    { icon: "💭", name: "Independent Thinking", left: "Follow Crowd", right: "Chart Own Course", position: 85, description: "You're suspicious of anything everyone else loves" },
+                    { icon: "🔍", name: "Authority Questioning", left: "Trust Experts", right: "Verify Everything", position: 75, description: "You've googled your doctor's credentials mid-appointment" }
+                ],
+                predictions: [
+                    { icon: "📖", title: "Reading Habits", text: "You read contrarian takes on popular books before the books themselves" },
+                    { icon: "🗣️", title: "Conversations", text: "You start sentences with 'Actually...' more than you'd like to admit" },
+                    { icon: "📱", title: "Social Media", text: "You're the person commenting 'source?' on everything" },
+                    { icon: "🎬", title: "Entertainment", text: "You prefer obscure indie films and bands nobody's heard of" },
+                    { icon: "🛒", title: "Shopping", text: "You research products so thoroughly you talk yourself out of buying them" },
+                    { icon: "💼", title: "Work Style", text: "You're the one asking 'why do we do it this way?' in every meeting" }
+                ],
+                survival: {
+                    kryptonite: "Echo chambers and people who say 'because that's how it's always been done'",
+                    superpower: "Spotting flaws in seemingly perfect systems",
+                    warning: "You're explaining why a viral trend is actually problematic",
+                    emergency: "When overwhelmed by groupthink, find a quiet space to research alternative perspectives"
+                }
+            },
+            'maverick-free-spirit': {
+                name: "The Drifter",
+                tagline: "Spontaneous Adventurer + Moderate Pirate",
+                titleAdjectives: ["Forgotten", "Hidden", "Secret", "Abandoned", "Remote", "Undiscovered", "Lost", "Mysterious"],
+                titleNouns: ["Coffee Shops", "Bookstores", "Markets", "Diners", "Cafes", "Trails", "Stories", "Adventures"],
+                attributes: [
+                    { icon: "🗺️", name: "Wanderlust Level", left: "Homebody", right: "Eternal Nomad", position: 80, description: "You have travel apps for places you'll probably never visit" },
+                    { icon: "🎒", name: "Commitment Flexibility", left: "Long-term Plans", right: "Keep Options Open", position: 85, description: "You buy refundable tickets for everything" },
+                    { icon: "🌅", name: "Adventure Seeking", left: "Safe Routine", right: "Novel Experience", position: 75, description: "You take the scenic route even when you're late" },
+                    { icon: "🚶", name: "Path Preference", left: "Well-trodden", right: "Road Less Traveled", position: 80, description: "You're the friend who finds the hidden gem restaurant" },
+                    { icon: "📅", name: "Planning Style", left: "Detailed Schedule", right: "Go With Flow", position: 70, description: "Your weekend plans are 'see what happens'" }
+                ],
+                predictions: [
+                    { icon: "🎒", title: "Travel Style", text: "You've mastered the art of packing everything in a carry-on" },
+                    { icon: "📍", title: "Local Expert", text: "You know more about your city than people who've lived there for decades" },
+                    { icon: "🚗", title: "Transportation", text: "You've taken the long way home just to see where it goes" },
+                    { icon: "📚", title: "Learning", text: "You collect experiences like other people collect things" },
+                    { icon: "🏠", title: "Home Life", text: "Your place reflects everywhere you've been" },
+                    { icon: "👥", title: "Social Circle", text: "You have friends in every time zone" }
+                ],
+                survival: {
+                    kryptonite: "Being tied down by long-term commitments and inflexible schedules",
+                    superpower: "Finding opportunity and beauty in unexpected places",
+                    warning: "You're researching flights during a work presentation",
+                    emergency: "When feeling stuck, take a different route home or explore a new neighborhood"
+                }
+            },
+            'maverick-balanced': {
+                name: "The Maverick",
+                tagline: "Strategic Independent + Balanced Forces",
+                titleAdjectives: ["Strategic", "Tactical", "Adaptive", "Creative", "Independent", "Innovative", "Entrepreneurial", "Paradigm-shifting"],
+                titleNouns: ["Corporate Culture", "Business Strategy", "Innovation Labs", "Meeting Formats", "Decision Processes", "Creative Expression"],
+                attributes: [
+                    { icon: "🏢", name: "Meeting Energy", left: "Snooze-Fest", right: "Let's Burn This Down", position: 75, description: "You probably suggest 'alternative approaches' in every meeting" },
+                    { icon: "🎭", name: "Corporate Camouflage", left: "Total Rebel", right: "Stealth Operative", position: 60, description: "You can blend in when needed, but your eye-rolling is legendary" },
+                    { icon: "📋", name: "Rule Relationship", left: "Suggestions", right: "Sacred Law", position: 25, description: "Rules are more like... guidelines, right?" },
+                    { icon: "🎯", name: "Decision Making", left: "Overthink Everything", right: "Trust The Gut", position: 70, description: "You trust your instincts over endless analysis" },
+                    { icon: "⚡", name: "Change Tolerance", left: "Gradual Evolution", right: "Burn It All Down", position: 85, description: "Why improve something when you can revolutionize it?" }
+                ],
+                predictions: [
+                    { icon: "🏠", title: "At Home", text: "You probably have at least 5 unfinished creative projects scattered around" },
+                    { icon: "📱", title: "Your Phone", text: "Camera roll is 60% random ideas, 40% memes that 'totally get you'" },
+                    { icon: "🛒", title: "Shopping Style", text: "You buy ingredients for elaborate meals then order takeout anyway" },
+                    { icon: "💼", title: "Work Mode", text: "You do your best thinking in the shower or while walking" },
+                    { icon: "🗣️", title: "In Arguments", text: "You play devil's advocate even when you agree with people" },
+                    { icon: "🔮", title: "Future Prediction", text: "You'll probably quit at least one job dramatically (in a good way)" }
+                ],
+                survival: {
+                    kryptonite: "Micromanagers and 'because that's how we've always done it'",
+                    superpower: "Turning problems into opportunities for creative rebellion",
+                    warning: "You're using the phrase 'disrupt' unironically",
+                    emergency: "When feeling trapped, find the nearest whiteboard and start brainstorming alternatives"
+                }
+            }
+        };
+
+        // Image filename mapping for each archetype
+        const archetypeImages = {
+            'maverick-pure': 'wildcard.jpeg',
+            'maverick-rebel-thinker': 'contrarian.jpeg', 
+            'maverick-free-spirit': 'drifter.jpeg',
+            'maverick-balanced': 'maverick.jpeg',
+            'rogue-strategic': 'treasure_hunter.jpeg',
+            'rogue-pure': 'mapmaker.jpeg',
+            'rogue-balanced': 'wayfinder.jpeg',
+            'rogue-individualist': 'seeker.jpeg',
+            'champion-warrior': 'crusader.jpeg',
+            'champion-balanced': 'guardian.jpeg',
+            'champion-pure': 'paladin.jpeg',
+            'champion-activist': 'activist.jpeg',
+            'sage-balanced': 'mentor.jpeg',
+            'sage-counselor': 'oracle.jpeg',
+            'sage-advisor': 'advisor.jpeg',
+            'sage-pure': 'archon.jpeg'
+        };
+
+        let currentArchetypeData = null;
+
+        // Calculate personality type from forces
+        function calculatePersonalityType(forces) {
+            const { cowboy, wizard, pirate, knight } = forces;
+            
+            // Convert percentages back to the 1-7 scale for compatibility
+            const cowboyWizardAvg = ((cowboy / 100) * 6) + 1;
+            const pirateKnightAvg = ((pirate / 100) * 6) + 1;
+            
+            // Use the same logic as the original take_quiz.html
+            let personalityKey;
+            
+            if (pirateKnightAvg <= 3.5) { // More Pirate
+                if (cowboyWizardAvg <= 2.5) {
+                    personalityKey = 'maverick-pure'; // The Wildcard
+                } else if (cowboyWizardAvg <= 3.5) {
+                    personalityKey = 'maverick-free-spirit'; // The Drifter
+                } else if (cowboyWizardAvg <= 4.5) {
+                    personalityKey = 'maverick-balanced'; // The Maverick
+                } else if (cowboyWizardAvg <= 5.5) {
+                    personalityKey = 'maverick-rebel-thinker'; // The Contrarian
+                } else {
+                    personalityKey = 'rogue-strategic'; // The Treasure Hunter
+                }
+            } else { // More Knight
+                if (cowboyWizardAvg <= 2.5) {
+                    personalityKey = 'champion-warrior'; // The Crusader
+                } else if (cowboyWizardAvg <= 3.5) {
+                    personalityKey = 'champion-pure'; // The Paladin
+                } else if (cowboyWizardAvg <= 4.5) {
+                    personalityKey = 'champion-balanced'; // The Guardian
+                } else if (cowboyWizardAvg <= 5.5) {
+                    personalityKey = 'champion-activist'; // The Activist
+                } else {
+                    personalityKey = 'sage-advisor'; // The Advisor
+                }
+            }
+
+            // More nuanced mapping for extreme scores
+            if (pirateKnightAvg <= 2) { // Very Pirate
+                if (cowboyWizardAvg >= 6) {
+                    personalityKey = 'rogue-pure'; // The Mapmaker
+                } else if (cowboyWizardAvg >= 5) {
+                    personalityKey = 'rogue-individualist'; // The Seeker
+                }
+            } else if (pirateKnightAvg >= 6) { // Very Knight
+                if (cowboyWizardAvg >= 6) {
+                    personalityKey = 'sage-pure'; // The Archon
+                } else if (cowboyWizardAvg >= 5) {
+                    personalityKey = 'sage-counselor'; // The Oracle
+                } else if (cowboyWizardAvg <= 3) {
+                    personalityKey = 'champion-pure'; // The Paladin
+                }
+            }
+
+            // Handle balanced middle scores
+            if (pirateKnightAvg > 3.5 && pirateKnightAvg < 4.5) {
+                if (cowboyWizardAvg > 3.5 && cowboyWizardAvg < 4.5) {
+                    personalityKey = 'sage-balanced'; // The Mentor (most balanced)
+                } else if (cowboyWizardAvg >= 5) {
+                    personalityKey = 'rogue-balanced'; // The Wayfinder
+                }
+            }
+            
+            return personalityKey;
+        }
+
+        // Update archetype display with image
+        function updateArchetypeDisplay(archetypeKey, archetypeData) {
+            // Update text content
+            document.getElementById('archetypeName').textContent = archetypeData.name;
+            document.getElementById('archetypeTagline').textContent = archetypeData.tagline;
+            
+            // Update portrait image
+            const imageElement = document.getElementById('archetypeImage');
+            const imagePath = `images/${archetypeImages[archetypeKey]}`;
+            imageElement.src = imagePath;
+            imageElement.alt = `${archetypeData.name} - ${archetypeData.tagline}`;
+        }
+
+        // Random title generator
+        function generateRandomTitle() {
+            if (!currentArchetypeData) return;
+            
+            const adjectives = currentArchetypeData.titleAdjectives;
+            const nouns = currentArchetypeData.titleNouns;
+            
+            const randomAdjective = adjectives[Math.floor(Math.random() * adjectives.length)];
+            const randomNoun = nouns[Math.floor(Math.random() * nouns.length)];
+            
+            const titleTemplates = [
+                `${randomAdjective} ${randomNoun} Disruptor`,
+                `${randomAdjective} ${randomNoun} Revolutionary`,
+                `${randomAdjective} ${randomNoun} Innovator`,
+                `${randomAdjective} ${randomNoun} Challenger`,
+                `${randomAdjective} ${randomNoun} Transformer`,
+                `${randomAdjective} ${randomNoun} Navigator`,
+                `${randomAdjective} ${randomNoun} Catalyst`,
+                `${randomAdjective} ${randomNoun} Specialist`,
+                `${randomAdjective} ${randomNoun} Mastermind`,
+                `${randomAdjective} ${randomNoun} Architect`
+            ];
+            
+            const randomTitle = titleTemplates[Math.floor(Math.random() * titleTemplates.length)];
+            document.getElementById('generatedTitle').textContent = randomTitle;
+        }
+
+        // Populate attributes section
+        function populateAttributes(attributes) {
+            const container = document.getElementById('attributeContainer');
+            container.innerHTML = '';
+            
+            attributes.forEach((attr, index) => {
+                const attributeDiv = document.createElement('div');
+                attributeDiv.className = 'attribute-item';
+                attributeDiv.style.animationDelay = `${index * 0.1}s`;
+                attributeDiv.innerHTML = `
+                    <div class="attribute-header">
+                        <span class="attribute-icon">${attr.icon}</span>
+                        <span class="attribute-name">${attr.name}</span>
+                    </div>
+                    <div class="spectrum-container">
+                        <div class="spectrum-labels">
+                            <span>${attr.left}</span>
+                            <span>${attr.right}</span>
+                        </div>
+                        <div class="spectrum-bar">
+                            <div class="spectrum-indicator" style="left: ${attr.position}%"></div>
+                        </div>
+                    </div>
+                    <div class="attribute-description">
+                        ${attr.description}
+                    </div>
+                `;
+                container.appendChild(attributeDiv);
+            });
+        }
+
+        // Populate predictions section
+        function populatePredictions(predictions) {
+            const container = document.getElementById('predictionContainer');
+            container.innerHTML = '';
+            
+            predictions.forEach((pred, index) => {
+                const predDiv = document.createElement('div');
+                predDiv.className = 'prediction-item';
+                predDiv.style.animationDelay = `${index * 0.1}s`;
+                predDiv.innerHTML = `
+                    <div class="prediction-icon">${pred.icon}</div>
+                    <div class="prediction-title">${pred.title}</div>
+                    <div class="prediction-text">${pred.text}</div>
+                `;
+                container.appendChild(predDiv);
+            });
+        }
+
+        // Populate survival guide
+        function populateSurvival(survival) {
+            const container = document.getElementById('survivalContainer');
+            container.innerHTML = `
+                <div class="survival-item">
+                    <div class="survival-icon">🎯</div>
+                    <div class="survival-title">Your Kryptonite</div>
+                    <div class="survival-text">${survival.kryptonite}</div>
+                </div>
+                <div class="survival-item">
+                    <div class="survival-icon">🚀</div>
+                    <div class="survival-title">Your Superpower</div>
+                    <div class="survival-text">${survival.superpower}</div>
+                </div>
+                <div class="survival-item">
+                    <div class="survival-icon">⚠️</div>
+                    <div class="survival-title">Warning Signs</div>
+                    <div class="survival-text">${survival.warning}</div>
+                </div>
+                <div class="survival-item">
+                    <div class="survival-icon">🎪</div>
+                    <div class="survival-title">Emergency Protocol</div>
+                    <div class="survival-text">${survival.emergency}</div>
+                </div>
+            `;
+        }
+
+        // Force mixer functionality
+        function setupForceMixer() {
+            const sliders = ['mixerCowboy', 'mixerWizard', 'mixerPirate', 'mixerKnight'];
+            
+            sliders.forEach(sliderId => {
+                const slider = document.getElementById(sliderId);
+                const valueDisplay = document.getElementById(sliderId + 'Value');
+                
+                slider.addEventListener('input', function() {
+                    valueDisplay.textContent = this.value + '%';
+                    updateMixerPrediction();
+                });
+            });
+        }
+
+        function updateMixerPrediction() {
+            const cowboy = parseInt(document.getElementById('mixerCowboy').value);
+            const wizard = parseInt(document.getElementById('mixerWizard').value);
+            const pirate = parseInt(document.getElementById('mixerPirate').value);
+            const knight = parseInt(document.getElementById('mixerKnight').value);
+            
+            let prediction = "";
+            
+            if (wizard > 70) {
+                prediction = "With high Wizard energy, you'd probably overthink your rebellions and create elaborate strategic plans for disruption instead of just winging it.";
+            } else if (knight > 70) {
+                prediction = "With high Knight energy, you'd channel your rebellious spirit into fighting for justice and protecting others rather than just challenging the system.";
+            } else if (cowboy > 80) {
+                prediction = "With maximum Cowboy energy, you'd be even more action-oriented, probably starting revolutions before thinking them through completely.";
+            } else if (pirate > 90) {
+                prediction = "With maximum Pirate energy, you'd be pure chaos - breaking every rule just because it exists, probably starting your own company just to avoid having a boss.";
+            } else if (wizard < 30 && knight < 30) {
+                prediction = "With low Wizard and Knight forces, you'd be pure chaos and action - like a beautiful disaster that somehow always works out.";
+            } else if (cowboy < 30 && pirate < 30) {
+                prediction = "With high structure forces, you'd become the ultimate wise advisor - probably ending up as everyone's go-to person for life advice.";
+            } else {
+                prediction = "This combination would create a different flavor of your heroic spirit - experiment with the sliders to see how your approach would change!";
+            }
+            
+            document.getElementById('mixerPrediction').textContent = prediction;
+        }
+
+        // Animate force bars
+        function animateForceBars(forces) {
+            setTimeout(() => {
+                document.getElementById('cowboyBar').style.width = forces.cowboy + '%';
+                document.getElementById('wizardBar').style.width = forces.wizard + '%';
+                document.getElementById('pirateBar').style.width = forces.pirate + '%';
+                document.getElementById('knightBar').style.width = forces.knight + '%';
+            }, 800);
+        }
+
+        // Populate results with quiz data or default to maverick
+        function populateResults(quizResults = null) {
+            let archetype = 'maverick-balanced';
+            let forces = { cowboy: 65, wizard: 35, pirate: 80, knight: 20 };
+            
+            if (quizResults) {
+                archetype = quizResults.archetype;
+                forces = quizResults.forces;
+            }
+            
+            // Check if archetype exists in our data
+            if (!archetypeData[archetype]) {
+                console.warn(`Archetype ${archetype} not found, using maverick-balanced`);
+                archetype = 'maverick-balanced';
+            }
+            
+            currentArchetypeData = archetypeData[archetype];
+            
+            // Update header with image
+            updateArchetypeDisplay(archetype, currentArchetypeData);
+            
+            // Update force display
+            document.getElementById('cowboyPercentage').textContent = forces.cowboy + '%';
+            document.getElementById('wizardPercentage').textContent = forces.wizard + '%';
+            document.getElementById('piratePercentage').textContent = forces.pirate + '%';
+            document.getElementById('knightPercentage').textContent = forces.knight + '%';
+            
+            // Update force description
+            const sortedForces = Object.entries(forces).sort((a, b) => b[1] - a[1]);
+            const highest = sortedForces[0];
+            const second = sortedForces[1];
+            
+            document.getElementById('forceDescription').textContent = 
+                `You're feeling ${highest[1]}% ${highest[0]} and ${second[1]}% ${second[0]}!`;
+            
+            // Update mixer
+            document.getElementById('mixerCowboy').value = forces.cowboy;
+            document.getElementById('mixerWizard').value = forces.wizard;
+            document.getElementById('mixerPirate').value = forces.pirate;
+            document.getElementById('mixerKnight').value = forces.knight;
+            
+            document.getElementById('mixerCowboyValue').textContent = forces.cowboy + '%';
+            document.getElementById('mixerWizardValue').textContent = forces.wizard + '%';
+            document.getElementById('mixerPirateValue').textContent = forces.pirate + '%';
+            document.getElementById('mixerKnightValue').textContent = forces.knight + '%';
+            
+            // Populate content sections
+            populateAttributes(currentArchetypeData.attributes);
+            populatePredictions(currentArchetypeData.predictions);
+            populateSurvival(currentArchetypeData.survival);
+            
+            // Animate force bars
+            animateForceBars(forces);
+            
+            return true;
+        }
+
+        // Initialize everything when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Show loading initially
+            document.getElementById('loadingState').style.display = 'block';
+            document.getElementById('mainResults').style.display = 'none';
+            document.getElementById('errorState').style.display = 'none';
+            
+            setTimeout(() => {
+                // Try to load quiz results from sessionStorage
+                const savedResults = sessionStorage.getItem('quizResults');
+                
+                if (savedResults) {
+                    try {
+                        const results = JSON.parse(savedResults);
+                        populateResults(results);
+                        
+                        // Show main results
+                        document.getElementById('loadingState').style.display = 'none';
+                        document.getElementById('mainResults').style.display = 'block';
+                        
+                        setupForceMixer();
+                        generateRandomTitle();
+                        
+                    } catch (error) {
+                        console.error('Error parsing quiz results:', error);
+                        showErrorState();
+                    }
+                } else {
+                    // Check URL parameters as fallback
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const archetypeParam = urlParams.get('archetype');
+                    
+                    if (archetypeParam && archetypeData[archetypeParam]) {
+                        populateResults({ archetype: archetypeParam, forces: { cowboy: 50, wizard: 50, pirate: 50, knight: 50 } });
+                        
+                        document.getElementById('loadingState').style.display = 'none';
+                        document.getElementById('mainResults').style.display = 'block';
+                        
+                        setupForceMixer();
+                        generateRandomTitle();
+                    } else {
+                        showErrorState();
+                    }
+                }
+            }, 1500); // Simulated loading time
+        });
+        
+        function showErrorState() {
+            document.getElementById('loadingState').style.display = 'none';
+            document.getElementById('errorState').style.display = 'block';
+            document.getElementById('mainResults').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
