@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hero Compass - The Oracle</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #0a0a1f 0%, #1a1a2e 50%, #16213e 100%);
+            color: #f4f4f4;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Navigation */
+        .navigation-bar {
+            background: rgba(255,255,255,0.05);
+            padding: 15px 0;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            color: #4ecdc4;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: bold;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: rgba(78, 205, 196, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .nav-link.active {
+            color: #ffd700;
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        /* Hero Section */
+        .hero-section {
+            text-align: center;
+            padding: 60px 0;
+            background: radial-gradient(circle at center, rgba(60, 179, 113, 0.1) 0%, transparent 70%);
+            border-radius: 20px;
+            margin-bottom: 50px;
+        }
+
+        .hero-content {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        /* Portrait Section */
+        .portrait-section {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .hero-portrait {
+            width: 500px;
+            height: 500px;
+            border-radius: 20px;
+            object-fit: cover;
+            border: 4px solid rgba(60, 179, 113, 0.4);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            transition: all 0.3s ease;
+            display: block;
+            margin: 0 auto;
+            max-width: 90vw;
+        }
+
+        .hero-portrait:hover {
+            transform: scale(1.02);
+            border-color: rgba(60, 179, 113, 0.7);
+            box-shadow: 0 25px 80px rgba(60, 179, 113, 0.3);
+        }
+
+        .type-name {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            background: linear-gradient(45deg, #3CB371, #20B2AA, #2E8B57);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .type-tagline {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #b8b8b8;
+            font-style: italic;
+        }
+
+        .type-blend {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            color: #4ecdc4;
+            font-weight: bold;
+        }
+
+        .type-overview {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            color: rgba(255,255,255,0.9);
+        }
+
+        /* Core Profile Section */
+        .core-profile {
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 50px;
+            backdrop-filter: blur(10px);
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: #ffd700;
+            text-align: center;
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .profile-item {
+            background: rgba(255,255,255,0.03);
+            border-radius: 10px;
+            padding: 25px;
+            border-left: 4px solid #3CB371;
+        }
+
+        .profile-label {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #ffd700;
+            margin-bottom: 10px;
+        }
+
+        .profile-content {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: rgba(255,255,255,0.9);
+        }
+
+        /* Random Subtitle Generator */
+        .subtitle-generator {
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 50px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .generator-title {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #4ecdc4;
+        }
+
+        .generated-subtitle {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: #ffd700;
+            font-weight: bold;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            padding: 20px;
+            font-style: italic;
+        }
+
+        .generate-button {
+            background: linear-gradient(45deg, #3CB371, #20B2AA);
+            color: #fff;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .generate-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(60, 179, 113, 0.3);
+        }
+
+        /* Content Sections */
+        .content-section {
+            background: rgba(255,255,255,0.03);
+            border-radius: 15px;
+            padding: 35px;
+            margin-bottom: 40px;
+        }
+
+        .content-title {
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+            color: #4ecdc4;
+            border-bottom: 2px solid rgba(78, 205, 196, 0.3);
+            padding-bottom: 10px;
+        }
+
+        .content-text {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 15px;
+        }
+
+        .content-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .content-list li {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: rgba(255,255,255,0.85);
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .content-list li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #ffd700;
+            font-weight: bold;
+        }
+
+        /* Related Types */
+        .related-types {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .related-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            text-decoration: none;
+            color: inherit;
+            cursor: pointer;
+        }
+
+        .related-card:hover {
+            transform: translateY(-3px);
+            background: rgba(255,255,255,0.08);
+        }
+
+        .related-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .related-description {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.8);
+            line-height: 1.5;
+        }
+
+        /* Similar Types (default styling) */
+        .related-card.similar {
+            border-color: rgba(78, 205, 196, 0.3);
+        }
+
+        .related-card.similar:hover {
+            border-color: rgba(78, 205, 196, 0.7);
+        }
+
+        .related-card.similar .related-name {
+            color: #4ecdc4;
+        }
+
+        /* Opposite Type */
+        .related-card.opposite {
+            border-color: rgba(255, 215, 0, 0.3);
+        }
+
+        .related-card.opposite:hover {
+            border-color: rgba(255, 215, 0, 0.7);
+        }
+
+        .related-card.opposite .related-name {
+            color: #ffd700;
+        }
+
+        /* Foil Type */
+        .related-card.foil {
+            border-color: rgba(255, 107, 107, 0.3);
+        }
+
+        .related-card.foil:hover {
+            border-color: rgba(255, 107, 107, 0.7);
+        }
+
+        .related-card.foil .related-name {
+            color: #ff6b6b;
+        }
+
+        /* Quiz CTA */
+        .quiz-cta {
+            text-align: center;
+            padding: 50px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            margin-top: 50px;
+        }
+
+        .cta-title {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: #ffd700;
+        }
+
+        .cta-description {
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+            color: rgba(255,255,255,0.9);
+            line-height: 1.6;
+        }
+
+        .cta-button {
+            background: linear-gradient(45deg, #ffd700, #ff6b6b, #4ecdc4);
+            color: #000;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255,215,0,0.3);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .related-types {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .hero-portrait {
+                width: 400px;
+                height: 400px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .type-name {
+                font-size: 2.2rem;
+            }
+            
+            .generated-subtitle {
+                font-size: 1.5rem;
+            }
+            
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .related-types {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero-portrait {
+                width: 350px;
+                height: 350px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-portrait {
+                width: 280px;
+                height: 280px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="navigation-bar">
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="take_quiz.html" class="nav-link">Take Quiz</a>
+                <a href="framework.html" class="nav-link">Framework</a>
+                <a href="all_types.html" class="nav-link">All Types</a>
+                <a href="compare_types.html" class="nav-link">Compare Types</a>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="hero-content">
+                <h1 class="type-name">The Oracle</h1>
+                <p class="type-tagline">Keeper of Collective Wisdom</p>
+                <p class="type-blend">Moderate Knight + High Wizard</p>
+                <p class="type-overview">
+                    The Oracle serves as a bridge between profound knowledge and collective benefit. They are the wise counselors who dedicate their intellectual gifts to guiding and teaching others. Like ancient seers who shared divine wisdom with their communities, they transform complex understanding into accessible guidance that helps everyone grow.
+                </p>
+            </div>
+        </section>
+
+        <!-- Portrait Section -->
+        <section class="portrait-section">
+            <img src="images/oracle.jpeg" alt="The Oracle - Keeper of Collective Wisdom" class="hero-portrait">
+        </section>
+
+        <!-- Core Profile -->
+        <section class="core-profile">
+            <h2 class="section-title">Core Profile</h2>
+            <div class="profile-grid">
+                <div class="profile-item">
+                    <div class="profile-label">Core Traits</div>
+                    <div class="profile-content">Knowledge-focused helper, serves others through wisdom, teaches and guides, patient mentor</div>
+                </div>
+                <div class="profile-item">
+                    <div class="profile-label">Approach</div>
+                    <div class="profile-content">Uses deep understanding to help others, shares knowledge for collective benefit, builds learning communities</div>
+                </div>
+                <div class="profile-item">
+                    <div class="profile-label">Strengths</div>
+                    <div class="profile-content">Wisdom sharing, teaching excellence, thoughtful guidance, ability to simplify complex concepts</div>
+                </div>
+                <div class="profile-item">
+                    <div class="profile-label">Challenges</div>
+                    <div class="profile-content">May become overly academic, can be preachy, struggles with practical action over analysis</div>
+                </div>
+                <div class="profile-item">
+                    <div class="profile-label">Drainers</div>
+                    <div class="profile-content">Impatient students, anti-intellectual environments, being rushed to quick decisions, having wisdom dismissed</div>
+                </div>
+                <div class="profile-item">
+                    <div class="profile-label">Motivation</div>
+                    <div class="profile-content">Driven by the desire to elevate others through knowledge and create lasting positive impact through teaching</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Random Subtitle Generator -->
+        <section class="subtitle-generator">
+            <h2 class="generator-title">I am the...</h2>
+            <div class="generated-subtitle" id="generatedSubtitle">Guardian of Sacred Recipe Books</div>
+            <button class="generate-button" onclick="generateSubtitle()">Generate New Title</button>
+        </section>
+
+        <!-- In Action -->
+        <section class="content-section">
+            <h2 class="content-title">The Oracle in Action</h2>
+            <p class="content-text">
+                Oracles are the beloved professors who change lives, the mentors who see potential in everyone, and the wise voices that communities turn to for guidance. They excel at taking complex knowledge and making it accessible and meaningful to others.
+            </p>
+            <p class="content-text">
+                You'll find them leading workshops, writing educational content, and patiently answering the same questions because they know that each person needs to hear wisdom in their own way. They measure success by the growth and enlightenment of those they serve.
+            </p>
+        </section>
+
+        <!-- Career Paths -->
+        <section class="content-section">
+            <h2 class="content-title">Career Paths</h2>
+            <ul class="content-list">
+                <li>University professor or educational administrator</li>
+                <li>Corporate trainer or learning and development specialist</li>
+                <li>Therapist, counselor, or life coach</li>
+                <li>Educational content creator or curriculum designer</li>
+                <li>Public speaker or workshop facilitator</li>
+                <li>Museum curator or cultural educator</li>
+                <li>Technical writer or documentation specialist</li>
+                <li>Spiritual teacher or community leader</li>
+            </ul>
+        </section>
+
+        <!-- Growth Journey -->
+        <section class="content-section">
+            <h2 class="content-title">Growth Journey</h2>
+            <p class="content-text">
+                Oracles grow by learning to balance their love of knowledge with practical application. Their challenge is to move beyond just teaching concepts to helping others implement wisdom in real-world situations.
+            </p>
+            <p class="content-text">
+                Development involves becoming more action-oriented while maintaining their depth of understanding. The most evolved Oracles become transformational leaders who can inspire others to not just learn, but to apply knowledge for meaningful change.
+            </p>
+        </section>
+
+        <!-- Relationships -->
+        <section class="content-section">
+            <h2 class="content-title">In Relationships</h2>
+            <p class="content-text">
+                Oracles naturally take on mentoring roles in relationships, offering guidance and support to help others grow. They're drawn to people who are curious and open to learning, and they find fulfillment in relationships where they can share knowledge and wisdom.
+            </p>
+            <p class="content-text">
+                They thrive with partners who appreciate their teaching nature and don't feel threatened by their expertise. They struggle with those who are closed-minded or who expect them to suppress their natural inclination to share insights and guidance.
+            </p>
+        </section>
+
+        <!-- Decision Making -->
+        <section class="content-section">
+            <h2 class="content-title">Decision Making</h2>
+            <p class="content-text">
+                Oracles make decisions by considering the long-term impact on everyone involved, drawing from their deep well of knowledge and experience. They prefer collaborative decision-making that incorporates multiple perspectives and considers educational value.
+            </p>
+            <p class="content-text">
+                They take time to research and reflect before choosing, and they often seek input from trusted advisors or their community. Their decisions prioritize collective benefit and sustainable positive impact over personal gain.
+            </p>
+        </section>
+
+        <!-- Related Types -->
+        <section class="content-section">
+            <h2 class="content-title">Related Types</h2>
+            <div class="related-types">
+                <a href="the_mentor.html" class="related-card similar">
+                    <div class="related-name">The Mentor</div>
+                    <div class="related-description">Shares the wisdom-focused approach but with more balanced action orientation</div>
+                </a>
+                <a href="the_advisor.html" class="related-card similar">
+                    <div class="related-name">The Advisor</div>
+                    <div class="related-description">Similar dedication to helping others through knowledge and counsel</div>
+                </a>
+                <a href="the_mapmaker.html" class="related-card opposite">
+                    <div class="related-name">The Mapmaker</div>
+                    <div class="related-description">Opposite type - uses knowledge for independence rather than collective service</div>
+                </a>
+                <a href="the_drifter.html" class="related-card foil">
+                    <div class="related-name">The Drifter</div>
+                    <div class="related-description">Foil - Spontaneous experiencer who complements the Oracle's wisdom with hands-on exploration</div>
+                </a>
+            </div>
+        </section>
+
+        <!-- Famous Examples -->
+        <section class="content-section">
+            <h2 class="content-title">Famous Oracles</h2>
+            <ul class="content-list">
+                <li><strong>Carl Sagan</strong> - Scientist who made complex knowledge accessible to everyone through teaching</li>
+                <li><strong>Maya Angelou</strong> - Poet and teacher who shared wisdom through storytelling and mentorship</li>
+                <li><strong>Oprah Winfrey</strong> - Media personality who uses her platform to educate and inspire growth</li>
+                <li><strong>Dumbledore</strong> - Fictional character who guides others through wisdom, patience, and teaching</li>
+            </ul>
+        </section>
+
+        <!-- Quiz CTA -->
+        <section class="quiz-cta">
+            <h2 class="cta-title">Not Sure If This Is You?</h2>
+            <p class="cta-description">
+                Take our comprehensive assessment to discover your true heroic archetype and see how you compare to The Oracle and the other 15 types.
+            </p>
+            <a href="take_quiz.html" class="cta-button">Take The Quiz</a>
+        </section>
+    </div>
+
+    <script>
+        // Random subtitle generator for The Oracle
+        const adjectives = [
+            "Sacred", "Ancient", "Wise", "Timeless", "Divine", "Mystical", "Enlightened", "Blessed", 
+            "Holy", "Eternal", "Prophetic", "Celestial", "Harmonious", "Peaceful", "Serene", "Profound", 
+            "Universal", "Cosmic", "Spiritual", "Transcendent", "Illuminated", "Radiant", "Glowing", "Luminous",
+            "Benevolent", "Compassionate", "Nurturing", "Healing", "Restorative", "Transformative", "Uplifting", 
+            "Inspiring", "Guiding", "Teaching", "Mentoring", "Counseling", "Supportive", "Encouraging", "Empowering",
+            "Community", "Collective", "Shared", "United", "Harmonized", "Synchronized", "Balanced", "Centered",
+            "Mindful", "Meditative", "Contemplative", "Reflective"
+        ];
+
+        const nouns = [
+            "Recipe Books", "Garden Seeds", "Tea Ceremonies", "Meditation Cushions", "Library Scrolls", "Wisdom Crystals",
+            "Healing Herbs", "Story Collections", "Memory Boxes", "Photo Albums", "Letter Archives", "Journal Entries",
+            "Teaching Materials", "Learning Games", "Puzzle Pieces", "Art Supplies", "Musical Instruments", "Poetry Books",
+            "Cookbook Collections", "Family Recipes", "Grandmother's Quilts", "Rocking Chairs", "Fireside Chats", "Warm Blankets",
+            "Community Gardens", "Shared Meals", "Group Hugs", "Circle Discussions", "Friendship Bracelets", "Thank You Notes",
+            "Blessing Bowls", "Prayer Wheels", "Wind Chimes", "Dream Catchers", "Mandala Patterns", "Labyrinth Paths",
+            "Fountain Pens", "Handwritten Letters", "Bookmark Collections", "Reading Glasses", "Cozy Corners", "Study Nooks",
+            "Conference Tables", "Discussion Forums", "Workshop Tools", "Presentation Slides", "Flip Chart Papers", "Marker Sets",
+            "Campus Walks", "Office Hours", "Study Groups", "Book Clubs"
+        ];
+
+        function generateSubtitle() {
+            const randomAdjective = adjectives[Math.floor(Math.random() * adjectives.length)];
+            const randomNoun = nouns[Math.floor(Math.random() * nouns.length)];
+            const titles = [
+                `Guardian of ${randomAdjective} ${randomNoun}`,
+                `Keeper of ${randomAdjective} ${randomNoun}`,
+                `Protector of ${randomAdjective} ${randomNoun}`,
+                `Shepherd of ${randomAdjective} ${randomNoun}`,
+                `Guide to ${randomAdjective} ${randomNoun}`,
+                `Teacher of ${randomAdjective} ${randomNoun}`,
+                `Curator of ${randomAdjective} ${randomNoun}`,
+                `Steward of ${randomAdjective} ${randomNoun}`,
+                `Caretaker of ${randomAdjective} ${randomNoun}`,
+                `Nurturer of ${randomAdjective} ${randomNoun}`
+            ];
+            
+            const randomTitle = titles[Math.floor(Math.random() * titles.length)];
+            document.getElementById('generatedSubtitle').textContent = randomTitle;
+        }
+
+        // Generate initial subtitle when page loads
+        window.addEventListener('DOMContentLoaded', generateSubtitle);
+    </script>
+</body>
+</html>

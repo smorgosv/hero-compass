@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hero Compass - The Maverick</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #0a0a1f 0%, #1a1a2e 50%, #16213e 100%);
+            color: #f4f4f4;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Navigation */
+        .navigation-bar {
+            background: rgba(255,255,255,0.05);
+            padding: 15px 0;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            color: #4ecdc4;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: bold;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: rgba(78, 205, 196, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .nav-link.active {
+            color: #ffd700;
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        /* Hero Section */
+        .hero-section {
+            text-align: center;
+            padding: 60px 0;
+            background: radial-gradient(circle at center, rgba(139, 69, 19, 0.1) 0%, transparent 70%);
+            border-radius: 20px;
+            margin-bottom: 50px;
+        }
+
+        .hero-content {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        /* Portrait Section */
+        .portrait-section {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .hero-portrait {
+            width: 500px;
+            height: 500px;
+            border-radius: 20px;
+            object-fit: cover;
+            border: 4px solid rgba(139, 69, 19, 0.4);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            transition: all 0.3s ease;
+            display: block;
+            margin: 0 auto;
+            max-width: 90vw;
+        }
+
+        .hero-portrait:hover {
+            transform: scale(1.02);
+            border-color: rgba(139, 69, 19, 0.7);
+            box-shadow: 0 25px 80px rgba(139, 69, 19, 0.3);
+        }
+
+        .type-name {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            background: linear-gradient(45deg, #8B4513, #CD853F, #D2691E);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .type-tagline {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #b8b8b8;
+            font-style: italic;
+        }
+
+        .type-blend {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            color: #4ecdc4;
+            font-weight: bold;
+        }
+
+        .type-overview {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            color: rgba(255,255,255,0.9);
+        }
+
+        /* Core Profile Section */
+        .core-profile {
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 50px;
+            backdrop-filter: blur(10px);
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: #ffd700;
+            text-align: center;
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .profile-item {
+            background: rgba(255,255,255,0.03);
+            border-radius: 10px;
+            padding: 25px;
+            border-left: 4px solid #8B4513;
+        }
+
+        .profile-label {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #ffd700;
+            margin-bottom: 10px;
+        }
+
+        .profile-content {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: rgba(255,255,255,0.9);
+        }
+
+        /* Random Subtitle Generator */
+        .subtitle-generator {
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 50px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .generator-title {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #4ecdc4;
+        }
+
+        .generated-subtitle {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: #ffd700;
+            font-weight: bold;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            padding: 20px;
+            font-style: italic;
+        }
+
+        .generate-button {
+            background: linear-gradient(45deg, #8B4513, #CD853F);
+            color: #fff;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .generate-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(139, 69, 19, 0.3);
+        }
+
+        /* Content Sections */
+        .content-section {
+            background: rgba(255,255,255,0.03);
+            border-radius: 15px;
+            padding: 35px;
+            margin-bottom: 40px;
+        }
+
+        .content-title {
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+            color: #4ecdc4;
+            border-bottom: 2px solid rgba(78, 205, 196, 0.3);
+            padding-bottom: 10px;
+        }
+
+        .content-text {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 15px;
+        }
+
+        .content-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .content-list li {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: rgba(255,255,255,0.85);
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .content-list li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #ffd700;
+            font-weight: bold;
+        }
+
+        /* Related Types */
+        .related-types {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .related-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            text-decoration: none;
+            color: inherit;
+            cursor: pointer;
+        }
+
+        .related-card:hover {
+            transform: translateY(-3px);
+            background: rgba(255,255,255,0.08);
+        }
+
+        .related-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .related-description {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.8);
+            line-height: 1.5;
+        }
+
+        /* Similar Types (default styling) */
+        .related-card.similar {
+            border-color: rgba(78, 205, 196, 0.3);
+        }
+
+        .related-card.similar:hover {
+            border-color: rgba(78, 205, 196, 0.7);
+        }
+
+        .related-card.similar .related-name {
+            color: #4ecdc4;
+        }
+
+        /* Opposite Type */
+        .related-card.opposite {
+            border-color: rgba(255, 215, 0, 0.3);
+        }
+
+        .related-card.opposite:hover {
+            border-color: rgba(255, 215, 0, 0.7);
+        }
+
+        .related-card.opposite .related-name {
+            color: #ffd700;
+        }
+
+        /* Foil Type */
+        .related-card.foil {
+            border-color: rgba(255, 107, 107, 0.3);
+        }
+
+        .related-card.foil:hover {
+            border-color: rgba(255, 107, 107, 0.7);
+        }
+
+        .related-card.foil .related-name {
+            color: #ff6b6b;
+        }
+
+        /* Quiz CTA */
+        .quiz-cta {
+            text-align: center;
+            padding: 50px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            margin-top: 50px;
+        }
+
+        .cta-title {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: #ffd700;
+        }
+
+        .cta-description {
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+            color: rgba(255,255,255,0.9);
+            line-height: 1.6;
+        }
+
+        .cta-button {
+            background: linear-gradient(45deg, #ffd700, #ff6b6b, #4ecdc4);
+            color: #000;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255,215,0,0.3);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .related-types {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .hero-portrait {
+                width: 400px;
+                height: 400px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .type-name {
+                font-size: 2.2rem;
+            }
+            
+            .generated-subtitle {
+                font-size: 1.5rem;
+            }
+            
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .related-types {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero-portrait {
+                width: 350px;
+                height: 350px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-portrait {
+                width: 280px;
+                height: 280px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="navigation-bar">
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="take_quiz.html" class="nav-link">Take Quiz</a>
+                <a href="framework.html" class="nav-link">Framework</a>
+                <a href="all_types.html" class="nav-link">All Types</a>
+                <a href="compare_types.html" class="nav-link">Compare Types</a>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="hero-content">
+                <h1 class="type-name">The Maverick</h1>
+                <p class="type-tagline">Freedom Through Strategic Independence</p>
+                <p class="type-blend">Moderate Pirate + Moderate Cowboy</p>
+                <p class="type-overview">
+                    Mavericks are the thoughtful rebels who know when to break rules and when to follow them. They value independence but understand that complete chaos isn't freedom - it's just noise. Like strategic outlaws who pick their battles carefully, they maintain their autonomy while still being able to work within systems when it serves their goals.
+                </p>
+            </div>
+        </section>
+
+        <!-- Portrait Section -->
+        <section class="portrait-section">
+            <img src="images/maverick.jpeg" alt="The Maverick - Strategic Independent" class="hero-portrait">
+        </section>
+
+        <!-- Core Profile -->
+        <section class="core-profile">
+            <h2 class="section-title">Core Profile</h2>
+            <div class="profile-grid">
+                <div class="profile-item">
+                    <div class="profile-label">Core Traits</div>
+                    <div class="profile-content">Selectively independent, thoughtfully spontaneous, balances freedom with structure, strategic individualist</div>
+                </div>
+                <div class="profile-item">
+                    <div class="profile-label">Approach</div>
+                    <div class="profile-content">Chooses when to rebel and act, maintains autonomy while considering consequences</div>
+                </div>
+                <div class="profile-item">
+                    <div class="profile-label">Strengths</div>
+                    <div class="profile-content">Flexible independence, strategic spontaneity, pragmatic freedom, adaptive thinking</div>
+                </div>
+                <div class="profile-item">
+                    <div class="profile-label">Challenges</div>
+                    <div class="profile-content">Can seem unpredictable to others, may struggle with long-term commitments, balancing act can be exhausting</div>
+                </div>
+                <div class="profile-item">
+                    <div class="profile-label">Drainers</div>
+                    <div class="profile-content">Micromanagement, rigid bureaucracy, having to choose between complete conformity or total rebellion</div>
+                </div>
+                <div class="profile-item">
+                    <div class="profile-label">Motivation</div>
+                    <div class="profile-content">Driven by a need to maintain meaningful autonomy while still being able to collaborate and contribute</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Random Subtitle Generator -->
+        <section class="subtitle-generator">
+            <h2 class="generator-title">I am the...</h2>
+            <div class="generated-subtitle" id="generatedSubtitle">Strategic Rule-Bender of Corporate Culture</div>
+            <button class="generate-button" onclick="generateSubtitle()">Generate New Title</button>
+        </section>
+
+        <!-- In Action -->
+        <section class="content-section">
+            <h2 class="content-title">The Maverick in Action</h2>
+            <p class="content-text">
+                Mavericks are the people who work within organizations but on their own terms, who follow their own moral compass while still being team players when it matters. They're the ones who find creative solutions that nobody else considered and who can navigate between different worlds without losing their authenticity.
+            </p>
+            <p class="content-text">
+                You'll find them as entrepreneurs who build companies with unconventional cultures, employees who get results through unorthodox methods, and leaders who inspire others to think outside the box while still achieving practical goals. They measure success by how well they've maintained their freedom while still making meaningful contributions.
+            </p>
+        </section>
+
+        <!-- Career Paths -->
+        <section class="content-section">
+            <h2 class="content-title">Career Paths</h2>
+            <ul class="content-list">
+                <li>Entrepreneur or startup founder</li>
+                <li>Creative director or design strategist</li>
+                <li>Independent contractor or consultant</li>
+                <li>Product manager or innovation specialist</li>
+                <li>Freelance writer, artist, or content creator</li>
+                <li>Sales professional or business development</li>
+                <li>Marketing strategist or brand consultant</li>
+                <li>Project manager with creative freedom</li>
+            </ul>
+        </section>
+
+        <!-- Growth Journey -->
+        <section class="content-section">
+            <h2 class="content-title">Growth Journey</h2>
+            <p class="content-text">
+                Mavericks grow by learning to communicate their unconventional approaches in ways that others can understand and appreciate. Their challenge is to build bridges between their independent thinking and collaborative success.
+            </p>
+            <p class="content-text">
+                Development involves learning when their autonomy serves the greater good and when it might be holding them back from deeper connections and commitments. The most evolved Mavericks become inspiring leaders who show others how to maintain authenticity while still being effective team players.
+            </p>
+        </section>
+
+        <!-- Relationships -->
+        <section class="content-section">
+            <h2 class="content-title">In Relationships</h2>
+            <p class="content-text">
+                Mavericks bring creativity and authenticity to relationships while still being reliable partners. They need people who appreciate their independent spirit but can also count on them when it matters most.
+            </p>
+            <p class="content-text">
+                They thrive with partners who are secure enough to give them space and flexible enough to adapt to their unconventional approaches. They struggle with those who need constant predictability or who try to control their natural tendency to march to their own drummer.
+            </p>
+        </section>
+
+        <!-- Decision Making -->
+        <section class="content-section">
+            <h2 class="content-title">Decision Making</h2>
+            <p class="content-text">
+                Mavericks make decisions by considering both their personal values and practical consequences. They look for creative options that allow them to maintain their autonomy while still achieving their goals and meeting their responsibilities.
+            </p>
+            <p class="content-text">
+                They trust their intuition but also consider input from others, especially when it comes to understanding how their choices might affect their relationships and commitments. Their decisions aim to balance authentic self-expression with effective action.
+            </p>
+        </section>
+
+        <!-- Related Types -->
+        <section class="content-section">
+            <h2 class="content-title">Related Types</h2>
+            <div class="related-types">
+                <a href="the_wildcard.html" class="related-card similar">
+                    <div class="related-name">The Wildcard</div>
+                    <div class="related-description">Shares the independent spirit but with more chaotic, less strategic energy</div>
+                </a>
+                <a href="the_drifter.html" class="related-card similar">
+                    <div class="related-name">The Drifter</div>
+                    <div class="related-description">Similar balance of freedom and action but with more wandering, less structure</div>
+                </a>
+                <a href="the_archon.html" class="related-card opposite">
+                    <div class="related-name">The Archon</div>
+                    <div class="related-description">Opposite type - ultimate service and wisdom versus strategic independence</div>
+                </a>
+                <a href="the_advisor.html" class="related-card foil">
+                    <div class="related-name">The Advisor</div>
+                    <div class="related-description">Foil - Dedicated service orientation complements the Maverick's independent creativity</div>
+                </a>
+            </div>
+        </section>
+
+        <!-- Famous Examples -->
+        <section class="content-section">
+            <h2 class="content-title">Famous Mavericks</h2>
+            <ul class="content-list">
+                <li><strong>Richard Branson</strong> - Entrepreneur who built business empire while maintaining unconventional approach</li>
+                <li><strong>Oprah Winfrey</strong> - Media mogul who created her own path while building massive mainstream success</li>
+                <li><strong>Elon Musk</strong> - Innovator who challenges conventional wisdom while building practical companies</li>
+                <li><strong>Han Solo</strong> - Fictional character who maintains independence while still being a reliable team member</li>
+            </ul>
+        </section>
+
+        <!-- Quiz CTA -->
+        <section class="quiz-cta">
+            <h2 class="cta-title">Not Sure If This Is You?</h2>
+            <p class="cta-description">
+                Take our comprehensive assessment to discover your true heroic archetype and see how you compare to The Maverick and the other 15 types.
+            </p>
+            <a href="take_quiz.html" class="cta-button">Take The Quiz</a>
+        </section>
+    </div>
+
+    <script>
+        // Random subtitle generator for The Maverick
+        const adjectives = [
+            "Strategic", "Tactical", "Adaptive", "Flexible", "Creative", "Independent", "Authentic", "Unconventional",
+            "Thoughtful", "Selective", "Pragmatic", "Innovative", "Balanced", "Dynamic", "Resourceful", "Clever",
+            "Freelance", "Entrepreneurial", "Alternative", "Non-conformist", "Original", "Self-directed", "Autonomous", "Pioneering",
+            "Diplomatic", "Collaborative", "Team-building", "Bridge-building", "Connecting", "Integrating", "Synthesizing", "Harmonizing",
+            "Market-disrupting", "Industry-changing", "Paradigm-shifting", "Status-quo-challenging", "Boundary-pushing", "Norm-bending", "Rule-adapting", "System-improving"
+        ];
+
+        const nouns = [
+            "Corporate Culture", "Startup Ecosystem", "Creative Industries", "Tech Innovation", "Business Strategy", "Team Dynamics",
+            "Project Management", "Brand Development", "Product Design", "Marketing Campaigns", "Sales Approaches", "Client Relations",
+            "Organizational Structure", "Workplace Policies", "Meeting Formats", "Communication Styles", "Leadership Methods", "Decision Processes",
+            "Work-Life Integration", "Remote Collaboration", "Networking Events", "Professional Development", "Career Pathways", "Skill Building",
+            "Problem-Solving", "Crisis Management", "Change Implementation", "Process Improvement", "Quality Control", "Performance Metrics",
+            "Creative Expression", "Artistic Vision", "Design Philosophy", "Innovation Labs", "Research Projects", "Development Cycles",
+            "Social Media Strategy", "Content Creation", "Digital Transformation", "Technology Adoption", "Platform Integration", "User Experience",
+            "Community Building", "Partnership Development", "Stakeholder Engagement", "Investor Relations", "Market Positioning", "Competitive Analysis"
+        ];
+
+        function generateSubtitle() {
+            const randomAdjective = adjectives[Math.floor(Math.random() * adjectives.length)];
+            const randomNoun = nouns[Math.floor(Math.random() * nouns.length)];
+            const titles = [
+                `${randomAdjective} Rule-Bender of ${randomNoun}`,
+                `${randomAdjective} Navigator of ${randomNoun}`,
+                `${randomAdjective} Architect of ${randomNoun}`,
+                `${randomAdjective} Pioneer of ${randomNoun}`,
+                `${randomAdjective} Catalyst of ${randomNoun}`,
+                `${randomAdjective} Designer of ${randomNoun}`,
+                `${randomAdjective} Builder of ${randomNoun}`,
+                `${randomAdjective} Creator of ${randomNoun}`,
+                `${randomAdjective} Leader of ${randomNoun}`,
+                `${randomAdjective} Master of ${randomNoun}`
+            ];
+            
+            const randomTitle = titles[Math.floor(Math.random() * titles.length)];
+            document.getElementById('generatedSubtitle').textContent = randomTitle;
+        }
+
+        // Generate initial subtitle when page loads
+        window.addEventListener('DOMContentLoaded', generateSubtitle);
+    </script>
+</body>
+</html>

@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hero Compass - The Treasure Hunter</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #0a0a1f 0%, #1a1a2e 50%, #16213e 100%);
+            color: #f4f4f4;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Navigation */
+        .navigation-bar {
+            background: rgba(255,255,255,0.05);
+            padding: 15px 0;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            color: #4ecdc4;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: bold;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: rgba(78, 205, 196, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .nav-link.active {
+            color: #ffd700;
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        /* Hero Section */
+        .hero-section {
+            text-align: center;
+            padding: 60px 0;
+            background: radial-gradient(circle at center, rgba(106, 90, 205, 0.1) 0%, transparent 70%);
+            border-radius: 20px;
+            margin-bottom: 50px;
+        }
+
+        .hero-content {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        /* Portrait Section */
+        .portrait-section {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .hero-portrait {
+            width: 500px;
+            height: 500px;
+            border-radius: 20px;
+            object-fit: cover;
+            border: 4px solid rgba(106, 90, 205, 0.4);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            transition: all 0.3s ease;
+            display: block;
+            margin: 0 auto;
+            max-width: 90vw;
+        }
+
+        .hero-portrait:hover {
+            transform: scale(1.02);
+            border-color: rgba(106, 90, 205, 0.7);
+            box-shadow: 0 25px 80px rgba(106, 90, 205, 0.3);
+        }
+
+        .type-name {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            background: linear-gradient(45deg, #6A5ACD, #8A2BE2, #9370DB);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .type-tagline {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #b8b8b8;
+            font-style: italic;
+        }
+
+        .type-blend {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            color: #4ecdc4;
+            font-weight: bold;
+        }
+
+        .type-overview {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            color: rgba(255,255,255,0.9);
+        }
+
+        /* Core Profile Section */
+        .core-profile {
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 50px;
+            backdrop-filter: blur(10px);
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: #ffd700;
+            text-align: center;
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .profile-item {
+            background: rgba(255,255,255,0.03);
+            border-radius: 10px;
+            padding: 25px;
+            border-left: 4px solid #6A5ACD;
+        }
+
+        .profile-label {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #ffd700;
+            margin-bottom: 10px;
+        }
+
+        .profile-content {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: rgba(255,255,255,0.9);
+        }
+
+        /* Random Subtitle Generator */
+        .subtitle-generator {
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 50px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .generator-title {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #4ecdc4;
+        }
+
+        .generated-subtitle {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: #ffd700;
+            font-weight: bold;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            padding: 20px;
+            font-style: italic;
+        }
+
+        .generate-button {
+            background: linear-gradient(45deg, #6A5ACD, #8A2BE2);
+            color: #fff;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .generate-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(106, 90, 205, 0.3);
+        }
+
+        /* Content Sections */
+        .content-section {
+            background: rgba(255,255,255,0.03);
+            border-radius: 15px;
+            padding: 35px;
+            margin-bottom: 40px;
+        }
+
+        .content-title {
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+            color: #4ecdc4;
+            border-bottom: 2px solid rgba(78, 205, 196, 0.3);
+            padding-bottom: 10px;
+        }
+
+        .content-text {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 15px;
+        }
+
+        .content-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .content-list li {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: rgba(255,255,255,0.85);
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .content-list li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #ffd700;
+            font-weight: bold;
+        }
+
+        /* Related Types */
+        .related-types {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .related-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            text-decoration: none;
+            color: inherit;
+            cursor: pointer;
+        }
+
+        .related-card:hover {
+            transform: translateY(-3px);
+            background: rgba(255,255,255,0.08);
+        }
+
+        .related-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .related-description {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.8);
+            line-height: 1.5;
+        }
+
+        /* Similar Types */
+        .related-card.similar {
+            border-color: rgba(78, 205, 196, 0.3);
+        }
+
+        .related-card.similar:hover {
+            border-color: rgba(78, 205, 196, 0.7);
+        }
+
+        .related-card.similar .related-name {
+            color: #4ecdc4;
+        }
+
+        /* Opposite Type */
+        .related-card.opposite {
+            border-color: rgba(255, 215, 0, 0.3);
+        }
+
+        .related-card.opposite:hover {
+            border-color: rgba(255, 215, 0, 0.7);
+        }
+
+        .related-card.opposite .related-name {
+            color: #ffd700;
+        }
+
+        /* Foil Type */
+        .related-card.foil {
+            border-color: rgba(255, 107, 107, 0.3);
+        }
+
+        .related-card.foil:hover {
+            border-color: rgba(255, 107, 107, 0.7);
+        }
+
+        .related-card.foil .related-name {
+            color: #ff6b6b;
+        }
+
+        /* Quiz CTA */
+        .quiz-cta {
+            text-align: center;
+            padding: 50px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            margin-top: 50px;
+        }
+
+        .cta-title {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: #ffd700;
+        }
+
+        .cta-description {
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+            color: rgba(255,255,255,0.9);
+            line-height: 1.6;
+        }
+
+        .cta-button {
+            background: linear-gradient(45deg, #ffd700, #ff6b6b, #4ecdc4);
+            color: #000;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255,215,0,0.3);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .related-types {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .hero-portrait {
+                width: 400px;
+                height: 400px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .type-name {
+                font-size: 2.2rem;
+            }
+            
+            .generated-subtitle {
+                font-size: 1.5rem;
+            }
+            
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .related-types {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero-portrait {
+                width: 350px;
+                height: 350px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-portrait {
+                width: 280px;
+                height: 280px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="navigation-bar">
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="take_quiz.html" class="nav-link">Take Quiz</a>
+                <a href="framework.html" class="nav-link">Framework</a>
+                <a href="all_types.html" class="nav-link">All Types</a>
+                <a href="compare_types.html" class="nav-link">Compare Types</a>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="hero-content">
+                <h1 class="type-name">The Treasure Hunter</h1>
+                <p class="type-tagline">Strategic Rebel with a Plan</p>
+                <p class="type-blend">High Pirate + Moderate Wizard</p>
+                <p class="type-overview">
+                    The Treasure Hunter is the calculating individualist who plans their rebellion with intelligence and precision. They use knowledge as their weapon against conformity, systematically challenging authority while maintaining their fierce independence. Like scholarly pirates raiding the vaults of conventional wisdom, they steal the best ideas and discard the rest.
+                </p>
+            </div>
+        </section>
+
+        <!-- Portrait Section -->
+        <section class="portrait-section">
+            <img src="images/treasure_hunter.jpeg" alt="The Treasure Hunter - Strategic Rebel with a Plan" class="hero-portrait">
+        </section>
+
+        <!-- Core Profile -->
+        <section class="core-profile">
+            <h2 class="section-title">Core Profile</h2>
+            <div class="profile-grid">
+                <div class="profile-item">
+                    <div class="profile-label">Core Traits</div>
+                    <div class="profile-content">Calculating individualist, plans rebellion, uses intelligence to maintain independence, strategic nonconformist</div>
+                </div>
+                <div class="profile-item">
+                    <div class="profile-label">Approach</div>
+                    <div class="profile-content">Systematically challenges authority, uses knowledge to subvert systems, thinks before rebelling</div>
+                </div>
+                <div class="profile-item">
+                    <div class="profile-label">Strengths</div>
+                    <div class="profile-content">Intelligent resistance, strategic independence, effective system criticism, tactical thinking</div>
+                </div>
+                <div class="profile-item">
+                    <div class="profile-label">Challenges</div>
+                    <div class="profile-content">Can be overly suspicious of authority, tendency to overthink rebellion, may isolate due to distrust</div>
+                </div>
+                <div class="profile-item">
+                    <div class="profile-label">Drainers</div>
+                    <div class="profile-content">Blind obedience expectations, micromanagement, systems that suppress independent thought</div>
+                </div>
+                <div class="profile-item">
+                    <div class="profile-label">Motivation</div>
+                    <div class="profile-content">Driven to outsmart constraining systems and maintain intellectual and personal freedom</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Random Subtitle Generator -->
+        <section class="subtitle-generator">
+            <h2 class="generator-title">I am the...</h2>
+            <div class="generated-subtitle" id="generatedSubtitle">Infiltrator of Corporate Jargon Databases</div>
+            <button class="generate-button" onclick="generateSubtitle()">Generate New Title</button>
+        </section>
+
+        <!-- In Action -->
+        <section class="content-section">
+            <h2 class="content-title">The Treasure Hunter in Action</h2>
+            <p class="content-text">
+                Treasure Hunters are the people who research companies before interviews to find leverage points, who understand bureaucratic systems well enough to work around them, and who always have a backup plan for maintaining their independence. They're strategic rebels who pick their battles carefully.
+            </p>
+            <p class="content-text">
+                You'll find them studying power structures to find weaknesses, building alternative systems that serve their needs, and using their intelligence to maintain freedom from institutional control. They measure success by how well they've avoided being trapped by systems they don't believe in.
+            </p>
+        </section>
+
+        <!-- Career Paths -->
+        <section class="content-section">
+            <h2 class="content-title">Career Paths</h2>
+            <ul class="content-list">
+                <li>Independent consultant or freelance specialist</li>
+                <li>Cybersecurity analyst or ethical hacker</li>
+                <li>Investigative journalist or research analyst</li>
+                <li>Patent attorney or intellectual property expert</li>
+                <li>System architect or technical strategist</li>
+                <li>Market researcher or competitive intelligence analyst</li>
+                <li>Academic researcher in disruptive fields</li>
+                <li>Startup founder in niche markets</li>
+            </ul>
+        </section>
+
+        <!-- Growth Journey -->
+        <section class="content-section">
+            <h2 class="content-title">Growth Journey</h2>
+            <p class="content-text">
+                Treasure Hunters grow by learning to channel their rebellious intelligence into constructive innovation. Their challenge is to move beyond just undermining existing systems to building better alternatives that others can benefit from.
+            </p>
+            <p class="content-text">
+                Development involves learning to trust selectively and to collaborate with others who share their values without compromising their independence. The most evolved Treasure Hunters become architects of new systems that protect individual freedom while serving collective needs.
+            </p>
+        </section>
+
+        <!-- Relationships -->
+        <section class="content-section">
+            <h2 class="content-title">In Relationships</h2>
+            <p class="content-text">
+                Treasure Hunters need relationships with people who respect their need for independence and intellectual freedom. They're drawn to partners who either share their skepticism of authority or who at least don't try to constrain their rebellious thinking.
+            </p>
+            <p class="content-text">
+                They thrive with people who appreciate their strategic insights and don't take their independence personally. They struggle with those who expect blind loyalty or who try to control their natural tendency to question and analyze everything.
+            </p>
+        </section>
+
+        <!-- Decision Making -->
+        <section class="content-section">
+            <h2 class="content-title">Decision Making</h2>
+            <p class="content-text">
+                Treasure Hunters make decisions through careful analysis of power dynamics and long-term consequences for their freedom. They research thoroughly and often choose unconventional paths that preserve their independence.
+            </p>
+            <p class="content-text">
+                They prefer to understand all the angles before committing and always maintain escape routes from any situation. Their decisions prioritize maintaining autonomy and intellectual integrity over security or social approval.
+            </p>
+        </section>
+
+        <!-- Related Types -->
+        <section class="content-section">
+            <h2 class="content-title">Related Types</h2>
+            <div class="related-types">
+                <a href="the_contrarian.html" class="related-card similar">
+                    <div class="related-name">The Contrarian</div>
+                    <div class="related-description">Shares the strategic rebellion but with more intellectual focus than system planning</div>
+                </a>
+                <a href="the_mapmaker.html" class="related-card similar">
+                    <div class="related-name">The Mapmaker</div>
+                    <div class="related-description">Similar intellectual independence but with more pure knowledge focus</div>
+                </a>
+                <a href="the_activist.html" class="related-card opposite">
+                    <div class="related-name">The Activist</div>
+                    <div class="related-description">Opposite type - dedicated service to causes versus strategic independence</div>
+                </a>
+                <a href="the_guardian.html" class="related-card foil">
+                    <div class="related-name">The Guardian</div>
+                    <div class="related-description">Foil - Protective stability complements the Treasure Hunter's strategic disruption</div>
+                </a>
+            </div>
+        </section>
+
+        <!-- Famous Examples -->
+        <section class="content-section">
+            <h2 class="content-title">Famous Treasure Hunters</h2>
+            <ul class="content-list">
+                <li><strong>Edward Snowden</strong> - Used insider knowledge to challenge surveillance systems</li>
+                <li><strong>Julian Assange</strong> - Strategic information liberation through WikiLeaks</li>
+                <li><strong>Aaron Swartz</strong> - Programmer who fought for information freedom</li>
+                <li><strong>Lisbeth Salander</strong> - Fictional hacker who uses intelligence to maintain independence</li>
+            </ul>
+        </section>
+
+        <!-- Quiz CTA -->
+        <section class="quiz-cta">
+            <h2 class="cta-title">Not Sure If This Is You?</h2>
+            <p class="cta-description">
+                Take our comprehensive assessment to discover your true heroic archetype and see how you compare to The Treasure Hunter and the other 15 types.
+            </p>
+            <a href="take_quiz.html" class="cta-button">Take The Quiz</a>
+        </section>
+    </div>
+
+    <script>
+        // Random subtitle generator for The Treasure Hunter
+        const adjectives = [
+            "Corporate", "Bureaucratic", "Institutional", "Government", "Academic", "Political", "Financial", "Legal",
+            "Secret", "Classified", "Restricted", "Protected", "Encrypted", "Hidden", "Confidential", "Private",
+            "Surveillance", "Monitoring", "Tracking", "Control", "Management", "Authority", "Hierarchy", "Power",
+            "Mainstream", "Conventional", "Traditional", "Established", "Standard", "Official", "Authorized", "Certified",
+            "Digital", "Virtual", "Electronic", "Cyber", "Network", "System", "Database", "Algorithm",
+            "Social", "Cultural", "Economic", "Historical", "Statistical", "Analytical", "Technical", "Scientific"
+        ];
+
+        const nouns = [
+            "Jargon Databases", "Policy Manuals", "Procedure Guides", "Compliance Codes", "Regulation Books", "Authority Structures",
+            "Security Protocols", "Access Systems", "Control Mechanisms", "Power Networks", "Influence Chains", "Command Hierarchies",
+            "Information Vaults", "Data Repositories", "Knowledge Banks", "Intelligence Files", "Research Archives", "Document Libraries",
+            "Meeting Minutes", "Email Threads", "Communication Logs", "Decision Trees", "Process Maps", "Workflow Diagrams",
+            "Budget Allocations", "Resource Distributions", "Asset Inventories", "Investment Portfolios", "Revenue Streams", "Cost Centers",
+            "Surveillance Records", "Monitoring Reports", "Tracking Systems", "Behavioral Profiles", "Pattern Analyses", "Trend Studies",
+            "Password Vaults", "Security Keys", "Encryption Codes", "Access Tokens", "Digital Signatures", "Authentication Systems",
+            "Strategy Documents", "Planning Sessions", "Board Meetings", "Executive Briefings", "Stakeholder Reports", "Performance Metrics"
+        ];
+
+        function generateSubtitle() {
+            const randomAdjective = adjectives[Math.floor(Math.random() * adjectives.length)];
+            const randomNoun = nouns[Math.floor(Math.random() * nouns.length)];
+            const titles = [
+                `Infiltrator of ${randomAdjective} ${randomNoun}`,
+                `Decoder of ${randomAdjective} ${randomNoun}`,
+                `Analyst of ${randomAdjective} ${randomNoun}`,
+                `Hacker of ${randomAdjective} ${randomNoun}`,
+                `Investigator of ${randomAdjective} ${randomNoun}`,
+                `Explorer of ${randomAdjective} ${randomNoun}`,
+                `Examiner of ${randomAdjective} ${randomNoun}`,
+                `Researcher of ${randomAdjective} ${randomNoun}`,
+                `Scout of ${randomAdjective} ${randomNoun}`,
+                `Mapper of ${randomAdjective} ${randomNoun}`
+            ];
+            
+            const randomTitle = titles[Math.floor(Math.random() * titles.length)];
+            document.getElementById('generatedSubtitle').textContent = randomTitle;
+        }
+
+        // Generate initial subtitle when page loads
+        window.addEventListener('DOMContentLoaded', generateSubtitle);
+    </script>
+</body>
+</html>

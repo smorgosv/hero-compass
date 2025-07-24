@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hero Compass - The Wayfinder</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #0a0a1f 0%, #1a1a2e 50%, #16213e 100%);
+            color: #f4f4f4;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Navigation */
+        .navigation-bar {
+            background: rgba(255,255,255,0.05);
+            padding: 15px 0;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            color: #4ecdc4;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: bold;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: rgba(78, 205, 196, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .nav-link.active {
+            color: #ffd700;
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        /* Hero Section */
+        .hero-section {
+            text-align: center;
+            padding: 60px 0;
+            background: radial-gradient(circle at center, rgba(138, 43, 226, 0.1) 0%, transparent 70%);
+            border-radius: 20px;
+            margin-bottom: 50px;
+        }
+
+        .hero-content {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        /* Portrait Section */
+        .portrait-section {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .hero-portrait {
+            width: 500px;
+            height: 500px;
+            border-radius: 20px;
+            object-fit: cover;
+            border: 4px solid rgba(138, 43, 226, 0.4);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            transition: all 0.3s ease;
+            display: block;
+            margin: 0 auto;
+            max-width: 90vw;
+        }
+
+        .hero-portrait:hover {
+            transform: scale(1.02);
+            border-color: rgba(138, 43, 226, 0.7);
+            box-shadow: 0 25px 80px rgba(138, 43, 226, 0.3);
+        }
+
+        .type-name {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            background: linear-gradient(45deg, #8A2BE2, #9370DB, #6A5ACD);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .type-tagline {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #b8b8b8;
+            font-style: italic;
+        }
+
+        .type-blend {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            color: #4ecdc4;
+            font-weight: bold;
+        }
+
+        .type-overview {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            color: rgba(255,255,255,0.9);
+        }
+
+        /* Core Profile Section */
+        .core-profile {
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 50px;
+            backdrop-filter: blur(10px);
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: #ffd700;
+            text-align: center;
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .profile-item {
+            background: rgba(255,255,255,0.03);
+            border-radius: 10px;
+            padding: 25px;
+            border-left: 4px solid #8A2BE2;
+        }
+
+        .profile-label {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #ffd700;
+            margin-bottom: 10px;
+        }
+
+        .profile-content {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: rgba(255,255,255,0.9);
+        }
+
+        /* Random Subtitle Generator */
+        .subtitle-generator {
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 50px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .generator-title {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #4ecdc4;
+        }
+
+        .generated-subtitle {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: #ffd700;
+            font-weight: bold;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            padding: 20px;
+            font-style: italic;
+        }
+
+        .generate-button {
+            background: linear-gradient(45deg, #8A2BE2, #9370DB);
+            color: #fff;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .generate-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(138, 43, 226, 0.3);
+        }
+
+        /* Content Sections */
+        .content-section {
+            background: rgba(255,255,255,0.03);
+            border-radius: 15px;
+            padding: 35px;
+            margin-bottom: 40px;
+        }
+
+        .content-title {
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+            color: #4ecdc4;
+            border-bottom: 2px solid rgba(78, 205, 196, 0.3);
+            padding-bottom: 10px;
+        }
+
+        .content-text {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 15px;
+        }
+
+        .content-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .content-list li {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: rgba(255,255,255,0.85);
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .content-list li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #ffd700;
+            font-weight: bold;
+        }
+
+        /* Related Types */
+        .related-types {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .related-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            text-decoration: none;
+            color: inherit;
+            cursor: pointer;
+        }
+
+        .related-card:hover {
+            transform: translateY(-3px);
+            background: rgba(255,255,255,0.08);
+        }
+
+        .related-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .related-description {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.8);
+            line-height: 1.5;
+        }
+
+        /* Similar Types */
+        .related-card.similar {
+            border-color: rgba(78, 205, 196, 0.3);
+        }
+
+        .related-card.similar:hover {
+            border-color: rgba(78, 205, 196, 0.7);
+        }
+
+        .related-card.similar .related-name {
+            color: #4ecdc4;
+        }
+
+        /* Opposite Type */
+        .related-card.opposite {
+            border-color: rgba(255, 215, 0, 0.3);
+        }
+
+        .related-card.opposite:hover {
+            border-color: rgba(255, 215, 0, 0.7);
+        }
+
+        .related-card.opposite .related-name {
+            color: #ffd700;
+        }
+
+        /* Foil Type */
+        .related-card.foil {
+            border-color: rgba(255, 107, 107, 0.3);
+        }
+
+        .related-card.foil:hover {
+            border-color: rgba(255, 107, 107, 0.7);
+        }
+
+        .related-card.foil .related-name {
+            color: #ff6b6b;
+        }
+
+        /* Quiz CTA */
+        .quiz-cta {
+            text-align: center;
+            padding: 50px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            margin-top: 50px;
+        }
+
+        .cta-title {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: #ffd700;
+        }
+
+        .cta-description {
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+            color: rgba(255,255,255,0.9);
+            line-height: 1.6;
+        }
+
+        .cta-button {
+            background: linear-gradient(45deg, #ffd700, #ff6b6b, #4ecdc4);
+            color: #000;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255,215,0,0.3);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .related-types {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .hero-portrait {
+                width: 400px;
+                height: 400px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .type-name {
+                font-size: 2.2rem;
+            }
+            
+            .generated-subtitle {
+                font-size: 1.5rem;
+            }
+            
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .related-types {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero-portrait {
+                width: 350px;
+                height: 350px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-portrait {
+                width: 280px;
+                height: 280px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="navigation-bar">
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="take_quiz.html" class="nav-link">Take Quiz</a>
+                <a href="framework.html" class="nav-link">Framework</a>
+                <a href="all_types.html" class="nav-link">All Types</a>
+                <a href="compare_types.html" class="nav-link">Compare Types</a>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="hero-content">
+                <h1 class="type-name">The Wayfinder</h1>
+                <p class="type-tagline">Balanced Guide Between Worlds</p>
+                <p class="type-blend">Moderate Pirate + Moderate Wizard</p>
+                <p class="type-overview">
+                    The Wayfinder is the thoughtful individualist who balances independence with wisdom, finding paths that others cannot see. They are the balanced rebels who use knowledge to maintain appropriate independence, rebelling only when justified by their understanding. Like wise guides who know both the safe roads and the hidden trails, they help others navigate complex territories.
+                </p>
+            </div>
+        </section>
+
+        <!-- Portrait Section -->
+        <section class="portrait-section">
+            <img src="images/wayfinder.jpeg" alt="The Wayfinder - Balanced Guide Between Worlds" class="hero-portrait">
+        </section>
+
+        <!-- Core Profile -->
+        <section class="core-profile">
+            <h2 class="section-title">Core Profile</h2>
+            <div class="profile-grid">
+                <div class="profile-item">
+                    <div class="profile-label">Core Traits</div>
+                    <div class="profile-content">Thoughtful individualist, balances independence with wisdom, selectively rebellious, strategic guide</div>
+                </div>
+                <div class="profile-item">
+                    <div class="profile-label">Approach</div>
+                    <div class="profile-content">Uses knowledge to maintain appropriate independence, rebels when justified, finds middle paths</div>
+                </div>
+                <div class="profile-item">
+                    <div class="profile-label">Strengths</div>
+                    <div class="profile-content">Wise independence, justified rebellion, balanced perspective, ability to see alternative routes</div>
+                </div>
+                <div class="profile-item">
+                    <div class="profile-label">Challenges</div>
+                    <div class="profile-content">Can seem indecisive when weighing options, may overthink before acting, tendency to see all sides</div>
+                </div>
+                <div class="profile-item">
+                    <div class="profile-label">Drainers</div>
+                    <div class="profile-content">Pressure to choose extreme positions, black-and-white thinking environments, rushed decisions</div>
+                </div>
+                <div class="profile-item">
+                    <div class="profile-label">Motivation</div>
+                    <div class="profile-content">Driven to find balanced solutions that honor both independence and wisdom</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Random Subtitle Generator -->
+        <section class="subtitle-generator">
+            <h2 class="generator-title">I am the...</h2>
+            <div class="generated-subtitle" id="generatedSubtitle">Navigator of Hidden Coffee Shop Routes</div>
+            <button class="generate-button" onclick="generateSubtitle()">Generate New Title</button>
+        </section>
+
+        <!-- In Action -->
+        <section class="content-section">
+            <h2 class="content-title">The Wayfinder in Action</h2>
+            <p class="content-text">
+                Wayfinders are the people who find the third option when everyone else sees only two choices, who know how to work within systems while maintaining their independence, and who help others navigate complex situations with both wisdom and freedom.
+            </p>
+            <p class="content-text">
+                You'll find them mediating conflicts, finding creative solutions to institutional problems, and helping others discover paths that honor both their values and practical constraints. They measure success by how well they've helped others find their own balanced way forward.
+            </p>
+        </section>
+
+        <!-- Career Paths -->
+        <section class="content-section">
+            <h2 class="content-title">Career Paths</h2>
+            <ul class="content-list">
+                <li>Mediator or conflict resolution specialist</li>
+                <li>Independent consultant or advisor</li>
+                <li>Therapist or counselor</li>
+                <li>Organizational development specialist</li>
+                <li>Life coach or personal development guide</li>
+                <li>Cultural anthropologist or social researcher</li>
+                <li>Freelance educator or curriculum designer</li>
+                <li>Strategic planning consultant</li>
+            </ul>
+        </section>
+
+        <!-- Growth Journey -->
+        <section class="content-section">
+            <h2 class="content-title">Growth Journey</h2>
+            <p class="content-text">
+                Wayfinders grow by learning to trust their ability to find balance and by developing confidence in their unique perspective. Their challenge is to act decisively on their insights without losing their valuable ability to see multiple sides.
+            </p>
+            <p class="content-text">
+                Development involves learning when to guide and when to follow, when to rebel and when to cooperate. The most evolved Wayfinders become wise leaders who can help entire communities navigate complex changes while preserving what's valuable from the past.
+            </p>
+        </section>
+
+        <!-- Relationships -->
+        <section class="content-section">
+            <h2 class="content-title">In Relationships</h2>
+            <p class="content-text">
+                Wayfinders bring balance and perspective to relationships, helping partners navigate conflicts and find middle ground. They need relationships with people who value their thoughtful approach and don't pressure them into extreme positions.
+            </p>
+            <p class="content-text">
+                They thrive with partners who appreciate their ability to see both sides and who value their independent thinking. They struggle with those who demand absolute loyalty or who can't tolerate their need to maintain some degree of intellectual and emotional independence.
+            </p>
+        </section>
+
+        <!-- Decision Making -->
+        <section class="content-section">
+            <h2 class="content-title">Decision Making</h2>
+            <p class="content-text">
+                Wayfinders make decisions by carefully weighing multiple factors and looking for solutions that honor both independence and wisdom. They prefer to understand all perspectives before choosing and often find creative third options.
+            </p>
+            <p class="content-text">
+                They trust both their analytical abilities and their intuition, seeking decisions that feel both smart and authentic. Their choices prioritize long-term balance and sustainable independence over quick fixes or extreme positions.
+            </p>
+        </section>
+
+        <!-- Related Types -->
+        <section class="content-section">
+            <h2 class="content-title">Related Types</h2>
+            <div class="related-types">
+                <a href="the_seeker.html" class="related-card similar">
+                    <div class="related-name">The Seeker</div>
+                    <div class="related-description">Shares the balance of independence and wisdom seeking</div>
+                </a>
+                <a href="the_mentor.html" class="related-card similar">
+                    <div class="related-name">The Mentor</div>
+                    <div class="related-description">Similar balance but with more service orientation</div>
+                </a>
+                <a href="the_wildcard.html" class="related-card opposite">
+                    <div class="related-name">The Wildcard</div>
+                    <div class="related-description">Opposite type - pure chaos versus balanced consideration</div>
+                </a>
+                <a href="the_crusader.html" class="related-card foil">
+                    <div class="related-name">The Crusader</div>
+                    <div class="related-description">Foil - Bold immediate action complements the Wayfinder's thoughtful navigation</div>
+                </a>
+            </div>
+        </section>
+
+        <!-- Famous Examples -->
+        <section class="content-section">
+            <h2 class="content-title">Famous Wayfinders</h2>
+            <ul class="content-list">
+                <li><strong>Nelson Mandela</strong> - Found paths between resistance and reconciliation</li>
+                <li><strong>Dalai Lama</strong> - Balances spiritual independence with compassionate engagement</li>
+                <li><strong>Jane Goodall</strong> - Independent researcher who bridges science and advocacy</li>
+                <li><strong>Gandalf</strong> - Fictional wizard who guides others while maintaining his independence</li>
+            </ul>
+        </section>
+
+        <!-- Quiz CTA -->
+        <section class="quiz-cta">
+            <h2 class="cta-title">Not Sure If This Is You?</h2>
+            <p class="cta-description">
+                Take our comprehensive assessment to discover your true heroic archetype and see how you compare to The Wayfinder and the other 15 types.
+            </p>
+            <a href="take_quiz.html" class="cta-button">Take The Quiz</a>
+        </section>
+    </div>
+
+    <script>
+        // Random subtitle generator for The Wayfinder
+        const adjectives = [
+            "Hidden", "Secret", "Alternative", "Forgotten", "Unexplored", "Mysterious", "Ancient", "Lost",
+            "Balanced", "Harmonious", "Peaceful", "Serene", "Tranquil", "Gentle", "Wise", "Thoughtful",
+            "Bridge", "Connecting", "Linking", "Joining", "Uniting", "Crossing", "Spanning", "Merging",
+            "Middle", "Intermediate", "Transitional", "Border", "Threshold", "Gateway", "Portal", "Passage",
+            "Scenic", "Winding", "Curved", "Meandering", "Flowing", "Graceful", "Elegant", "Smooth",
+            "Compass", "Guiding", "Directing", "Leading", "Pointing", "Orienting", "Navigating", "Steering"
+        ];
+
+        const nouns = [
+            "Coffee Shop Routes", "Library Pathways", "Garden Trails", "Campus Walkways", "Neighborhood Streets", "Park Passages",
+            "Conversation Bridges", "Understanding Paths", "Compromise Roads", "Agreement Routes", "Resolution Trails", "Harmony Ways",
+            "Learning Journeys", "Discovery Paths", "Insight Routes", "Wisdom Trails", "Knowledge Roads", "Understanding Ways",
+            "Cultural Exchanges", "Language Bridges", "Tradition Paths", "Heritage Routes", "Custom Trails", "Ritual Ways",
+            "Career Transitions", "Life Changes", "Decision Points", "Crossroads", "Turning Points", "Choice Moments",
+            "Relationship Dynamics", "Family Connections", "Friendship Bonds", "Community Links", "Social Networks", "Group Interactions",
+            "Creative Processes", "Artistic Expressions", "Design Solutions", "Innovation Paths", "Inspiration Routes", "Vision Trails",
+            "Technology Integrations", "Digital Balances", "Online Offline Bridges", "Virtual Real Connections", "Screen Life Harmony", "Tech Wisdom Paths"
+        ];
+
+        function generateSubtitle() {
+            const randomAdjective = adjectives[Math.floor(Math.random() * adjectives.length)];
+            const randomNoun = nouns[Math.floor(Math.random() * nouns.length)];
+            const titles = [
+                `Navigator of ${randomAdjective} ${randomNoun}`,
+                `Guide to ${randomAdjective} ${randomNoun}`,
+                `Finder of ${randomAdjective} ${randomNoun}`,
+                `Explorer of ${randomAdjective} ${randomNoun}`,
+                `Mapper of ${randomAdjective} ${randomNoun}`,
+                `Scout of ${randomAdjective} ${randomNoun}`,
+                `Discoverer of ${randomAdjective} ${randomNoun}`,
+                `Pathfinder of ${randomAdjective} ${randomNoun}`,
+                `Trailblazer of ${randomAdjective} ${randomNoun}`,
+                `Pioneer of ${randomAdjective} ${randomNoun}`
+            ];
+            
+            const randomTitle = titles[Math.floor(Math.random() * titles.length)];
+            document.getElementById('generatedSubtitle').textContent = randomTitle;
+        }
+
+        // Generate initial subtitle when page loads
+        window.addEventListener('DOMContentLoaded', generateSubtitle);
+    </script>
+</body>
+</html>

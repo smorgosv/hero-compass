@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hero Compass - All Types</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #0a0a1f 0%, #1a1a2e 50%, #16213e 100%);
+            color: #f4f4f4;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Navigation */
+        .navigation-bar {
+            background: rgba(255,255,255,0.05);
+            padding: 15px 0;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            color: #4ecdc4;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: bold;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: rgba(78, 205, 196, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .nav-link.active {
+            color: #ffd700;
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .title {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            background: linear-gradient(45deg, #ffd700, #ff6b6b, #4ecdc4, #45b7d1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #b8b8b8;
+            font-style: italic;
+            margin-bottom: 30px;
+        }
+
+        .description {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            color: rgba(255,255,255,0.9);
+        }
+
+        /* Quadrant Sections */
+        .quadrant-section {
+            margin-bottom: 80px;
+        }
+
+        .quadrant-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .quadrant-title {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: #ffd700;
+        }
+
+        .quadrant-description {
+            font-size: 1.1rem;
+            color: #b8b8b8;
+            font-style: italic;
+        }
+
+        .types-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+        }
+
+        .type-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 25px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .type-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255,215,0,0.3);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .type-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            transition: all 0.3s ease;
+        }
+
+        /* Maverick colors */
+        .maverick-card { background: linear-gradient(135deg, rgba(139, 69, 19, 0.1), rgba(205, 133, 63, 0.1)); }
+        .maverick-card::before { background: linear-gradient(90deg, #8B4513, #CD853F); }
+
+        /* Rogue Scholar colors */
+        .rogue-card { background: linear-gradient(135deg, rgba(75, 0, 130, 0.1), rgba(138, 43, 226, 0.1)); }
+        .rogue-card::before { background: linear-gradient(90deg, #4B0082, #8A2BE2); }
+
+        /* Champion colors */
+        .champion-card { background: linear-gradient(135deg, rgba(178, 34, 34, 0.1), rgba(220, 20, 60, 0.1)); }
+        .champion-card::before { background: linear-gradient(90deg, #B22222, #DC143C); }
+
+        /* Sage Guardian colors */
+        .sage-card { background: linear-gradient(135deg, rgba(46, 139, 87, 0.1), rgba(32, 178, 170, 0.1)); }
+        .sage-card::before { background: linear-gradient(90deg, #2E8B57, #20B2AA); }
+
+        .type-name {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            color: #ffd700;
+            font-weight: bold;
+        }
+
+        .type-traits {
+            margin-bottom: 15px;
+        }
+
+        .trait-label {
+            display: block;
+            color: #4ecdc4;
+            font-weight: bold;
+            margin-bottom: 5px;
+            margin-top: 10px;
+        }
+
+        .trait-label:first-child {
+            margin-top: 0;
+        }
+
+        .trait-text {
+            color: rgba(255,255,255,0.85);
+            line-height: 1.4;
+            font-size: 0.9rem;
+        }
+
+        .type-blend {
+            color: #b8b8b8;
+            font-style: italic;
+            font-size: 0.85rem;
+            text-align: center;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* Quiz CTA */
+        .quiz-cta {
+            text-align: center;
+            padding: 60px 20px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .cta-title {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #ffd700;
+        }
+
+        .cta-description {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto 40px;
+            color: rgba(255,255,255,0.9);
+        }
+
+        .cta-button {
+            background: linear-gradient(45deg, #ffd700, #ff6b6b, #4ecdc4);
+            color: #000;
+            border: none;
+            padding: 18px 36px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 8px 25px rgba(255,215,0,0.3);
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(255,215,0,0.4);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .types-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .types-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .title {
+                font-size: 2rem;
+            }
+            
+            .quadrant-title {
+                font-size: 1.6rem;
+            }
+            
+            .type-card {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .type-name {
+                font-size: 1.2rem;
+            }
+            
+            .trait-text {
+                font-size: 0.85rem;
+            }
+            
+            .cta-button {
+                padding: 14px 28px;
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="navigation-bar">
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="take_quiz.html" class="nav-link">Take Quiz</a>
+                <a href="framework.html" class="nav-link">Framework</a>
+                <a href="all_types.html" class="nav-link active">All Types</a>
+                <a href="compare_types.html" class="nav-link">Compare Types</a>
+            </div>
+        </nav>
+
+        <div class="header">
+            <h1 class="title">Hero Compass</h1>
+            <p class="subtitle">All 16 Heroic Archetypes</p>
+            <p class="description">
+                Explore every heroic archetype in the Hero Compass framework. Each represents a unique blend of the four archetypal forces—Pirate, Knight, Cowboy, and Wizard—creating distinct paths to greatness.
+            </p>
+        </div>
+
+        <!-- The Maverick Quadrant -->
+        <section class="quadrant-section">
+            <div class="quadrant-header">
+                <h2 class="quadrant-title">The Maverick Quadrant</h2>
+                <p class="quadrant-description">Pirate + Cowboy: Independent action-takers who value freedom above all</p>
+            </div>
+            <div class="types-grid">
+                <a href="the_wildcard.html" class="type-card maverick-card">
+                    <h3 class="type-name">The Wildcard</h3>
+                    <div class="type-traits">
+                        <span class="trait-label">Core Traits:</span>
+                        <div class="trait-text">Wildly independent, impulsive rebel, thrives on chaos and adventure</div>
+                        <span class="trait-label">Strengths:</span>
+                        <div class="trait-text">Unmatched adaptability, fearless risk-taking, authentic self-expression</div>
+                    </div>
+                    <div class="type-blend">Maximum Pirate + Maximum Cowboy</div>
+                </a>
+                
+                <a href="the_contrarian.html" class="type-card maverick-card">
+                    <h3 class="type-name">The Contrarian</h3>
+                    <div class="type-traits">
+                        <span class="trait-label">Core Traits:</span>
+                        <div class="trait-text">Independent contrarian, questions everything, values intellectual freedom</div>
+                        <span class="trait-label">Strengths:</span>
+                        <div class="trait-text">Critical thinking, innovative solutions, intellectual courage</div>
+                    </div>
+                    <div class="type-blend">High Pirate + Moderate Wizard</div>
+                </a>
+                
+                <a href="the_drifter.html" class="type-card maverick-card">
+                    <h3 class="type-name">The Drifter</h3>
+                    <div class="type-traits">
+                        <span class="trait-label">Core Traits:</span>
+                        <div class="trait-text">Action-oriented individualist, spontaneous adventurer, values freedom through experience</div>
+                        <span class="trait-label">Strengths:</span>
+                        <div class="trait-text">Quick decision-making, experiential learning, inspiring spontaneity</div>
+                    </div>
+                    <div class="type-blend">Moderate Pirate + High Cowboy</div>
+                </a>
+                
+                <a href="the_maverick.html" class="type-card maverick-card">
+                    <h3 class="type-name">The Maverick</h3>
+                    <div class="type-traits">
+                        <span class="trait-label">Core Traits:</span>
+                        <div class="trait-text">Selectively independent, thoughtfully spontaneous, balances freedom with structure</div>
+                        <span class="trait-label">Strengths:</span>
+                        <div class="trait-text">Flexible independence, strategic spontaneity, pragmatic freedom</div>
+                    </div>
+                    <div class="type-blend">Moderate Pirate + Moderate Cowboy</div>
+                </a>
+            </div>
+        </section>
+
+        <!-- The Rogue Scholar Quadrant -->
+        <section class="quadrant-section">
+            <div class="quadrant-header">
+                <h2 class="quadrant-title">The Rogue Scholar Quadrant</h2>
+                <p class="quadrant-description">Pirate + Wizard: Independent intellectuals who seek knowledge and freedom</p>
+            </div>
+            <div class="types-grid">
+                <a href="the_treasure_hunter.html" class="type-card rogue-card">
+                    <h3 class="type-name">The Treasure Hunter</h3>
+                    <div class="type-traits">
+                        <span class="trait-label">Core Traits:</span>
+                        <div class="trait-text">Calculating individualist, plans rebellion, uses intelligence to maintain independence</div>
+                        <span class="trait-label">Strengths:</span>
+                        <div class="trait-text">Intelligent resistance, strategic independence, effective system criticism</div>
+                    </div>
+                    <div class="type-blend">High Pirate + Moderate Wizard</div>
+                </a>
+                
+                <a href="the_mapmaker.html" class="type-card rogue-card">
+                    <h3 class="type-name">The Mapmaker</h3>
+                    <div class="type-traits">
+                        <span class="trait-label">Core Traits:</span>
+                        <div class="trait-text">Brilliant individualist, masters forbidden knowledge, completely independent intellectual</div>
+                        <span class="trait-label">Strengths:</span>
+                        <div class="trait-text">Intellectual mastery, complete independence, innovative thinking</div>
+                    </div>
+                    <div class="type-blend">Maximum Pirate + Maximum Wizard</div>
+                </a>
+                
+                <a href="the_wayfinder.html" class="type-card rogue-card">
+                    <h3 class="type-name">The Wayfinder</h3>
+                    <div class="type-traits">
+                        <span class="trait-label">Core Traits:</span>
+                        <div class="trait-text">Thoughtful individualist, balances independence with wisdom, selectively rebellious</div>
+                        <span class="trait-label">Strengths:</span>
+                        <div class="trait-text">Wise independence, justified rebellion, balanced perspective</div>
+                    </div>
+                    <div class="type-blend">Moderate Pirate + Moderate Wizard</div>
+                </a>
+                
+                <a href="the_seeker.html" class="type-card rogue-card">
+                    <h3 class="type-name">The Seeker</h3>
+                    <div class="type-traits">
+                        <span class="trait-label">Core Traits:</span>
+                        <div class="trait-text">Intellectually independent, values understanding over conformity, quietly rebellious</div>
+                        <span class="trait-label">Strengths:</span>
+                        <div class="trait-text">Intellectual integrity, thoughtful independence, deep understanding</div>
+                    </div>
+                    <div class="type-blend">Moderate Pirate + High Wizard</div>
+                </a>
+            </div>
+        </section>
+
+        <!-- The Champion Quadrant -->
+        <section class="quadrant-section">
+            <div class="quadrant-header">
+                <h2 class="quadrant-title">The Champion Quadrant</h2>
+                <p class="quadrant-description">Knight + Cowboy: Noble warriors who protect others through bold action</p>
+            </div>
+            <div class="types-grid">
+                <a href="the_crusader.html" class="type-card champion-card">
+                    <h3 class="type-name">The Crusader</h3>
+                    <div class="type-traits">
+                        <span class="trait-label">Core Traits:</span>
+                        <div class="trait-text">Bold protector, instinctively heroic, acts courageously for others without hesitation</div>
+                        <span class="trait-label">Strengths:</span>
+                        <div class="trait-text">Natural heroism, inspiring courage, protective instincts</div>
+                    </div>
+                    <div class="type-blend">Moderate Knight + High Cowboy</div>
+                </a>
+                
+                <a href="the_guardian.html" class="type-card champion-card">
+                    <h3 class="type-name">The Guardian</h3>
+                    <div class="type-traits">
+                        <span class="trait-label">Core Traits:</span>
+                        <div class="trait-text">Thoughtful protector, balances duty with action, considers impact of heroic deeds</div>
+                        <span class="trait-label">Strengths:</span>
+                        <div class="trait-text">Sustainable service, balanced heroism, thoughtful protection</div>
+                    </div>
+                    <div class="type-blend">Moderate Knight + Moderate Cowboy</div>
+                </a>
+                
+                <a href="the_paladin.html" class="type-card champion-card">
+                    <h3 class="type-name">The Paladin</h3>
+                    <div class="type-traits">
+                        <span class="trait-label">Core Traits:</span>
+                        <div class="trait-text">Ultimate protector-warrior, maximum duty with fearless action, lives to serve others</div>
+                        <span class="trait-label">Strengths:</span>
+                        <div class="trait-text">Unlimited courage, total dedication, inspiring leadership</div>
+                    </div>
+                    <div class="type-blend">Maximum Knight + Maximum Cowboy</div>
+                </a>
+                
+                <a href="the_activist.html" class="type-card champion-card">
+                    <h3 class="type-name">The Activist</h3>
+                    <div class="type-traits">
+                        <span class="trait-label">Core Traits:</span>
+                        <div class="trait-text">Service-oriented reformer, dedicates life to causes, patient in pursuit of justice</div>
+                        <span class="trait-label">Strengths:</span>
+                        <div class="trait-text">Sustained dedication, movement building, patient activism</div>
+                    </div>
+                    <div class="type-blend">High Knight + Moderate Cowboy</div>
+                </a>
+            </div>
+        </section>
+
+        <!-- The Sage Guardian Quadrant -->
+        <section class="quadrant-section">
+            <div class="quadrant-header">
+                <h2 class="quadrant-title">The Sage Guardian Quadrant</h2>
+                <p class="quadrant-description">Knight + Wizard: Wise protectors who serve others through knowledge and dedication</p>
+            </div>
+            <div class="types-grid">
+                <a href="the_mentor.html" class="type-card sage-card">
+                    <h3 class="type-name">The Mentor</h3>
+                    <div class="type-traits">
+                        <span class="trait-label">Core Traits:</span>
+                        <div class="trait-text">Thoughtful server, balances wisdom with duty, considers long-term impact</div>
+                        <span class="trait-label">Strengths:</span>
+                        <div class="trait-text">Wise service, sustainable impact, balanced leadership</div>
+                    </div>
+                    <div class="type-blend">Moderate Knight + Moderate Wizard</div>
+                </a>
+                
+                <a href="the_oracle.html" class="type-card sage-card">
+                    <h3 class="type-name">The Oracle</h3>
+                    <div class="type-traits">
+                        <span class="trait-label">Core Traits:</span>
+                        <div class="trait-text">Knowledge-focused helper, serves others through wisdom, teaches and guides</div>
+                        <span class="trait-label">Strengths:</span>
+                        <div class="trait-text">Wisdom sharing, teaching excellence, thoughtful guidance</div>
+                    </div>
+                    <div class="type-blend">Moderate Knight + High Wizard</div>
+                </a>
+                
+                <a href="the_advisor.html" class="type-card sage-card">
+                    <h3 class="type-name">The Advisor</h3>
+                    <div class="type-traits">
+                        <span class="trait-label">Core Traits:</span>
+                        <div class="trait-text">Service-oriented thinker, dedicates intellect to helping others, loyal counselor</div>
+                        <span class="trait-label">Strengths:</span>
+                        <div class="trait-text">Dedicated counsel, loyal service, thoughtful advice</div>
+                    </div>
+                    <div class="type-blend">High Knight + Moderate Wizard</div>
+                </a>
+                
+                <a href="the_archon.html" class="type-card sage-card">
+                    <h3 class="type-name">The Archon</h3>
+                    <div class="type-traits">
+                        <span class="trait-label">Core Traits:</span>
+                        <div class="trait-text">Philosopher-king, combines ultimate wisdom with complete dedication to others</div>
+                        <span class="trait-label">Strengths:</span>
+                        <div class="trait-text">Ultimate wisdom in service, perfect balance, inspiring leadership</div>
+                    </div>
+                    <div class="type-blend">Maximum Knight + Maximum Wizard</div>
+                </a>
+            </div>
+        </section>
+
+        <!-- Quiz CTA -->
+        <section class="quiz-cta">
+            <h2 class="cta-title">Don't Know Your Type Yet?</h2>
+            <p class="cta-description">
+                Take our comprehensive 30-question assessment to discover which of these 16 heroic archetypes matches your unique personality and approach to life.
+            </p>
+            <a href="take_quiz.html" class="cta-button">Discover Your Heroic Archetype</a>
+        </section>
+    </div>
+</body>
+</html>
