@@ -20,14 +20,14 @@
         }
 
         .container {
-            max-width: 1600px;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
         .title {
             text-align: center;
             font-size: 2.5rem;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             background: linear-gradient(45deg, #ffd700, #ff6b6b, #4ecdc4, #45b7d1);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -38,7 +38,7 @@
         .subtitle {
             text-align: center;
             font-size: 1.2rem;
-            margin-bottom: 50px;
+            margin-bottom: 30px;
             color: #b8b8b8;
             font-style: italic;
         }
@@ -47,17 +47,17 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             grid-template-rows: 1fr 1fr;
-            gap: 50px;
-            margin: 180px 0;
+            gap: 30px;
+            margin: 80px 0;
             position: relative;
         }
 
         .main-axis-h {
             position: absolute;
             top: 50%;
-            left: -100px;
-            right: -100px;
-            height: 4px;
+            left: 15%;
+            right: 15%;
+            height: 3px;
             background: linear-gradient(90deg, transparent 5%, #ff6b6b 20%, #ffd700 50%, #4ecdc4 80%, transparent 95%);
             transform: translateY(-50%);
             z-index: 15;
@@ -68,9 +68,9 @@
         .main-axis-v {
             position: absolute;
             left: 50%;
-            top: -100px;
-            bottom: -100px;
-            width: 4px;
+            top: 15%;
+            bottom: 15%;
+            width: 3px;
             background: linear-gradient(0deg, transparent 5%, #ff6b6b 20%, #ffd700 50%, #45b7d1 80%, transparent 95%);
             transform: translateX(-50%);
             z-index: 15;
@@ -80,127 +80,156 @@
 
         .axis-label {
             position: absolute;
-            font-size: 1.4rem;
+            font-size: 1.1rem;
             font-weight: bold;
             color: #ffd700;
             z-index: 20;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
             text-align: center;
+            padding: 5px 10px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            backdrop-filter: blur(5px);
         }
 
-        .cowboy-label { top: 50%; left: -150px; transform: translateY(-50%); }
-        .wizard-label { top: 50%; right: -150px; transform: translateY(-50%); }
-        .pirate-label { top: -130px; left: 50%; transform: translateX(-50%); }
-        .knight-label { bottom: -130px; left: 50%; transform: translateX(-50%); }
+        .cowboy-label { 
+            top: 50%; 
+            left: 10px; 
+            transform: translateY(-50%); 
+        }
+        .wizard-label { 
+            top: 50%; 
+            right: 10px; 
+            transform: translateY(-50%); 
+        }
+        .pirate-label { 
+            top: -30px; 
+            left: 50%; 
+            transform: translateX(-50%); 
+        }
+        .knight-label { 
+            bottom: -30px; 
+            left: 50%; 
+            transform: translateX(-50%); 
+        }
 
         .main-quadrant {
-            border-radius: 20px;
+            border-radius: 15px;
             overflow: hidden;
-            border: 4px solid #555;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+            border: 3px solid #555;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
             transition: transform 0.3s ease;
         }
 
         .main-quadrant:hover {
-            transform: translateY(-5px);
-        }
-
-        .quadrant-header {
-            text-align: center;
-            padding: 25px;
-            font-size: 1.6rem;
-            font-weight: bold;
-            color: #fff;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
-            border-bottom: 3px solid rgba(255,255,255,0.2);
+            transform: translateY(-3px);
         }
 
         .sub-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             grid-template-rows: 1fr 1fr;
-            gap: 4px;
-            min-height: 450px;
+            gap: 2px;
+            min-height: 350px;
         }
 
         .sub-quadrant {
-            padding: 25px;
+            padding: 20px 15px;
             transition: all 0.3s ease;
             cursor: pointer;
             backdrop-filter: blur(5px);
             position: relative;
             display: flex;
             flex-direction: column;
-            justify-content: flex-start;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            text-decoration: none;
+            overflow: hidden;
         }
 
         .sub-quadrant:hover {
-            transform: scale(1.02);
-            box-shadow: 0 10px 30px rgba(255,255,255,0.2);
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(255,255,255,0.3);
             z-index: 10;
         }
 
+        .sub-quadrant:hover .sub-title {
+            transform: translateY(-20px);
+        }
+
+        .sub-quadrant:hover .sub-tagline {
+            opacity: 0;
+        }
+
+        .sub-quadrant:hover .archetype-image {
+            opacity: 1;
+        }
+
         .sub-title {
-            font-size: 1.4rem;
+            font-size: 1.2rem;
             font-weight: bold;
-            margin-bottom: 20px;
-            text-align: center;
+            margin-bottom: 8px;
             color: #fff;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-            border-bottom: 2px solid rgba(255,255,255,0.3);
-            padding-bottom: 12px;
+            transition: all 0.3s ease;
+            z-index: 2;
+            position: relative;
         }
 
-        .trait-section {
-            margin-bottom: 18px;
-            font-size: 0.9rem;
-            line-height: 1.5;
+        .sub-tagline {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.8);
+            font-style: italic;
+            line-height: 1.3;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
+            transition: all 0.3s ease;
+            z-index: 2;
+            position: relative;
         }
 
-        .trait-header {
-            font-weight: bold;
-            color: #ffd700;
-            margin-bottom: 8px;
-            text-align: center;
-            font-size: 1rem;
-        }
-
-        .trait-content {
-            color: rgba(255,255,255,0.9);
-            text-align: center;
+        .archetype-image {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            height: 80%;
+            object-fit: cover;
+            border-radius: 10px;
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
 
         /* Maverick quadrant colors */
-        .maverick-main { background: linear-gradient(135deg, #8B4513 0%, #CD853F 50%, #D2691E 100%); }
         .maverick-pure { background: rgba(139, 69, 19, 0.95); }
         .maverick-rebel-thinker { background: rgba(160, 82, 45, 0.9); }
         .maverick-free-spirit { background: rgba(160, 82, 45, 0.9); }
         .maverick-balanced { background: rgba(205, 133, 63, 0.8); }
 
         /* Rogue Scholar quadrant colors */
-        .rogue-main { background: linear-gradient(135deg, #4B0082 0%, #8A2BE2 50%, #9370DB 100%); }
         .rogue-strategic { background: rgba(106, 90, 205, 0.9); }
         .rogue-pure { background: rgba(75, 0, 130, 0.95); }
         .rogue-balanced { background: rgba(138, 43, 226, 0.8); }
         .rogue-individualist { background: rgba(106, 90, 205, 0.9); }
 
         /* Champion quadrant colors */
-        .champion-main { background: linear-gradient(135deg, #B22222 0%, #DC143C 50%, #FF6347 100%); }
         .champion-warrior { background: rgba(220, 20, 60, 0.9); }
         .champion-balanced { background: rgba(205, 92, 92, 0.8); }
         .champion-pure { background: rgba(178, 34, 34, 0.95); }
         .champion-activist { background: rgba(220, 20, 60, 0.9); }
 
         /* Sage Guardian quadrant colors */
-        .sage-main { background: linear-gradient(135deg, #2E8B57 0%, #3CB371 50%, #20B2AA 100%); }
         .sage-balanced { background: rgba(32, 178, 170, 0.8); }
         .sage-counselor { background: rgba(60, 179, 113, 0.9); }
         .sage-advisor { background: rgba(60, 179, 113, 0.9); }
         .sage-pure { background: rgba(46, 139, 87, 0.95); }
 
         .description {
-            margin-top: 50px;
-            padding: 30px;
+            margin-top: 30px;
+            padding: 25px;
             background: rgba(255,255,255,0.05);
             border-radius: 15px;
             backdrop-filter: blur(10px);
@@ -208,20 +237,225 @@
 
         .description h3 {
             color: #ffd700;
-            margin-bottom: 20px;
-            font-size: 1.4rem;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
         }
 
         .description p {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .interactive-section {
+            margin-top: 40px;
+        }
+
+        .spectrum-matcher {
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255,215,0,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .spectrum-matcher:hover {
+            border-color: rgba(255,215,0,0.4);
+        }
+
+        .spectrum-title {
+            color: #ffd700;
+            font-size: 1.4rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .spectrum-subtitle {
+            color: #b8b8b8;
+            font-size: 0.95rem;
+            text-align: center;
+            margin-bottom: 25px;
+            font-style: italic;
+        }
+
+        .spectrums-grid {
+            display: grid;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .spectrum-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .spectrum-row:hover {
+            background: rgba(255,255,255,0.08);
+        }
+
+        .spectrum-left, .spectrum-right {
             font-size: 1rem;
-            line-height: 1.7;
-            margin-bottom: 15px;
+            font-weight: bold;
+            color: #fff;
+            width: 120px;
+            text-align: center;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 40px;
+        }
+
+        .spectrum-slider-container {
+            flex: 1;
+            position: relative;
+            margin: 0 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .spectrum-track {
+            position: absolute;
+            width: 100%;
+            height: 8px;
+            background: #333;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .spectrum-fill {
+            position: absolute;
+            height: 100%;
+            transition: all 0.1s ease;
+            top: 0;
+            border-radius: 4px;
+        }
+
+        .spectrum-center-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            width: 2px;
+            height: 100%;
+            background: #ffd700;
+            transform: translateX(-50%);
+            z-index: 3;
+        }
+
+        .spectrum-slider {
+            width: 100%;
+            height: 8px;
+            background: transparent;
+            outline: none;
+            cursor: pointer;
+            position: relative;
+            z-index: 4;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        .spectrum-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #fff;
+            border: 3px solid #ffd700;
+            cursor: pointer;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.4);
+            transition: all 0.2s ease;
+        }
+
+        .spectrum-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+            border-color: #ff6b6b;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+        }
+
+        .spectrum-slider::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #fff;
+            border: 3px solid #ffd700;
+            cursor: pointer;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.4);
+        }
+
+        .spectrum-slider::-moz-range-track {
+            background: transparent;
+        }
+
+        .results-section {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 20px;
+            align-items: center;
+            padding: 20px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 12px;
+            border: 2px solid rgba(78,205,196,0.3);
+        }
+
+        .your-match {
+            text-align: center;
+        }
+
+        .match-label {
+            color: #4ecdc4;
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .match-archetype {
+            color: #fff;
+            font-size: 1.6rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+        }
+
+        .match-confidence {
+            color: #ffd700;
+            font-size: 0.85rem;
+            font-style: italic;
+        }
+
+        .randomize-btn {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ffd700 100%);
+            border: none;
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .randomize-btn:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 8px 20px rgba(255,107,107,0.3);
         }
 
         .navigation-bar {
             background: rgba(255,255,255,0.05);
             padding: 15px 0;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             border-radius: 10px;
             backdrop-filter: blur(10px);
         }
@@ -252,6 +486,30 @@
             color: #ffd700;
             background: rgba(255, 215, 0, 0.1);
         }
+
+        .click-hint {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #b8b8b8;
+            font-style: italic;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .results-section {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            
+            .spectrum-left, .spectrum-right {
+                width: 100px;
+                font-size: 0.9rem;
+            }
+            
+            .spectrum-row {
+                gap: 10px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -268,6 +526,7 @@
 
         <h1 class="title">Hero Compass</h1>
         <p class="subtitle">16 Heroic Archetypes: Find Your Path to Greatness</p>
+        <p class="click-hint">Click any archetype to explore their full profile</p>
         
         <div class="main-grid">
             <!-- Main Axis Lines -->
@@ -281,270 +540,106 @@
             <div class="axis-label knight-label">KNIGHT</div>
 
             <!-- The Maverick Quadrant (Pirate + Cowboy) -->
-            <div class="main-quadrant maverick-main">
-                <div class="quadrant-header">THE MAVERICK (Pirate + Cowboy)</div>
+            <div class="main-quadrant">
                 <div class="sub-grid">
-                    <div class="sub-quadrant maverick-pure">
+                    <a href="the_wildcard.html" class="sub-quadrant maverick-pure">
+                        <img src="images/wildcard.jpeg" alt="The Wildcard" class="archetype-image">
                         <div class="sub-title">The Wildcard</div>
-                        <div class="trait-section">
-                            <div class="trait-header">Core Traits:</div>
-                            <div class="trait-content">Wildly independent, impulsive rebel, thrives on chaos and adventure</div>
-                        </div>
-                        <div class="trait-section">
-                            <div class="trait-header">Approach:</div>
-                            <div class="trait-content">Shoots from the hip, breaks rules instinctively, values complete freedom</div>
-                        </div>
-                        <div class="trait-section">
-                            <div class="trait-header">Strengths:</div>
-                            <div class="trait-content">Unmatched adaptability, fearless risk-taking, authentic self-expression</div>
-                        </div>
-                    </div>
-                    <div class="sub-quadrant maverick-rebel-thinker">
+                        <div class="sub-tagline">Chaotic freedom seeker</div>
+                    </a>
+                    <a href="the_contrarian.html" class="sub-quadrant maverick-rebel-thinker">
+                        <img src="images/contrarian.jpeg" alt="The Contrarian" class="archetype-image">
                         <div class="sub-title">The Contrarian</div>
-                        <div class="trait-section">
-                            <div class="trait-header">Core Traits:</div>
-                            <div class="trait-content">Independent contrarian, questions everything, values intellectual freedom</div>
-                        </div>
-                        <div class="trait-section">
-                            <div class="trait-header">Approach:</div>
-                            <div class="trait-content">Challenges systems through analysis, breaks conventional wisdom</div>
-                        </div>
-                        <div class="trait-section">
-                            <div class="trait-header">Strengths:</div>
-                            <div class="trait-content">Critical thinking, innovative solutions, intellectual courage</div>
-                        </div>
-                    </div>
-                    <div class="sub-quadrant maverick-free-spirit">
+                        <div class="sub-tagline">Questions everything boldly</div>
+                    </a>
+                    <a href="the_drifter.html" class="sub-quadrant maverick-free-spirit">
+                        <img src="images/drifter.jpeg" alt="The Drifter" class="archetype-image">
                         <div class="sub-title">The Drifter</div>
-                        <div class="trait-section">
-                            <div class="trait-header">Core Traits:</div>
-                            <div class="trait-content">Action-oriented individualist, spontaneous adventurer, values freedom through experience</div>
-                        </div>
-                        <div class="trait-section">
-                            <div class="trait-header">Approach:</div>
-                            <div class="trait-content">Takes bold action while maintaining independence, learns through trial and error</div>
-                        </div>
-                        <div class="trait-section">
-                            <div class="trait-header">Strengths:</div>
-                            <div class="trait-content">Quick decision-making, experiential learning, inspiring spontaneity</div>
-                        </div>
-                    </div>
-                    <div class="sub-quadrant maverick-balanced">
+                        <div class="sub-tagline">Adventure through experience</div>
+                    </a>
+                    <a href="the_maverick.html" class="sub-quadrant maverick-balanced">
+                        <img src="images/maverick.jpeg" alt="The Maverick" class="archetype-image">
                         <div class="sub-title">The Maverick</div>
-                        <div class="trait-section">
-                            <div class="trait-header">Core Traits:</div>
-                            <div class="trait-content">Selectively independent, thoughtfully spontaneous, balances freedom with structure</div>
-                        </div>
-                        <div class="trait-section">
-                            <div class="trait-header">Approach:</div>
-                            <div class="trait-content">Chooses when to rebel and act, maintains autonomy while considering consequences</div>
-                        </div>
-                        <div class="trait-section">
-                            <div class="trait-header">Strengths:</div>
-                            <div class="trait-content">Flexible independence, strategic spontaneity, pragmatic freedom</div>
-                        </div>
-                    </div>
+                        <div class="sub-tagline">Strategic independence</div>
+                    </a>
                 </div>
             </div>
 
             <!-- The Rogue Scholar Quadrant (Pirate + Wizard) -->
-            <div class="main-quadrant rogue-main">
-                <div class="quadrant-header">THE ROGUE SCHOLAR (Pirate + Wizard)</div>
+            <div class="main-quadrant">
                 <div class="sub-grid">
-                    <div class="sub-quadrant rogue-strategic">
+                    <a href="the_treasure_hunter.html" class="sub-quadrant rogue-strategic">
+                        <img src="images/treasure_hunter.jpeg" alt="The Treasure Hunter" class="archetype-image">
                         <div class="sub-title">The Treasure Hunter</div>
-                        <div class="trait-section">
-                            <div class="trait-header">Core Traits:</div>
-                            <div class="trait-content">Calculating individualist, plans rebellion, uses intelligence to maintain independence</div>
-                        </div>
-                        <div class="trait-section">
-                            <div class="trait-header">Approach:</div>
-                            <div class="trait-content">Systematically challenges authority, uses knowledge to subvert systems</div>
-                        </div>
-                        <div class="trait-section">
-                            <div class="trait-header">Strengths:</div>
-                            <div class="trait-content">Intelligent resistance, strategic independence, effective system criticism</div>
-                        </div>
-                    </div>
-                    <div class="sub-quadrant rogue-pure">
+                        <div class="sub-tagline">Strategic knowledge seeker</div>
+                    </a>
+                    <a href="the_mapmaker.html" class="sub-quadrant rogue-pure">
+                        <img src="images/mapmaker.jpeg" alt="The Mapmaker" class="archetype-image">
                         <div class="sub-title">The Mapmaker</div>
-                        <div class="trait-section">
-                            <div class="trait-header">Core Traits:</div>
-                            <div class="trait-content">Brilliant individualist, masters forbidden knowledge, completely independent intellectual</div>
-                        </div>
-                        <div class="trait-section">
-                            <div class="trait-header">Approach:</div>
-                            <div class="trait-content">Studies everything to maintain absolute freedom, uses deep understanding to stay unbound</div>
-                        </div>
-                        <div class="trait-section">
-                            <div class="trait-header">Strengths:</div>
-                            <div class="trait-content">Intellectual mastery, complete independence, innovative thinking</div>
-                        </div>
-                    </div>
-                    <div class="sub-quadrant rogue-balanced">
+                        <div class="sub-tagline">Masters forbidden knowledge</div>
+                    </a>
+                    <a href="the_wayfinder.html" class="sub-quadrant rogue-balanced">
+                        <img src="images/wayfinder.jpeg" alt="The Wayfinder" class="archetype-image">
                         <div class="sub-title">The Wayfinder</div>
-                        <div class="trait-section">
-                            <div class="trait-header">Core Traits:</div>
-                            <div class="trait-content">Thoughtful individualist, balances independence with wisdom, selectively rebellious</div>
-                        </div>
-                        <div class="trait-section">
-                            <div class="trait-header">Approach:</div>
-                            <div class="trait-content">Uses knowledge to maintain appropriate independence, rebels when justified</div>
-                        </div>
-                        <div class="trait-section">
-                            <div class="trait-header">Strengths:</div>
-                            <div class="trait-content">Wise independence, justified rebellion, balanced perspective</div>
-                        </div>
-                    </div>
-                    <div class="sub-quadrant rogue-individualist">
+                        <div class="sub-tagline">Wise independent thinker</div>
+                    </a>
+                    <a href="the_seeker.html" class="sub-quadrant rogue-individualist">
+                        <img src="images/seeker.jpeg" alt="The Seeker" class="archetype-image">
                         <div class="sub-title">The Seeker</div>
-                        <div class="trait-section">
-                            <div class="trait-header">Core Traits:</div>
-                            <div class="trait-content">Intellectually independent, values understanding over conformity, quietly rebellious</div>
-                        </div>
-                        <div class="trait-section">
-                            <div class="trait-header">Approach:</div>
-                            <div class="trait-content">Maintains independence through deep knowledge, questions through study</div>
-                        </div>
-                        <div class="trait-section">
-                            <div class="trait-header">Strengths:</div>
-                            <div class="trait-content">Intellectual integrity, thoughtful independence, deep understanding</div>
-                        </div>
-                    </div>
+                        <div class="sub-tagline">Truth over conformity</div>
+                    </a>
                 </div>
             </div>
 
             <!-- The Champion Quadrant (Knight + Cowboy) -->
-            <div class="main-quadrant champion-main">
-                <div class="quadrant-header">THE CHAMPION (Knight + Cowboy)</div>
+            <div class="main-quadrant">
                 <div class="sub-grid">
-                    <div class="sub-quadrant champion-warrior">
+                    <a href="the_crusader.html" class="sub-quadrant champion-warrior">
+                        <img src="images/crusader.jpeg" alt="The Crusader" class="archetype-image">
                         <div class="sub-title">The Crusader</div>
-                        <div class="trait-section">
-                            <div class="trait-header">Core Traits:</div>
-                            <div class="trait-content">Bold protector, instinctively heroic, acts courageously for others without hesitation</div>
-                        </div>
-                        <div class="trait-section">
-                            <div class="trait-header">Approach:</div>
-                            <div class="trait-content">Charges into danger to help others, follows moral instincts, leads by example</div>
-                        </div>
-                        <div class="trait-section">
-                            <div class="trait-header">Strengths:</div>
-                            <div class="trait-content">Natural heroism, inspiring courage, protective instincts</div>
-                        </div>
-                    </div>
-                    <div class="sub-quadrant champion-balanced">
+                        <div class="sub-tagline">Fearless moral warrior</div>
+                    </a>
+                    <a href="the_guardian.html" class="sub-quadrant champion-balanced">
+                        <img src="images/guardian.jpeg" alt="The Guardian" class="archetype-image">
                         <div class="sub-title">The Guardian</div>
-                        <div class="trait-section">
-                            <div class="trait-header">Core Traits:</div>
-                            <div class="trait-content">Thoughtful protector, balances duty with action, considers impact of heroic deeds</div>
-                        </div>
-                        <div class="trait-section">
-                            <div class="trait-header">Approach:</div>
-                            <div class="trait-content">Acts for others after consideration, balances courage with wisdom</div>
-                        </div>
-                        <div class="trait-section">
-                            <div class="trait-header">Strengths:</div>
-                            <div class="trait-content">Sustainable service, balanced heroism, thoughtful protection</div>
-                        </div>
-                    </div>
-                    <div class="sub-quadrant champion-pure">
+                        <div class="sub-tagline">Thoughtful protector</div>
+                    </a>
+                    <a href="the_paladin.html" class="sub-quadrant champion-pure">
+                        <img src="images/paladin.jpeg" alt="The Paladin" class="archetype-image">
                         <div class="sub-title">The Paladin</div>
-                        <div class="trait-section">
-                            <div class="trait-header">Core Traits:</div>
-                            <div class="trait-content">Ultimate protector-warrior, maximum duty with fearless action, lives to serve others</div>
-                        </div>
-                        <div class="trait-section">
-                            <div class="trait-header">Approach:</div>
-                            <div class="trait-content">Instantly acts on moral imperatives, charges fearlessly toward righteous causes</div>
-                        </div>
-                        <div class="trait-section">
-                            <div class="trait-header">Strengths:</div>
-                            <div class="trait-content">Unlimited courage, total dedication, inspiring leadership</div>
-                        </div>
-                    </div>
-                    <div class="sub-quadrant champion-activist">
+                        <div class="sub-tagline">Ultimate service warrior</div>
+                    </a>
+                    <a href="the_activist.html" class="sub-quadrant champion-activist">
+                        <img src="images/activist.jpeg" alt="The Activist" class="archetype-image">
                         <div class="sub-title">The Activist</div>
-                        <div class="trait-section">
-                            <div class="trait-header">Core Traits:</div>
-                            <div class="trait-content">Service-oriented reformer, dedicates life to causes, patient in pursuit of justice</div>
-                        </div>
-                        <div class="trait-section">
-                            <div class="trait-header">Approach:</div>
-                            <div class="trait-content">Systematically works for change, builds movements, persists through obstacles</div>
-                        </div>
-                        <div class="trait-section">
-                            <div class="trait-header">Strengths:</div>
-                            <div class="trait-content">Sustained dedication, movement building, patient activism</div>
-                        </div>
-                    </div>
+                        <div class="sub-tagline">Justice through dedication</div>
+                    </a>
                 </div>
             </div>
 
             <!-- The Sage Guardian Quadrant (Knight + Wizard) -->
-            <div class="main-quadrant sage-main">
-                <div class="quadrant-header">THE SAGE GUARDIAN (Knight + Wizard)</div>
+            <div class="main-quadrant">
                 <div class="sub-grid">
-                    <div class="sub-quadrant sage-balanced">
+                    <a href="the_mentor.html" class="sub-quadrant sage-balanced">
+                        <img src="images/mentor.jpeg" alt="The Mentor" class="archetype-image">
                         <div class="sub-title">The Mentor</div>
-                        <div class="trait-section">
-                            <div class="trait-header">Core Traits:</div>
-                            <div class="trait-content">Thoughtful server, balances wisdom with duty, considers long-term impact</div>
-                        </div>
-                        <div class="trait-section">
-                            <div class="trait-header">Approach:</div>
-                            <div class="trait-content">Studies how to best serve others, plans for sustainable impact</div>
-                        </div>
-                        <div class="trait-section">
-                            <div class="trait-header">Strengths:</div>
-                            <div class="trait-content">Wise service, sustainable impact, balanced leadership</div>
-                        </div>
-                    </div>
-                    <div class="sub-quadrant sage-counselor">
+                        <div class="sub-tagline">Wise guide and teacher</div>
+                    </a>
+                    <a href="the_oracle.html" class="sub-quadrant sage-counselor">
+                        <img src="images/oracle.jpeg" alt="The Oracle" class="archetype-image">
                         <div class="sub-title">The Oracle</div>
-                        <div class="trait-section">
-                            <div class="trait-header">Core Traits:</div>
-                            <div class="trait-content">Knowledge-focused helper, serves others through wisdom, teaches and guides</div>
-                        </div>
-                        <div class="trait-section">
-                            <div class="trait-header">Approach:</div>
-                            <div class="trait-content">Uses deep understanding to help others, shares knowledge for collective benefit</div>
-                        </div>
-                        <div class="trait-section">
-                            <div class="trait-header">Strengths:</div>
-                            <div class="trait-content">Wisdom sharing, teaching excellence, thoughtful guidance</div>
-                        </div>
-                    </div>
-                    <div class="sub-quadrant sage-advisor">
+                        <div class="sub-tagline">Knowledge-focused helper</div>
+                    </a>
+                    <a href="the_advisor.html" class="sub-quadrant sage-advisor">
+                        <img src="images/advisor.jpeg" alt="The Advisor" class="archetype-image">
                         <div class="sub-title">The Advisor</div>
-                        <div class="trait-section">
-                            <div class="trait-header">Core Traits:</div>
-                            <div class="trait-content">Service-oriented thinker, dedicates intellect to helping others, loyal counselor</div>
-                        </div>
-                        <div class="trait-section">
-                            <div class="trait-header">Approach:</div>
-                            <div class="trait-content">Studies to better serve, provides thoughtful advice, remains loyal</div>
-                        </div>
-                        <div class="trait-section">
-                            <div class="trait-header">Strengths:</div>
-                            <div class="trait-content">Dedicated counsel, loyal service, thoughtful advice</div>
-                        </div>
-                    </div>
-                    <div class="sub-quadrant sage-pure">
+                        <div class="sub-tagline">Loyal intellectual counselor</div>
+                    </a>
+                    <a href="the_archon.html" class="sub-quadrant sage-pure">
+                        <img src="images/archon.jpeg" alt="The Archon" class="archetype-image">
                         <div class="sub-title">The Archon</div>
-                        <div class="trait-section">
-                            <div class="trait-header">Core Traits:</div>
-                            <div class="trait-content">Philosopher-king, combines ultimate wisdom with complete dedication to others</div>
-                        </div>
-                        <div class="trait-section">
-                            <div class="trait-header">Approach:</div>
-                            <div class="trait-content">Studies everything to better serve humanity, makes decisions for collective good</div>
-                        </div>
-                        <div class="trait-section">
-                            <div class="trait-header">Strengths:</div>
-                            <div class="trait-content">Ultimate wisdom in service, perfect balance, inspiring leadership</div>
-                        </div>
-                    </div>
+                        <div class="sub-tagline">Philosopher-king leader</div>
+                    </a>
                 </div>
             </div>
         </div>
@@ -552,15 +647,260 @@
         <div class="description">
             <h3>Understanding the Hero Compass</h3>
             <p>
-                The Hero Compass expands four core archetypes (Pirate, Knight, Cowboy, Wizard) into 16 distinct heroic personalities. Each main quadrant represents a blend of two primary archetypes, with four gradations showing different intensities of those traits.
+                The Hero Compass expands four core archetypes (Pirate, Knight, Cowboy, Wizard) into 16 distinct heroic personalities. Click any archetype above to explore their complete profile and discover your heroic path.
             </p>
             <p>
-                <strong>The Pure Types</strong> (corner positions) represent maximum expression of both traits, while <strong>Balanced Types</strong> show moderate levels of each characteristic. The Hero Compass provides a nuanced way to understand personality that goes beyond simple categories to capture the full spectrum of heroic behavior and motivation.
-            </p>
-            <p>
-                Each profile includes Core Traits (fundamental characteristics), Approach (how they handle situations), and Strengths (natural advantages), providing a comprehensive view of each heroic archetype focused on positive attributes and capabilities. Every person is the hero of their own story - the Hero Compass simply helps you understand what kind of hero you are.
+                Each profile focuses on positive attributes and capabilities, providing a comprehensive view of heroic behavior and motivation. Every person is the hero of their own story - the Hero Compass simply helps you understand what kind of hero you are.
             </p>
         </div>
+
+        <div class="interactive-section">
+            <div class="spectrum-matcher">
+                <div class="spectrum-title">What Kind of Hero Are You?</div>
+                <div class="spectrum-subtitle">Fine-tune your personality through these preferences</div>
+                
+                <div class="spectrums-grid" id="spectrumsGrid">
+                    <!-- Spectrums will be generated here -->
+                </div>
+
+                <div class="results-section">
+                    <div class="your-match">
+                        <div class="match-label">Your Hero Match</div>
+                        <div class="match-archetype" id="matchArchetype">The Maverick</div>
+                        <div class="match-confidence" id="matchConfidence">72% confident</div>
+                    </div>
+                    <button class="randomize-btn" onclick="generateNewSpectrums()">
+                        New Questions
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <script>
+        // Pirate/Knight spectrum group (Independence vs Service)
+        const pirateKnightSpectrums = [
+            // Direct mappings
+            { left: "Freedom", right: "Duty", leftAxis: "pirate", rightAxis: "knight" },
+            { left: "Independent", right: "Team Player", leftAxis: "pirate", rightAxis: "knight" },
+            { left: "Rebel", right: "Loyal", leftAxis: "pirate", rightAxis: "knight" },
+            { left: "Question Authority", right: "Trust Leaders", leftAxis: "pirate", rightAxis: "knight" },
+            { left: "Self-Reliant", right: "Community-Minded", leftAxis: "pirate", rightAxis: "knight" },
+            { left: "Break Rules", right: "Follow Rules", leftAxis: "pirate", rightAxis: "knight" },
+            { left: "Wild", right: "Disciplined", leftAxis: "pirate", rightAxis: "knight" },
+            { left: "Chaos", right: "Order", leftAxis: "pirate", rightAxis: "knight" },
+            { left: "Adventure", right: "Security", leftAxis: "pirate", rightAxis: "knight" },
+            { left: "Solo Journey", right: "Group Mission", leftAxis: "pirate", rightAxis: "knight" },
+            
+            // Silly but meaningful mappings (Independence vs Service themes)
+            { left: "Cat", right: "Dog", leftAxis: "pirate", rightAxis: "knight" }, // independence vs loyalty
+            { left: "Coffee", right: "Tea", leftAxis: "pirate", rightAxis: "knight" }, // bold vs refined
+            { left: "Loud Music", right: "Quiet", leftAxis: "pirate", rightAxis: "knight" }, // bold vs considerate
+            { left: "Messy Desk", right: "Organized Desk", leftAxis: "pirate", rightAxis: "knight" }, // chaos vs order
+            { left: "Spicy Food", right: "Mild Food", leftAxis: "pirate", rightAxis: "knight" }, // bold vs cautious
+            { left: "Stay Up Late", right: "Early to Bed", leftAxis: "pirate", rightAxis: "knight" }, // rebel vs disciplined
+            { left: "Motorcycle", right: "Minivan", leftAxis: "pirate", rightAxis: "knight" }, // freedom vs family duty
+            { left: "Backpack", right: "Briefcase", leftAxis: "pirate", rightAxis: "knight" }, // casual vs formal
+            { left: "Camping", right: "Hotel", leftAxis: "pirate", rightAxis: "knight" }, // rugged vs comfort
+            { left: "Sneakers", right: "Dress Shoes", leftAxis: "pirate", rightAxis: "knight" }, // casual vs formal
+            { left: "Spontaneous Trip", right: "Planned Vacation", leftAxis: "pirate", rightAxis: "knight" }, // impulsive vs organized
+            { left: "Street Food", right: "Fine Dining", leftAxis: "pirate", rightAxis: "knight" }, // adventurous vs refined
+            { left: "Skateboard", right: "Bicycle", leftAxis: "pirate", rightAxis: "knight" }, // rebellious vs practical
+            { left: "Leather Jacket", right: "Suit Jacket", leftAxis: "pirate", rightAxis: "knight" }, // rebel vs professional
+            { left: "Rock Concert", right: "Symphony", leftAxis: "pirate", rightAxis: "knight" }, // wild vs refined
+            { left: "Graffiti", right: "Museum Art", leftAxis: "pirate", rightAxis: "knight" }, // rebellious vs traditional
+            { left: "Pizza for Breakfast", right: "Cereal for Breakfast", leftAxis: "pirate", rightAxis: "knight" }, // rule-breaking vs conventional
+            { left: "Neon Colors", right: "Earth Tones", leftAxis: "pirate", rightAxis: "knight" }, // bold vs subtle
+            { left: "Fireworks", right: "Candles", leftAxis: "pirate", rightAxis: "knight" }, // explosive vs gentle
+            { left: "Roller Coaster", right: "Ferris Wheel", leftAxis: "pirate", rightAxis: "knight" } // thrilling vs safe
+        ];
+
+        // Cowboy/Wizard spectrum group (Action vs Contemplation)
+        const cowboyWizardSpectrums = [
+            // Direct mappings
+            { left: "Action", right: "Thinking", leftAxis: "cowboy", rightAxis: "wizard" },
+            { left: "Do First", right: "Plan First", leftAxis: "cowboy", rightAxis: "wizard" },
+            { left: "Hands-On", right: "Theory", leftAxis: "cowboy", rightAxis: "wizard" },
+            { left: "Instinct", right: "Analysis", leftAxis: "cowboy", rightAxis: "wizard" },
+            { left: "Experience", right: "Research", leftAxis: "cowboy", rightAxis: "wizard" },
+            { left: "Trial & Error", right: "Study Guide", leftAxis: "cowboy", rightAxis: "wizard" },
+            { left: "Gut Feeling", right: "Data", leftAxis: "cowboy", rightAxis: "wizard" },
+            { left: "Jump In", right: "Look Before Leap", leftAxis: "cowboy", rightAxis: "wizard" },
+            { left: "Physical", right: "Mental", leftAxis: "cowboy", rightAxis: "wizard" },
+            { left: "Practice", right: "Theory", leftAxis: "cowboy", rightAxis: "wizard" },
+            
+            // Silly but meaningful mappings (Action vs Contemplation themes)
+            { left: "Running", right: "Reading", leftAxis: "cowboy", rightAxis: "wizard" }, // physical vs mental
+            { left: "Hot", right: "Cold", leftAxis: "cowboy", rightAxis: "wizard" }, // intensity vs coolness
+            { left: "Fast", right: "Slow", leftAxis: "cowboy", rightAxis: "wizard" }, // quick vs deliberate
+            { left: "Hammer", right: "Pen", leftAxis: "cowboy", rightAxis: "wizard" }, // building vs writing
+            { left: "Sunrise", right: "Sunset", leftAxis: "cowboy", rightAxis: "wizard" }, // start of action vs end reflection
+            { left: "Summer", right: "Winter", leftAxis: "cowboy", rightAxis: "wizard" }, // active season vs contemplative
+            { left: "Mountains", right: "Library", leftAxis: "cowboy", rightAxis: "wizard" }, // outdoor action vs indoor study
+            { left: "Sports Car", right: "Tesla", leftAxis: "cowboy", rightAxis: "wizard" }, // raw power vs smart tech
+            { left: "Bonfire", right: "Candlelight", leftAxis: "cowboy", rightAxis: "wizard" }, // big action vs quiet contemplation
+            { left: "Drums", right: "Piano", leftAxis: "cowboy", rightAxis: "wizard" }, // energetic vs sophisticated
+            { left: "Dancing", right: "Chess", leftAxis: "cowboy", rightAxis: "wizard" }, // physical vs mental game
+            { left: "Hiking Boots", right: "Slippers", leftAxis: "cowboy", rightAxis: "wizard" }, // action gear vs comfort
+            { left: "Energy Drink", right: "Herbal Tea", leftAxis: "cowboy", rightAxis: "wizard" }, // high energy vs calm
+            { left: "Gym", right: "Museum", leftAxis: "cowboy", rightAxis: "wizard" }, // physical vs intellectual space
+            { left: "Workout", right: "Meditation", leftAxis: "cowboy", rightAxis: "wizard" }, // active vs contemplative practice
+            { left: "Loud", right: "Whisper", leftAxis: "cowboy", rightAxis: "wizard" }, // bold vs subtle
+            { left: "Sunshine", right: "Moonlight", leftAxis: "cowboy", rightAxis: "wizard" }, // bright action vs mysterious contemplation
+            { left: "Sandwich", right: "Soup", leftAxis: "cowboy", rightAxis: "wizard" }, // grab-and-go vs slow consumption
+            { left: "Bright Colors", right: "Dark Colors", leftAxis: "cowboy", rightAxis: "wizard" }, // bold vs mysterious
+            { left: "Comedy Show", right: "Documentary", leftAxis: "cowboy", rightAxis: "wizard" } // entertainment vs learning
+        ];
+
+        // All 16 archetypes with their axis scores (0 = left side, 1 = right side)
+        const archetypes = [
+            // Maverick Quadrant (Pirate + Cowboy)
+            { name: "The Wildcard", pirate: 1, knight: 0, cowboy: 1, wizard: 0 }, // Max Pirate + Max Cowboy
+            { name: "The Contrarian", pirate: 1, knight: 0, cowboy: 0.25, wizard: 0.75 }, // Max Pirate + High Wizard
+            { name: "The Drifter", pirate: 0.75, knight: 0.25, cowboy: 1, wizard: 0 }, // High Pirate + Max Cowboy
+            { name: "The Maverick", pirate: 0.75, knight: 0.25, cowboy: 0.75, wizard: 0.25 }, // High Pirate + High Cowboy
+            
+            // Rogue Scholar Quadrant (Pirate + Wizard)
+            { name: "The Treasure Hunter", pirate: 1, knight: 0, cowboy: 0.25, wizard: 0.75 }, // Max Pirate + High Wizard
+            { name: "The Mapmaker", pirate: 1, knight: 0, cowboy: 0, wizard: 1 }, // Max Pirate + Max Wizard
+            { name: "The Wayfinder", pirate: 0.75, knight: 0.25, cowboy: 0.25, wizard: 0.75 }, // High Pirate + High Wizard
+            { name: "The Seeker", pirate: 0.75, knight: 0.25, cowboy: 0, wizard: 1 }, // High Pirate + Max Wizard
+            
+            // Champion Quadrant (Knight + Cowboy)
+            { name: "The Crusader", pirate: 0.25, knight: 0.75, cowboy: 1, wizard: 0 }, // High Knight + Max Cowboy
+            { name: "The Guardian", pirate: 0.25, knight: 0.75, cowboy: 0.75, wizard: 0.25 }, // High Knight + High Cowboy
+            { name: "The Paladin", pirate: 0, knight: 1, cowboy: 1, wizard: 0 }, // Max Knight + Max Cowboy
+            { name: "The Activist", pirate: 0, knight: 1, cowboy: 0.25, wizard: 0.75 }, // Max Knight + High Wizard
+            
+            // Sage Guardian Quadrant (Knight + Wizard)
+            { name: "The Mentor", pirate: 0.25, knight: 0.75, cowboy: 0.25, wizard: 0.75 }, // High Knight + High Wizard
+            { name: "The Oracle", pirate: 0.25, knight: 0.75, cowboy: 0, wizard: 1 }, // High Knight + Max Wizard
+            { name: "The Advisor", pirate: 0, knight: 1, cowboy: 0.25, wizard: 0.75 }, // Max Knight + High Wizard
+            { name: "The Archon", pirate: 0, knight: 1, cowboy: 0, wizard: 1 } // Max Knight + Max Wizard
+        ];
+
+        let currentSpectrums = [];
+        let userScores = { pirate: 0.5, knight: 0.5, cowboy: 0.5, wizard: 0.5 };
+
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        function generateNewSpectrums() {
+            // Select 4 from each group for better balance
+            const shuffledPK = shuffleArray(pirateKnightSpectrums).slice(0, 4);
+            const shuffledCW = shuffleArray(cowboyWizardSpectrums).slice(0, 4);
+            
+            // Combine and shuffle the order
+            currentSpectrums = shuffleArray([...shuffledPK, ...shuffledCW]);
+            
+            // Generate HTML
+            const spectrumsGrid = document.getElementById('spectrumsGrid');
+            spectrumsGrid.innerHTML = currentSpectrums.map((spectrum, index) => `
+                <div class="spectrum-row">
+                    <div class="spectrum-left">${spectrum.left}</div>
+                    <div class="spectrum-slider-container">
+                        <div class="spectrum-track">
+                            <div class="spectrum-fill" id="fill${index}"></div>
+                            <div class="spectrum-center-line"></div>
+                        </div>
+                        <input type="range" min="0" max="100" value="50" 
+                               class="spectrum-slider" 
+                               id="slider${index}"
+                               oninput="updateSliderVisual(${index}); updateScores()">
+                    </div>
+                    <div class="spectrum-right">${spectrum.right}</div>
+                </div>
+            `).join('');
+            
+            // Initialize visual state
+            currentSpectrums.forEach((_, index) => updateSliderVisual(index));
+            updateScores();
+        }
+
+        function updateSliderVisual(index) {
+            const slider = document.getElementById(`slider${index}`);
+            const fill = document.getElementById(`fill${index}`);
+            const value = parseInt(slider.value);
+            
+            if (value === 50) {
+                // Centered - no fill
+                fill.style.width = '0%';
+                fill.style.left = '50%';
+            } else if (value < 50) {
+                // Left side - red gradient from center extending left
+                const distance = 50 - value; // How far from center (0-50)
+                const fillWidth = (distance / 50) * 50; // Convert to percentage of half-track
+                fill.style.width = `${fillWidth}%`;
+                fill.style.background = 'linear-gradient(90deg, #ff6b6b, #ff8e8e)';
+                fill.style.left = `${50 - fillWidth}%`;
+                fill.style.transform = 'translateX(0)';
+            } else {
+                // Right side - blue gradient from center extending right  
+                const distance = value - 50; // How far from center (0-50)
+                const fillWidth = (distance / 50) * 50; // Convert to percentage of half-track
+                fill.style.width = `${fillWidth}%`;
+                fill.style.background = 'linear-gradient(90deg, #4ecdc4, #45b7d1)';
+                fill.style.left = '50%';
+                fill.style.transform = 'translateX(0)';
+            }
+        }
+
+        function updateScores() {
+            // Reset scores to neutral
+            userScores = { pirate: 0.5, knight: 0.5, cowboy: 0.5, wizard: 0.5 };
+            
+            // Calculate scores based on slider positions
+            currentSpectrums.forEach((spectrum, index) => {
+                const slider = document.getElementById(`slider${index}`);
+                const value = parseInt(slider.value) / 100; // Convert to 0-1 range
+                
+                // Map slider value to axis scores
+                const leftScore = 1 - value; // Left side gets higher score when slider is left
+                const rightScore = value;     // Right side gets higher score when slider is right
+                
+                // Apply to the appropriate axes (averaging with existing scores)
+                userScores[spectrum.leftAxis] = (userScores[spectrum.leftAxis] + leftScore) / 2;
+                userScores[spectrum.rightAxis] = (userScores[spectrum.rightAxis] + rightScore) / 2;
+            });
+            
+            findBestMatch();
+        }
+
+        function findBestMatch() {
+            let bestMatch = null;
+            let bestScore = -1;
+            
+            archetypes.forEach(archetype => {
+                // Calculate similarity score using normalized differences
+                let totalDifference = 0;
+                totalDifference += Math.abs(userScores.pirate - archetype.pirate);
+                totalDifference += Math.abs(userScores.knight - archetype.knight);
+                totalDifference += Math.abs(userScores.cowboy - archetype.cowboy);
+                totalDifference += Math.abs(userScores.wizard - archetype.wizard);
+                
+                // Convert difference to similarity score (lower difference = higher similarity)
+                const similarity = 1 - (totalDifference / 4);
+                
+                if (similarity > bestScore) {
+                    bestScore = similarity;
+                    bestMatch = archetype;
+                }
+            });
+            
+            // Update display
+            document.getElementById('matchArchetype').textContent = bestMatch.name;
+            const confidence = Math.round(bestScore * 100);
+            document.getElementById('matchConfidence').textContent = `${confidence}% confident`;
+        }
+
+        // Initialize on page load
+        generateNewSpectrums();
+    </script>
 </body>
 </html>
