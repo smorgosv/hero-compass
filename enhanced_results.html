@@ -500,64 +500,7 @@
             line-height: 1.5;
         }
 
-        /* Force Mixer */
-        .force-mixer {
-            background: rgba(255,215,0,0.05);
-            border: 1px solid rgba(255,215,0,0.2);
-        }
-
-        .mixer-controls {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        @media (max-width: 1024px) {
-            .mixer-controls {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .mixer-controls {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .mixer-slider {
-            background: rgba(255,255,255,0.05);
-            padding: 15px;
-            border-radius: 10px;
-        }
-
-        .slider-label {
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: #ffd700;
-        }
-
-        .slider-input {
-            width: 100%;
-            height: 8px;
-            border-radius: 4px;
-            background: rgba(255,255,255,0.2);
-            outline: none;
-            cursor: pointer;
-        }
-
-        .slider-value {
-            text-align: center;
-            margin-top: 5px;
-            color: rgba(255,255,255,0.8);
-        }
-
-        .mixer-prediction {
-            background: rgba(255,255,255,0.1);
-            padding: 20px;
-            border-radius: 15px;
-            text-align: center;
-        }
+        /* Force Mixer - REMOVED */
 
         .btn-primary {
             background: linear-gradient(45deg, #ffd700, #ffed4e);
@@ -619,10 +562,6 @@
             }
 
             .survival-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .mixer-controls {
                 grid-template-columns: 1fr;
             }
 
@@ -751,36 +690,6 @@
                 <h2 class="section-title">Your Heroic Survival Guide</h2>
                 <div class="survival-grid" id="survivalContainer">
                     <!-- Survival guide will be populated by JavaScript -->
-                </div>
-            </section>
-
-            <!-- Interactive Force Mixer -->
-            <section class="section force-mixer">
-                <h2 class="section-title">🎛️ Force Mixer: What If You Were Different?</h2>
-                <p style="text-align: center; margin-bottom: 30px; color: rgba(255,255,255,0.8);">
-                    Experiment with different force combinations to see how your heroic approach would change!
-                </p>
-                <div class="mixer-controls">
-                    <div class="mixer-slider">
-                        <div class="slider-label">Cowboy: <span id="cowboyMixerValue">50</span>%</div>
-                        <input type="range" min="0" max="100" value="50" class="slider-input" id="cowboyMixer">
-                    </div>
-                    <div class="mixer-slider">
-                        <div class="slider-label">Wizard: <span id="wizardMixerValue">50</span>%</div>
-                        <input type="range" min="0" max="100" value="50" class="slider-input" id="wizardMixer">
-                    </div>
-                    <div class="mixer-slider">
-                        <div class="slider-label">Pirate: <span id="pirateMixerValue">50</span>%</div>
-                        <input type="range" min="0" max="100" value="50" class="slider-input" id="pirateMixer">
-                    </div>
-                    <div class="mixer-slider">
-                        <div class="slider-label">Knight: <span id="knightMixerValue">50</span>%</div>
-                        <input type="range" min="0" max="100" value="50" class="slider-input" id="knightMixer">
-                    </div>
-                </div>
-                <div class="mixer-prediction">
-                    <h3 style="color: #ffd700; margin-bottom: 15px;">Prediction:</h3>
-                    <p id="mixerPrediction">Adjust the sliders to see how different force combinations would change your heroic approach!</p>
                 </div>
             </section>
         </div>
@@ -1438,47 +1347,7 @@
             });
         }
 
-        // Setup force mixer
-        function setupForceMixer() {
-            const sliders = ['cowboy', 'wizard', 'pirate', 'knight'];
-            
-            sliders.forEach(force => {
-                const slider = document.getElementById(`${force}Mixer`);
-                const valueSpan = document.getElementById(`${force}MixerValue`);
-                
-                slider.addEventListener('input', function() {
-                    valueSpan.textContent = this.value;
-                    updateMixerPrediction();
-                });
-            });
-        }
-
-        // Update mixer prediction based on slider values
-        function updateMixerPrediction() {
-            const cowboy = parseInt(document.getElementById('cowboyMixer').value);
-            const wizard = parseInt(document.getElementById('wizardMixer').value);
-            const pirate = parseInt(document.getElementById('pirateMixer').value);
-            const knight = parseInt(document.getElementById('knightMixer').value);
-            
-            let prediction = "";
-            
-            // Generate dynamic predictions based on force combinations
-            if (cowboy > 80 && pirate > 80) {
-                prediction = "With maximum Cowboy and Pirate forces, you'd be pure chaos in motion - the type of person who starts revolutions accidentally.";
-            } else if (wizard > 80 && knight > 80) {
-                prediction = "With high Wizard and Knight forces, you'd be the wise counselor everyone turns to - probably ending up as the mentor figure in every group.";
-            } else if (pirate > 90) {
-                prediction = "With maximum Pirate energy, you'd be pure chaos - breaking every rule just because it exists, probably starting your own company just to avoid having a boss.";
-            } else if (wizard < 30 && knight < 30) {
-                prediction = "With low Wizard and Knight forces, you'd be pure chaos and action - like a beautiful disaster that somehow always works out.";
-            } else if (cowboy < 30 && pirate < 30) {
-                prediction = "With high structure forces, you'd become the ultimate wise advisor - probably ending up as everyone's go-to person for life advice.";
-            } else {
-                prediction = "This combination would create a different flavor of your heroic spirit - experiment with the sliders to see how your approach would change!";
-            }
-            
-            document.getElementById('mixerPrediction').textContent = prediction;
-        }
+        // Setup force mixer - REMOVED
 
         // Animate force bars
         function animateForceBars(forces) {
@@ -1566,7 +1435,6 @@
                         document.getElementById('loadingState').style.display = 'none';
                         document.getElementById('mainResults').style.display = 'block';
                         
-                        setupForceMixer();
                         generateRandomTitle();
                         
                     } catch (error) {
@@ -1584,7 +1452,6 @@
                         document.getElementById('loadingState').style.display = 'none';
                         document.getElementById('mainResults').style.display = 'block';
                         
-                        setupForceMixer();
                         generateRandomTitle();
                     } else {
                         showErrorState();
