@@ -50,6 +50,10 @@
             gap: 30px;
             margin: 80px 0;
             position: relative;
+            aspect-ratio: 1;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .main-axis-h {
@@ -119,6 +123,7 @@
             border: 3px solid #555;
             box-shadow: 0 10px 30px rgba(0,0,0,0.6);
             transition: transform 0.3s ease;
+            aspect-ratio: 1;
         }
 
         .main-quadrant:hover {
@@ -130,7 +135,7 @@
             grid-template-columns: 1fr 1fr;
             grid-template-rows: 1fr 1fr;
             gap: 2px;
-            min-height: 350px;
+            height: 100%;
         }
 
         .sub-quadrant {
@@ -146,6 +151,7 @@
             text-align: center;
             text-decoration: none;
             overflow: hidden;
+            aspect-ratio: 1;
         }
 
         .sub-quadrant:hover {
@@ -201,6 +207,8 @@
             transition: all 0.3s ease;
             z-index: 1;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
         }
 
         /* Maverick quadrant colors */
@@ -508,6 +516,24 @@
             
             .spectrum-row {
                 gap: 10px;
+            }
+
+            .main-grid {
+                max-width: 100%;
+                margin: 60px auto;
+                gap: 20px;
+            }
+
+            .sub-quadrant {
+                padding: 15px 10px;
+            }
+
+            .sub-title {
+                font-size: 1rem;
+            }
+
+            .sub-tagline {
+                font-size: 0.75rem;
             }
         }
     </style>
