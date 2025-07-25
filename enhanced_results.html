@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Heroic Archetype Results</title>
+    <title>Your Heroic Profile - Hero Compass</title>
     <style>
         * {
             margin: 0;
@@ -21,11 +21,11 @@
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1000px;
             margin: 0 auto;
         }
 
-        /* Navigation Bar */
+        /* Navigation */
         .navigation-bar {
             background: rgba(255,255,255,0.05);
             padding: 15px 0;
@@ -61,541 +61,17 @@
             background: rgba(255, 215, 0, 0.1);
         }
 
-        /* Header Section */
-        .results-header {
-            text-align: center;
-            padding: 40px 0;
-            border-bottom: 2px solid rgba(255,215,0,0.3);
-            margin-bottom: 40px;
-        }
-
-        .archetype-name {
-            font-size: 3rem;
-            color: #ffd700;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-            background: linear-gradient(45deg, #ffd700, #ff6b6b, #4ecdc4, #45b7d1);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .archetype-tagline {
-            font-size: 1.5rem;
-            color: #4ecdc4;
-            margin-bottom: 30px;
-            font-style: italic;
-        }
-
-        .archetype-portrait {
-            margin: 30px 0;
-            display: flex;
-            justify-content: center;
-        }
-
-        .portrait-image {
-            width: 400px;
-            height: 400px;
-            border-radius: 20px;
-            object-fit: cover;
-            border: 4px solid #ffd700;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            transition: all 0.3s ease;
-            image-rendering: -webkit-optimize-contrast;
-            image-rendering: crisp-edges;
-        }
-
-        .portrait-image:hover {
-            transform: scale(1.02);
-            border-color: #ff6b6b;
-            box-shadow: 0 15px 40px rgba(255,107,107,0.3);
-        }
-
-        .title-generator {
-            background: rgba(255,255,255,0.1);
-            padding: 20px;
-            border-radius: 15px;
-            margin-bottom: 20px;
-            backdrop-filter: blur(10px);
-        }
-
-        .generator-label {
-            font-size: 1.2rem;
-            margin-bottom: 10px;
-            color: #ffd700;
-        }
-
-        .generated-title {
-            font-size: 1.5rem;
-            color: #f4f4f4;
-            margin-bottom: 15px;
-            min-height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .action-buttons {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .btn {
-            border: none;
-            padding: 10px 20px;
-            border-radius: 25px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-        }
-
-        .btn-primary {
-            background: linear-gradient(45deg, #ffd700, #ff6b6b);
-            color: #000;
-        }
-
-        .btn-secondary {
-            background: linear-gradient(45deg, #4ecdc4, #45b7d1);
-            color: #fff;
-        }
-
-        .btn-tertiary {
-            background: linear-gradient(45deg, #9370DB, #8A2BE2);
-            color: #fff;
-        }
-
-        /* Section Styles */
-        .section {
-            background: rgba(255,255,255,0.05);
-            padding: 30px;
-            border-radius: 15px;
-            margin-bottom: 40px;
-            backdrop-filter: blur(10px);
-        }
-
-        .section-title {
-            font-size: 2rem;
-            color: #ffd700;
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        /* FIXED GRID LAYOUTS - Only 1, 2, or 4 columns allowed */
-        .force-grid {
-            display: grid;
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        /* Force grid: Always 4 columns on large screens, 2 on medium, 1 on small */
-        .force-grid {
-            grid-template-columns: repeat(4, 1fr);
-        }
-
-        @media (max-width: 1024px) {
-            .force-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 640px) {
-            .force-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Prediction and Survival grids: 2 columns on large screens, 1 on small */
-        .prediction-grid, .survival-grid {
-            display: grid;
-            gap: 20px;
-        }
-
-        .prediction-grid {
-            grid-template-columns: repeat(2, 1fr);
-        }
-
-        .survival-grid {
-            grid-template-columns: repeat(4, 1fr);
-        }
-
-        @media (max-width: 900px) {
-            .prediction-grid {
-                grid-template-columns: 1fr;
-            }
-            .survival-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 640px) {
-            .survival-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Mixer controls: 4 columns on large screens, 2 on medium, 1 on small */
-        .mixer-controls {
-            display: grid;
-            gap: 25px;
-            margin-bottom: 30px;
-            grid-template-columns: repeat(4, 1fr);
-        }
-
-        @media (max-width: 900px) {
-            .mixer-controls {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 640px) {
-            .mixer-controls {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .force-item {
-            background: rgba(255,255,255,0.1);
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            transition: transform 0.3s ease;
-        }
-
-        .force-item:hover {
-            transform: translateY(-5px);
-        }
-
-        .force-icon {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            display: block;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        .force-name {
-            font-size: 1.2rem;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        .force-percentage {
-            font-size: 2rem;
-            color: #ffd700;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        .force-bar {
-            width: 100%;
-            height: 12px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 6px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .force-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #ffd700, #ff6b6b, #4ecdc4);
-            transition: width 1.5s ease;
-            border-radius: 6px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .force-fill::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            animation: shimmer 2s infinite;
-        }
-
-        @keyframes shimmer {
-            0% { left: -100%; }
-            100% { left: 100%; }
-        }
-
-        .force-description {
-            text-align: center;
-            color: rgba(255,255,255,0.8);
-            font-style: italic;
-            font-size: 1.1rem;
-            margin-top: 20px;
-        }
-
-        /* Attribute Spectrums */
-        .attribute-item {
-            margin-bottom: 30px;
-            padding: 25px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 10px;
-            transition: all 0.3s ease;
-        }
-
-        .attribute-item:hover {
-            background: rgba(255,255,255,0.15);
-            transform: translateY(-2px);
-        }
-
-        .attribute-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .attribute-icon {
-            font-size: 1.8rem;
-            margin-right: 15px;
-        }
-
-        .attribute-name {
-            font-size: 1.4rem;
-            font-weight: bold;
-            color: #ffd700;
-        }
-
-        .spectrum-container {
-            margin-bottom: 15px;
-        }
-
-        .spectrum-labels {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 15px;
-            font-size: 1rem;
-            color: rgba(255,255,255,0.8);
-            font-weight: 500;
-        }
-
-        .spectrum-bar {
-            width: 100%;
-            height: 24px;
-            background: linear-gradient(90deg, #ff6b6b, #ffd700, #4ecdc4);
-            border-radius: 12px;
-            position: relative;
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
-        }
-
-        .spectrum-indicator {
-            width: 24px;
-            height: 24px;
-            background: #f4f4f4;
-            border: 4px solid #ffd700;
-            border-radius: 50%;
-            position: absolute;
-            top: 0;
-            transform: translateX(-50%);
-            box-shadow: 0 3px 15px rgba(0,0,0,0.4);
-            transition: all 0.3s ease;
-        }
-
-        .spectrum-indicator:hover {
-            transform: translateX(-50%) scale(1.1);
-            border-color: #ff6b6b;
-        }
-
-        .attribute-description {
-            font-style: italic;
-            color: rgba(255,255,255,0.9);
-            text-align: center;
-            font-size: 1.1rem;
-            line-height: 1.5;
-        }
-
-        .prediction-item, .survival-item {
-            background: rgba(255,255,255,0.1);
-            padding: 25px;
-            border-radius: 12px;
-            border-left: 4px solid #ffd700;
-            transition: all 0.3s ease;
-        }
-
-        .prediction-item:hover, .survival-item:hover {
-            background: rgba(255,255,255,0.15);
-            transform: translateY(-3px);
-            border-left-color: #ff6b6b;
-        }
-
-        .survival-item {
-            text-align: center;
-            border-left: none;
-            border-top: 4px solid #ffd700;
-        }
-
-        .survival-item:hover {
-            border-top-color: #ff6b6b;
-        }
-
-        .prediction-icon, .survival-icon {
-            font-size: 1.8rem;
-            margin-bottom: 15px;
-        }
-
-        .survival-icon {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-        }
-
-        .prediction-title, .survival-title {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: #ffd700;
-            margin-bottom: 12px;
-        }
-
-        .survival-title {
-            font-size: 1.4rem;
-            margin-bottom: 15px;
-        }
-
-        .prediction-text, .survival-text {
-            color: rgba(255,255,255,0.9);
-            line-height: 1.6;
-        }
-
-        /* Force Mixer */
-        .mixer-control {
-            text-align: center;
-            background: rgba(255,255,255,0.1);
-            padding: 20px;
-            border-radius: 10px;
-        }
-
-        .mixer-label {
-            font-size: 1.1rem;
-            color: #ffd700;
-            margin-bottom: 15px;
-            font-weight: bold;
-        }
-
-        .mixer-slider {
-            width: 100%;
-            height: 10px;
-            border-radius: 5px;
-            background: rgba(255,255,255,0.2);
-            outline: none;
-            margin-bottom: 15px;
-            cursor: pointer;
-        }
-
-        .mixer-slider::-webkit-slider-thumb {
-            appearance: none;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            background: #ffd700;
-            cursor: pointer;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-        }
-
-        .mixer-slider::-moz-range-thumb {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            background: #ffd700;
-            cursor: pointer;
-            border: none;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-        }
-
-        .mixer-value {
-            font-size: 1.3rem;
-            color: #f4f4f4;
-            font-weight: bold;
-        }
-
-        .mixer-result {
-            background: rgba(255,255,255,0.1);
-            padding: 25px;
-            border-radius: 12px;
-            text-align: center;
-            border: 2px dashed rgba(255,215,0,0.3);
-        }
-
-        .mixer-result-text {
-            font-size: 1.1rem;
-            line-height: 1.6;
-            color: rgba(255,255,255,0.9);
-        }
-
-        /* Responsive adjustments for very small screens */
-        @media (max-width: 480px) {
-            .archetype-name {
-                font-size: 2.2rem;
-            }
-            
-            .portrait-image {
-                width: 280px;
-                height: 280px;
-            }
-            
-            .action-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-        }
-
-        /* Print Styles */
-        @media print {
-            body {
-                background: white;
-                color: black;
-            }
-            
-            .btn {
-                display: none;
-            }
-            
-            .force-mixer {
-                display: none;
-            }
-            
-            .section-title, .archetype-name {
-                color: black;
-            }
-            
-            .attribute-description, .prediction-text, .survival-text {
-                color: #333;
-            }
-            
-            .section {
-                background: transparent;
-                border: 1px solid #ddd;
-            }
-            
-            .portrait-image {
-                border-color: #333;
-            }
-        }
-
-        /* Loading Animation */
+        /* Loading State */
         .loading {
             text-align: center;
-            padding: 60px 0;
+            padding: 100px 20px;
         }
 
         .loading-spinner {
             width: 60px;
             height: 60px;
-            border: 5px solid rgba(255,215,0,0.3);
-            border-top: 5px solid #ffd700;
+            border: 4px solid rgba(255, 215, 0, 0.3);
+            border-top: 4px solid #ffd700;
             border-radius: 50%;
             animation: spin 1s linear infinite;
             margin: 0 auto 30px;
@@ -632,6 +108,536 @@
             color: rgba(255,255,255,0.8);
             margin-bottom: 30px;
         }
+
+        /* Main Results */
+        .results-header {
+            text-align: center;
+            padding: 60px 0;
+            background: radial-gradient(circle at center, rgba(255, 215, 0, 0.1) 0%, transparent 70%);
+            border-radius: 20px;
+            margin-bottom: 50px;
+        }
+
+        .archetype-name {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            background: linear-gradient(45deg, #ffd700, #ffed4e, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .archetype-tagline {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #b8b8b8;
+            font-style: italic;
+        }
+
+        .archetype-portrait {
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .portrait-image {
+            width: 500px;
+            height: 500px;
+            border-radius: 20px;
+            object-fit: cover;
+            border: 4px solid rgba(255, 215, 0, 0.4);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            transition: all 0.3s ease;
+            display: block;
+            margin: 0 auto;
+            max-width: 90vw;
+            background-color: rgba(255,255,255,0.1);
+        }
+
+        .portrait-image:hover {
+            transform: scale(1.02);
+            border-color: rgba(255, 215, 0, 0.7);
+            box-shadow: 0 25px 80px rgba(255, 215, 0, 0.3);
+        }
+
+        /* Fallback styling for missing images */
+        .portrait-image[src=""], .portrait-image:not([src]) {
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: #1a1a2e;
+        }
+
+        .portrait-image[src=""]:after, .portrait-image:not([src]):after {
+            content: "🎭";
+        }
+
+        .title-generator {
+            margin-top: 30px;
+            padding: 40px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .generator-label {
+            font-size: 1.2rem;
+            color: #4ecdc4;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .generated-title {
+            font-size: 1.8rem;
+            color: #ffd700;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .regenerate-btn {
+            background: linear-gradient(45deg, #ffd700, #ffed4e);
+            color: #1a1a2e;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .regenerate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255,215,0,0.3);
+        }
+
+        /* Sections */
+        .section {
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 50px;
+            backdrop-filter: blur(10px);
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: #ffd700;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        /* Force Display */
+        .force-display {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 1024px) {
+            .force-display {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .force-display {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .force-item {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .force-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .force-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .force-name {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .force-percentage {
+            font-size: 1.5rem;
+            color: #ffd700;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .force-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .force-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ffd700, #ffed4e);
+            border-radius: 4px;
+            transition: width 1s ease;
+            width: 0%;
+        }
+
+        .force-description {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.8);
+        }
+
+        /* Attributes */
+        .attribute-item {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .attribute-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .attribute-icon {
+            font-size: 1.5rem;
+            margin-right: 15px;
+        }
+
+        .attribute-name {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #ffd700;
+        }
+
+        .attribute-scale {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .scale-label {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.7);
+            flex: 1;
+        }
+
+        .scale-label.right {
+            text-align: right;
+        }
+
+        .scale-bar {
+            flex: 2;
+            height: 12px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 6px;
+            margin: 0 15px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .scale-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff6b6b, #ffd700, #4ecdc4);
+            border-radius: 6px;
+            transition: width 0.8s ease;
+            width: 0%;
+        }
+
+        .scale-indicator {
+            position: absolute;
+            top: -2px;
+            width: 16px;
+            height: 16px;
+            background: #ffffff;
+            border: 2px solid #ffd700;
+            border-radius: 50%;
+            transform: translateX(-50%);
+            transition: left 0.8s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+
+        .attribute-description {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.8);
+            font-style: italic;
+        }
+
+        /* Predictions */
+        .prediction-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .prediction-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .prediction-item {
+            background: rgba(255,255,255,0.05);
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 4px solid #ffd700;
+            transition: transform 0.3s ease;
+        }
+
+        .prediction-item:hover {
+            transform: translateX(5px);
+        }
+
+        .prediction-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .prediction-icon {
+            font-size: 1.5rem;
+            margin-right: 15px;
+        }
+
+        .prediction-title {
+            font-weight: bold;
+            color: #ffd700;
+        }
+
+        .prediction-text {
+            color: rgba(255,255,255,0.9);
+            line-height: 1.5;
+        }
+
+        /* Survival Guide */
+        .survival-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        @media (max-width: 1024px) {
+            .survival-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .survival-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .survival-item {
+            background: rgba(255,255,255,0.05);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .survival-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .survival-item.kryptonite {
+            border-top: 4px solid #ff6b6b;
+        }
+
+        .survival-item.superpower {
+            border-top: 4px solid #4ecdc4;
+        }
+
+        .survival-item.warning {
+            border-top: 4px solid #ffd700;
+        }
+
+        .survival-item.emergency {
+            border-top: 4px solid #ff9f43;
+        }
+
+        .survival-label {
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .survival-text {
+            color: rgba(255,255,255,0.9);
+            line-height: 1.5;
+        }
+
+        /* Force Mixer */
+        .force-mixer {
+            background: rgba(255,215,0,0.05);
+            border: 1px solid rgba(255,215,0,0.2);
+        }
+
+        .mixer-controls {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 1024px) {
+            .mixer-controls {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .mixer-controls {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .mixer-slider {
+            background: rgba(255,255,255,0.05);
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .slider-label {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #ffd700;
+        }
+
+        .slider-input {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: rgba(255,255,255,0.2);
+            outline: none;
+            cursor: pointer;
+        }
+
+        .slider-value {
+            text-align: center;
+            margin-top: 5px;
+            color: rgba(255,255,255,0.8);
+        }
+
+        .mixer-prediction {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #ffd700, #ffed4e);
+            color: #1a1a2e;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .portrait-image {
+                width: 400px;
+                height: 400px;
+            }
+            
+            .force-display {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .survival-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .mixer-controls {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .archetype-name {
+                font-size: 2.5rem;
+            }
+
+            .nav-links {
+                gap: 15px;
+            }
+
+            .force-display {
+                grid-template-columns: 1fr;
+            }
+
+            .prediction-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .survival-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .mixer-controls {
+                grid-template-columns: 1fr;
+            }
+
+            .portrait-image {
+                width: 350px;
+                height: 350px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .portrait-image {
+                width: 280px;
+                height: 280px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -658,7 +664,7 @@
             <div class="error-icon">🤔</div>
             <div class="error-title">No Quiz Results Found</div>
             <div class="error-text">It looks like you haven't taken the quiz yet, or your results have expired.</div>
-            <a href="take_quiz.html" class="btn btn-primary">Take the Quiz</a>
+            <a href="take_quiz.html" class="btn-primary">Take the Quiz</a>
         </div>
 
         <!-- Main Results -->
@@ -676,54 +682,52 @@
                 <div class="title-generator">
                     <div class="generator-label">🎲 Today you are the:</div>
                     <div class="generated-title" id="generatedTitle">Strategic Corporate Culture Disruptor</div>
-                    <div class="action-buttons">
-                        <button class="btn btn-primary" onclick="generateRandomTitle()">Generate New Mission</button>
-                        <button class="btn btn-secondary" onclick="window.print()">📄 Print Results</button>
-                        <a href="take_quiz.html" class="btn btn-tertiary">🔄 Retake Quiz</a>
-                    </div>
+                    <button class="regenerate-btn" onclick="generateRandomTitle()">🎯 Generate New Title</button>
                 </div>
             </div>
 
-            <!-- Force Visualization -->
+            <!-- Force Display -->
             <section class="section">
-                <h2 class="section-title">Your Heroic Force Profile</h2>
-                <div class="force-grid">
+                <h2 class="section-title">Your Heroic Forces</h2>
+                <div class="force-display">
                     <div class="force-item">
                         <span class="force-icon">🤠</span>
                         <div class="force-name">Cowboy</div>
-                        <div class="force-percentage" id="cowboyPercentage">65%</div>
+                        <div class="force-percentage" id="cowboyPercentage">0%</div>
                         <div class="force-bar">
-                            <div class="force-fill" id="cowboyBar" style="width: 0%"></div>
+                            <div class="force-fill" id="cowboyBar"></div>
                         </div>
+                        <div class="force-description">Action & Boldness</div>
                     </div>
                     <div class="force-item">
                         <span class="force-icon">🧙‍♂️</span>
                         <div class="force-name">Wizard</div>
-                        <div class="force-percentage" id="wizardPercentage">35%</div>
+                        <div class="force-percentage" id="wizardPercentage">0%</div>
                         <div class="force-bar">
-                            <div class="force-fill" id="wizardBar" style="width: 0%"></div>
+                            <div class="force-fill" id="wizardBar"></div>
                         </div>
+                        <div class="force-description">Wisdom & Strategy</div>
                     </div>
                     <div class="force-item">
                         <span class="force-icon">🏴‍☠️</span>
                         <div class="force-name">Pirate</div>
-                        <div class="force-percentage" id="piratePercentage">80%</div>
+                        <div class="force-percentage" id="piratePercentage">0%</div>
                         <div class="force-bar">
-                            <div class="force-fill" id="pirateBar" style="width: 0%"></div>
+                            <div class="force-fill" id="pirateBar"></div>
                         </div>
+                        <div class="force-description">Freedom & Independence</div>
                     </div>
                     <div class="force-item">
                         <span class="force-icon">⚔️</span>
                         <div class="force-name">Knight</div>
-                        <div class="force-percentage" id="knightPercentage">20%</div>
+                        <div class="force-percentage" id="knightPercentage">0%</div>
                         <div class="force-bar">
-                            <div class="force-fill" id="knightBar" style="width: 0%"></div>
+                            <div class="force-fill" id="knightBar"></div>
                         </div>
+                        <div class="force-description">Service & Honor</div>
                     </div>
                 </div>
-                <div class="force-description" id="forceDescription">
-                    "You're feeling 80% rebellious and 65% action-ready!"
-                </div>
+                <div id="forceDescription" class="force-description"></div>
             </section>
 
             <!-- Quirky Attribute Spectrums -->
@@ -756,54 +760,66 @@
                 <p style="text-align: center; margin-bottom: 30px; color: rgba(255,255,255,0.8);">
                     Experiment with different force combinations to see how your heroic approach would change!
                 </p>
-                
                 <div class="mixer-controls">
-                    <div class="mixer-control">
-                        <div class="mixer-label">🤠 Cowboy</div>
-                        <input type="range" min="0" max="100" value="65" class="mixer-slider" id="mixerCowboy">
-                        <div class="mixer-value" id="mixerCowboyValue">65%</div>
+                    <div class="mixer-slider">
+                        <div class="slider-label">Cowboy: <span id="cowboyMixerValue">50</span>%</div>
+                        <input type="range" min="0" max="100" value="50" class="slider-input" id="cowboyMixer">
                     </div>
-                    <div class="mixer-control">
-                        <div class="mixer-label">🧙‍♂️ Wizard</div>
-                        <input type="range" min="0" max="100" value="35" class="mixer-slider" id="mixerWizard">
-                        <div class="mixer-value" id="mixerWizardValue">35%</div>
+                    <div class="mixer-slider">
+                        <div class="slider-label">Wizard: <span id="wizardMixerValue">50</span>%</div>
+                        <input type="range" min="0" max="100" value="50" class="slider-input" id="wizardMixer">
                     </div>
-                    <div class="mixer-control">
-                        <div class="mixer-label">🏴‍☠️ Pirate</div>
-                        <input type="range" min="0" max="100" value="80" class="mixer-slider" id="mixerPirate">
-                        <div class="mixer-value" id="mixerPirateValue">80%</div>
+                    <div class="mixer-slider">
+                        <div class="slider-label">Pirate: <span id="pirateMixerValue">50</span>%</div>
+                        <input type="range" min="0" max="100" value="50" class="slider-input" id="pirateMixer">
                     </div>
-                    <div class="mixer-control">
-                        <div class="mixer-label">⚔️ Knight</div>
-                        <input type="range" min="0" max="100" value="20" class="mixer-slider" id="mixerKnight">
-                        <div class="mixer-value" id="mixerKnightValue">20%</div>
+                    <div class="mixer-slider">
+                        <div class="slider-label">Knight: <span id="knightMixerValue">50</span>%</div>
+                        <input type="range" min="0" max="100" value="50" class="slider-input" id="knightMixer">
                     </div>
                 </div>
-                
-                <div class="mixer-result">
-                    <div class="mixer-result-text" id="mixerPrediction">
-                        With more Wizard energy, you'd probably overthink your rebellions and create elaborate strategic plans for disruption instead of just winging it.
-                    </div>
+                <div class="mixer-prediction">
+                    <h3 style="color: #ffd700; margin-bottom: 15px;">Prediction:</h3>
+                    <p id="mixerPrediction">Adjust the sliders to see how different force combinations would change your heroic approach!</p>
                 </div>
             </section>
         </div>
     </div>
 
     <script>
+        // Function to calculate attribute position based on force percentages
+        function calculateAttributePosition(forceCalc, forces) {
+            const { cowboy, wizard, pirate, knight } = forces;
+            
+            // Handle different calculation types
+            if (forceCalc.includes('/')) {
+                // Handle averaging like "(pirate + cowboy) / 2"
+                return Math.round(eval(forceCalc.replace(/cowboy/g, cowboy).replace(/wizard/g, wizard).replace(/pirate/g, pirate).replace(/knight/g, knight)));
+            } else if (forceCalc.includes('-')) {
+                // Handle subtraction like "100 - pirate"
+                return Math.round(eval(forceCalc.replace(/cowboy/g, cowboy).replace(/wizard/g, wizard).replace(/pirate/g, pirate).replace(/knight/g, knight)));
+            } else {
+                // Simple force reference like "pirate"
+                return Math.round(forces[forceCalc]);
+            }
+        }
+
         // Complete archetype data with all 16 types
         const archetypeData = {
-            // Maverick Quadrant (Pirate + Cowboy)
+            // MAVERICK QUADRANT (Pirate + Cowboy) - Chaos & Freedom
+            
+            // The Wildcard (maverick-pure) - Maximum Pirate + Maximum Cowboy
             'maverick-pure': {
                 name: "The Wildcard",
                 tagline: "Maximum Pirate + Maximum Cowboy",
                 titleAdjectives: ["Chaotic", "Unpredictable", "Spontaneous", "Wild", "Free-spirited", "Anarchic", "Random", "Hurricane", "Tornado", "Lightning"],
                 titleNouns: ["Adventure Generator", "Chaos Theory", "Random Events", "Surprise Parties", "Impulse Decisions", "Spontaneous Combustion", "Plot Twists", "Wild Cards"],
                 attributes: [
-                    { icon: "🎲", name: "Life Randomizer", left: "Scheduled Chaos", right: "Pure Hurricane", position: 95, description: "Your calendar looks like a toddler drew it" },
-                    { icon: "⚡", name: "Impulse Purchase Probability", left: "Budgeting Master", right: "Cart Full of Regrets", position: 90, description: "You own at least three things you bought at 2 AM" },
-                    { icon: "🎪", name: "Party Catalyst Level", left: "Quiet Observer", right: "Human Fireworks Show", position: 95, description: "You're the reason parties either become legendary or get shut down" },
-                    { icon: "🌪️", name: "Chaos Comfort Level", left: "Need Structure", right: "Thrive in Madness", position: 98, description: "You're most productive when everything is falling apart" },
-                    { icon: "🎯", name: "Planning Approach", left: "Detailed Itinerary", right: "Wing It Completely", position: 95, description: "Your idea of planning is checking if your phone is charged" }
+                    { icon: "🎲", name: "Life Randomizer", left: "Scheduled Chaos", right: "Pure Hurricane", forceCalc: "(pirate + cowboy) / 2", description: "Your calendar looks like a toddler drew it" },
+                    { icon: "⚡", name: "Impulse Purchase Probability", left: "Budgeting Master", right: "Cart Full of Regrets", forceCalc: "pirate", description: "You own at least three things you bought at 2 AM" },
+                    { icon: "🎪", name: "Party Catalyst Level", left: "Quiet Observer", right: "Human Fireworks Show", forceCalc: "cowboy", description: "You're the reason parties either become legendary or get shut down" },
+                    { icon: "🌪️", name: "Chaos Comfort Level", left: "Need Structure", right: "Thrive in Madness", forceCalc: "(pirate + cowboy) / 2", description: "You're most productive when everything is falling apart" },
+                    { icon: "🎯", name: "Planning Approach", left: "Detailed Itinerary", right: "Wing It Completely", forceCalc: "pirate", description: "Your idea of planning is checking if your phone is charged" }
                 ],
                 predictions: [
                     { icon: "🌪️", title: "Daily Life", text: "Your day plans are more like gentle suggestions to the universe" },
@@ -815,90 +831,450 @@
                 ],
                 survival: {
                     kryptonite: "Boring routines and people who ask 'what's your five-year plan?'",
-                    superpower: "Turning any situation into an unexpected adventure",
-                    warning: "You're planning your next spontaneous trip during a work meeting",
-                    emergency: "When feeling trapped, book a random trip or try something you've never done before"
+                    superpower: "Turning disasters into adventures and finding opportunity in chaos",
+                    warning: "You're about to say yes to something that sounds fun but is probably a terrible idea",
+                    emergency: "When overwhelmed, embrace the chaos and remember that your best stories come from your worst plans"
                 }
             },
-            'maverick-rebel-thinker': {
-                name: "The Contrarian",
-                tagline: "Independent Contrarian + High Wizard",
-                titleAdjectives: ["Conventional", "Popular", "Mainstream", "Accepted", "Traditional", "Standard", "Typical", "Common"],
-                titleNouns: ["Pizza Wisdom", "Coffee Rules", "Meeting Protocols", "Parking Strategies", "Email Etiquette", "Dress Codes"],
-                attributes: [
-                    { icon: "🧠", name: "Contrarian Mode", left: "Go With Flow", right: "Question Everything", position: 85, description: "You automatically look for flaws in popular ideas" },
-                    { icon: "📚", name: "Research Intensity", left: "Accept Surface", right: "Dig for Truth", position: 80, description: "You fact-check memes before sharing them" },
-                    { icon: "🎭", name: "Devil's Advocate", left: "Agreeable", right: "Professional Skeptic", position: 90, description: "You argue the opposite side even when you agree" },
-                    { icon: "💭", name: "Independent Thinking", left: "Follow Crowd", right: "Chart Own Course", position: 85, description: "You're suspicious of anything everyone else loves" },
-                    { icon: "🔍", name: "Authority Questioning", left: "Trust Experts", right: "Verify Everything", position: 75, description: "You've googled your doctor's credentials mid-appointment" }
-                ],
-                predictions: [
-                    { icon: "📖", title: "Reading Habits", text: "You read contrarian takes on popular books before the books themselves" },
-                    { icon: "🗣️", title: "Conversations", text: "You start sentences with 'Actually...' more than you'd like to admit" },
-                    { icon: "📱", title: "Social Media", text: "You're the person commenting 'source?' on everything" },
-                    { icon: "🎬", title: "Entertainment", text: "You prefer obscure indie films and bands nobody's heard of" },
-                    { icon: "🛒", title: "Shopping", text: "You research products so thoroughly you talk yourself out of buying them" },
-                    { icon: "💼", title: "Work Style", text: "You're the one asking 'why do we do it this way?' in every meeting" }
-                ],
-                survival: {
-                    kryptonite: "Echo chambers and people who say 'because that's how it's always been done'",
-                    superpower: "Spotting flaws in seemingly perfect systems",
-                    warning: "You're explaining why a viral trend is actually problematic",
-                    emergency: "When overwhelmed by groupthink, find a quiet space to research alternative perspectives"
-                }
-            },
-            'maverick-free-spirit': {
-                name: "The Drifter",
-                tagline: "Spontaneous Adventurer + Moderate Pirate",
-                titleAdjectives: ["Forgotten", "Hidden", "Secret", "Abandoned", "Remote", "Undiscovered", "Lost", "Mysterious"],
-                titleNouns: ["Coffee Shops", "Bookstores", "Markets", "Diners", "Cafes", "Trails", "Stories", "Adventures"],
-                attributes: [
-                    { icon: "🗺️", name: "Wanderlust Level", left: "Homebody", right: "Eternal Nomad", position: 80, description: "You have travel apps for places you'll probably never visit" },
-                    { icon: "🎒", name: "Commitment Flexibility", left: "Long-term Plans", right: "Keep Options Open", position: 85, description: "You buy refundable tickets for everything" },
-                    { icon: "🌅", name: "Adventure Seeking", left: "Safe Routine", right: "Novel Experience", position: 75, description: "You take the scenic route even when you're late" },
-                    { icon: "🚶", name: "Path Preference", left: "Well-trodden", right: "Road Less Traveled", position: 80, description: "You're the friend who finds the hidden gem restaurant" },
-                    { icon: "📅", name: "Planning Style", left: "Detailed Schedule", right: "Go With Flow", position: 70, description: "Your weekend plans are 'see what happens'" }
-                ],
-                predictions: [
-                    { icon: "🎒", title: "Travel Style", text: "You've mastered the art of packing everything in a carry-on" },
-                    { icon: "📍", title: "Local Expert", text: "You know more about your city than people who've lived there for decades" },
-                    { icon: "🚗", title: "Transportation", text: "You've taken the long way home just to see where it goes" },
-                    { icon: "📚", title: "Learning", text: "You collect experiences like other people collect things" },
-                    { icon: "🏠", title: "Home Life", text: "Your place reflects everywhere you've been" },
-                    { icon: "👥", title: "Social Circle", text: "You have friends in every time zone" }
-                ],
-                survival: {
-                    kryptonite: "Being tied down by long-term commitments and inflexible schedules",
-                    superpower: "Finding opportunity and beauty in unexpected places",
-                    warning: "You're researching flights during a work presentation",
-                    emergency: "When feeling stuck, take a different route home or explore a new neighborhood"
-                }
-            },
+
+            // The Maverick (maverick-balanced) - Strategic Independent
             'maverick-balanced': {
                 name: "The Maverick",
-                tagline: "Strategic Independent + Balanced Forces",
-                titleAdjectives: ["Strategic", "Tactical", "Adaptive", "Creative", "Independent", "Innovative", "Entrepreneurial", "Paradigm-shifting"],
-                titleNouns: ["Corporate Culture", "Business Strategy", "Innovation Labs", "Meeting Formats", "Decision Processes", "Creative Expression"],
+                tagline: "Strategic Independent",
+                titleAdjectives: ["Strategic", "Independent", "Unconventional", "Bold", "Creative", "Flexible", "Original", "Adaptable", "Innovative", "Self-directed"],
+                titleNouns: ["Path Finder", "Rule Bender", "Creative Solutions", "Independent Thinking", "Strategic Rebellion", "Alternative Routes", "Outside-the-Box Living", "Personal Freedom", "Calculated Risks", "Smart Defiance"],
                 attributes: [
-                    { icon: "🏢", name: "Meeting Energy", left: "Snooze-Fest", right: "Let's Burn This Down", position: 75, description: "You probably suggest 'alternative approaches' in every meeting" },
-                    { icon: "🎭", name: "Corporate Camouflage", left: "Total Rebel", right: "Stealth Operative", position: 60, description: "You can blend in when needed, but your eye-rolling is legendary" },
-                    { icon: "📋", name: "Rule Relationship", left: "Suggestions", right: "Sacred Law", position: 25, description: "Rules are more like... guidelines, right?" },
-                    { icon: "🎯", name: "Decision Making", left: "Overthink Everything", right: "Trust The Gut", position: 70, description: "You trust your instincts over endless analysis" },
-                    { icon: "⚡", name: "Change Tolerance", left: "Gradual Evolution", right: "Burn It All Down", position: 85, description: "Why improve something when you can revolutionize it?" }
+                    { icon: "🎯", name: "Planning vs Winging It Balance", left: "Five-Year Plans", right: "What's Tomorrow?", forceCalc: "pirate", description: "You plan just enough to not be completely chaotic" },
+                    { icon: "🏢", name: "Corporate Tolerance Level", left: "Company Man", right: "Allergic to Cubicles", forceCalc: "pirate", description: "You can play the game but always with one foot out the door" },
+                    { icon: "💡", name: "Creative Problem Solving", left: "By the Book", right: "Invent New Book", forceCalc: "(pirate + cowboy) / 2", description: "Why solve problems normally when you can be clever about it?" },
+                    { icon: "🤝", name: "Team Player Capability", left: "Lone Wolf Only", right: "Natural Collaborator", forceCalc: "100 - pirate", description: "You work well with others when they respect your independence" },
+                    { icon: "⚡", name: "Change Adaptation Speed", left: "Slow Adjuster", right: "Chaos Surfer", forceCalc: "cowboy", description: "You thrive on change but prefer to see it coming" }
                 ],
                 predictions: [
-                    { icon: "🏠", title: "At Home", text: "You probably have at least 5 unfinished creative projects scattered around" },
-                    { icon: "📱", title: "Your Phone", text: "Camera roll is 60% random ideas, 40% memes that 'totally get you'" },
-                    { icon: "🛒", title: "Shopping Style", text: "You buy ingredients for elaborate meals then order takeout anyway" },
-                    { icon: "💼", title: "Work Mode", text: "You do your best thinking in the shower or while walking" },
-                    { icon: "🗣️", title: "In Arguments", text: "You play devil's advocate even when you agree with people" },
-                    { icon: "🔮", title: "Future Prediction", text: "You'll probably quit at least one job dramatically (in a good way)" }
+                    { icon: "💼", title: "Career Path", text: "You've probably changed industries at least twice and somehow it all makes sense" },
+                    { icon: "🏠", title: "Living Situation", text: "Your space reflects organized chaos - everything has a place, just not where others expect" },
+                    { icon: "📱", title: "Social Media", text: "Your posts are 70% professional insights, 30% random thoughts that get surprising engagement" },
+                    { icon: "🛒", title: "Shopping Style", text: "You research purchases thoroughly then buy something completely different on impulse" },
+                    { icon: "🚗", title: "Travel Approach", text: "You plan the destination, wing the details, and always find the best local spots" },
+                    { icon: "🎭", title: "Social Events", text: "You're the person who suggests the after-party that turns out better than the main event" }
                 ],
                 survival: {
-                    kryptonite: "Micromanagers and 'because that's how we've always done it'",
-                    superpower: "Turning problems into opportunities for creative rebellion",
-                    warning: "You're using the phrase 'disrupt' unironically",
-                    emergency: "When feeling trapped, find the nearest whiteboard and start brainstorming alternatives"
+                    kryptonite: "Micromanagers and meetings that could have been emails",
+                    superpower: "Finding the third option when everyone else sees only two choices",
+                    warning: "You're explaining why the 'standard way' is inefficient to people who didn't ask",
+                    emergency: "When feeling trapped, map out three unconventional escape routes immediately"
+                }
+            },
+
+            // The Drifter (maverick-free-spirit) - Adventure Through Experience  
+            'maverick-free-spirit': {
+                name: "The Drifter", 
+                tagline: "Adventure Through Experience",
+                titleAdjectives: ["Wandering", "Free-spirited", "Experiential", "Nomadic", "Adventurous", "Spontaneous", "Flowing", "Exploratory", "Unbound", "Journey-focused"],
+                titleNouns: ["Experience Collector", "Path Walker", "Adventure Seeker", "Moment Chaser", "Freedom Fighter", "Life Explorer", "Journey Maker", "Story Gatherer", "Memory Creator", "Experience Hunter"],
+                attributes: [
+                    { icon: "🎒", name: "Attachment to Stuff Level", left: "Hoarder Tendencies", right: "Owns Three Things", forceCalc: "pirate", description: "Your entire life fits in a backpack and you like it that way" },
+                    { icon: "📍", name: "Location Commitment Ability", left: "Deep Roots", right: "Permanent Nomad", forceCalc: "pirate", description: "Home is wherever you happen to be sleeping tonight" },
+                    { icon: "⏰", name: "Schedule Adherence Rate", left: "Time Nazi", right: "Time Is Illusion", forceCalc: "100 - cowboy", description: "You show up when the universe aligns, which is surprisingly often" },
+                    { icon: "💸", name: "Financial Planning Skills", left: "Retirement Fund", right: "YOLO Economics", forceCalc: "cowboy", description: "Money is for experiences, not savings accounts" },
+                    { icon: "🌊", name: "Go With Flow Factor", left: "Rigid Structure", right: "Human River", forceCalc: "(pirate + cowboy) / 2", description: "You adapt to circumstances like water flowing around rocks" }
+                ],
+                predictions: [
+                    { icon: "🗺️", title: "Travel Style", text: "You've slept in at least 5 different types of accommodation in the past year" },
+                    { icon: "💼", title: "Work Pattern", text: "You gravitate toward gig work, remote jobs, or careers that let you move around" },
+                    { icon: "📱", title: "Photo Gallery", text: "80% landscapes and random moments, 10% food, 10% people you met once but remember fondly" },
+                    { icon: "🎭", title: "Friend Groups", text: "You have meaningful connections in multiple cities but struggle with local small talk" },
+                    { icon: "🛍️", title: "Possessions", text: "You own less stuff than most people buy in a month but each item has a story" },
+                    { icon: "🏠", title: "Living Space", text: "Your current place feels temporary even if you've been there for two years" }
+                ],
+                survival: {
+                    kryptonite: "Long-term leases and people who ask about your 'five-year plan'",
+                    superpower: "Making meaningful connections wherever you land, however briefly",
+                    warning: "You're getting restless because you've been in the same place for more than six months",
+                    emergency: "When feeling trapped, start planning your next adventure, even if it's just to the next town over"
+                }
+            },
+
+            // The Contrarian (maverick-rebel-thinker) - Questions Everything Boldly
+            'maverick-rebel-thinker': {
+                name: "The Contrarian",
+                tagline: "Questions Everything Boldly", 
+                titleAdjectives: ["Contrarian", "Skeptical", "Questioning", "Critical", "Analytical", "Provocative", "Challenging", "Independent", "Rebellious", "Thoughtful"],
+                titleNouns: ["Question Asker", "Assumption Challenger", "Status Quo Disruptor", "Critical Thinker", "Perspective Shifter", "Authority Questioner", "Conventional Wisdom Destroyer", "Devil's Advocate", "System Challenger", "Thought Provocateur"],
+                attributes: [
+                    { icon: "🤔", name: "Automatic Skepticism Level", left: "Trusting Soul", right: "Question Everything", forceCalc: "wizard", description: "You hear 'everyone knows' and immediately think 'do they though?'" },
+                    { icon: "💬", name: "Devil's Advocate Frequency", left: "Agreeable Type", right: "Professional Contrarian", forceCalc: "(pirate + wizard) / 2", description: "You can't help but point out the other side of every argument" },
+                    { icon: "📚", name: "Research Rabbit Hole Depth", left: "Surface Skimmer", right: "Wikipedia Black Hole", forceCalc: "wizard", description: "You started researching coffee and somehow ended up reading about 16th-century trade routes" },
+                    { icon: "🎯", name: "Authority Respect Meter", left: "Rule Follower", right: "Question Authority", forceCalc: "pirate", description: "You respect expertise but refuse to accept 'because I said so' as reasoning" },
+                    { icon: "🧠", name: "Contrarian Thought Speed", left: "Go With Crowd", right: "Instant Opposition", forceCalc: "pirate", description: "Your brain automatically generates counterarguments faster than most people can finish sentences" }
+                ],
+                predictions: [
+                    { icon: "💭", title: "Thought Process", text: "You've probably changed your mind on major topics after diving deep into research" },
+                    { icon: "🗣️", title: "Conversations", text: "People either love debating with you or avoid controversial topics entirely" },
+                    { icon: "📖", title: "Reading Habits", text: "Your browser has 47 open tabs and you somehow remember what each one is about" },
+                    { icon: "🎭", title: "Social Dynamics", text: "You're the person who says 'actually...' and then drops fascinating information everyone else missed" },
+                    { icon: "💼", title: "Work Style", text: "You ask the questions in meetings that everyone else is thinking but afraid to voice" },
+                    { icon: "📱", title: "Social Media", text: "You fact-check viral posts and probably have strong opinions about misinformation" }
+                ],
+                survival: {
+                    kryptonite: "Echo chambers and people who get personally offended by intellectual disagreement",
+                    superpower: "Spotting logical fallacies and assumptions that everyone else accepts without question",
+                    warning: "You're about to correct someone's 'well-known fact' with actual research",
+                    emergency: "When feeling intellectually stifled, find someone who enjoys debate or dive into researching something controversial"
+                }
+            },
+
+            // ROGUE QUADRANT (Pirate + Wizard) - Strategic Independence
+
+            // The Mapmaker (rogue-pure) - Maximum Pirate + Maximum Wizard
+            'rogue-pure': {
+                name: "The Mapmaker",
+                tagline: "Charts Unknown Territory",
+                titleAdjectives: ["Uncharted", "Mysterious", "Independent", "Strategic", "Analytical", "Pioneering", "Methodical", "Self-reliant", "Calculating", "Investigative"],
+                titleNouns: ["Territory Explorer", "Knowledge Seeker", "Pattern Finder", "System Hacker", "Information Architect", "Research Maverick", "Data Detective", "Strategy Builder", "Wisdom Gatherer", "Path Creator"],
+                attributes: [
+                    { icon: "🧭", name: "Information Hoarding Tendency", left: "Share Everything", right: "Knowledge Vault", forceCalc: "pirate", description: "You collect information like a digital dragon hoarding treasure" },
+                    { icon: "🔍", name: "Conspiracy Detection Radar", left: "Face Value Believer", right: "Pattern Recognition Master", forceCalc: "wizard", description: "You see connections others miss, sometimes even when they're not there" },
+                    { icon: "🏴‍☠️", name: "Authority Figure Allergy", left: "Respect Chain of Command", right: "Question Everything", forceCalc: "pirate", description: "You automatically distrust anyone who says 'because I'm in charge'" },
+                    { icon: "📚", name: "Research Obsession Level", left: "Surface Knowledge", right: "PhD in Everything", forceCalc: "wizard", description: "You've fallen down Wikipedia rabbit holes that lasted entire weekends" },
+                    { icon: "🤐", name: "Social Sharing Frequency", left: "Open Book", right: "Mysterious Enigma", forceCalc: "100 - (knight + cowboy) / 2", description: "You share just enough to be helpful, keep enough to stay interesting" }
+                ],
+                predictions: [
+                    { icon: "💻", title: "Digital Life", text: "Your browser bookmarks are organized in a system only you understand but it's surprisingly logical" },
+                    { icon: "🕵️", title: "Problem Solving", text: "You solve problems by researching until you know more about the topic than the experts" },
+                    { icon: "📱", title: "Social Media", text: "You lurk more than you post, but when you comment it's always with a fascinating link" },
+                    { icon: "🏠", title: "Home Setup", text: "Your space has at least one area that looks like a research command center" },
+                    { icon: "💼", title: "Work Style", text: "You prefer projects where you can disappear into research and emerge with brilliant insights" },
+                    { icon: "🤝", title: "Networking", text: "You have contacts in weird, specific niches that prove surprisingly useful" }
+                ],
+                survival: {
+                    kryptonite: "Forced collaboration and people who interrupt your research flow",
+                    superpower: "Finding the obscure piece of information that solves everyone's problem",
+                    warning: "You're about to spend three hours researching something that started as a casual question",
+                    emergency: "When overwhelmed, retreat to your information fortress and map out the logical connections"
+                }
+            },
+
+            // The Treasure Hunter (rogue-strategic) - High Pirate + Moderate Wizard  
+            'rogue-strategic': {
+                name: "The Treasure Hunter",
+                tagline: "Seeks Hidden Value",
+                titleAdjectives: ["Strategic", "Opportunistic", "Clever", "Resourceful", "Calculating", "Tactical", "Sharp", "Cunning", "Enterprising", "Astute"],
+                titleNouns: ["Opportunity Finder", "Value Creator", "Resource Hunter", "Strategic Thinker", "Market Disruptor", "Advantage Seeker", "Profit Maximizer", "Deal Maker", "Asset Hunter", "Leverage Expert"],
+                attributes: [
+                    { icon: "💎", name: "Hidden Opportunity Radar", left: "Obvious Path Only", right: "X-Ray Vision for Value", forceCalc: "(pirate + wizard) / 2", description: "You spot potential where others see problems" },
+                    { icon: "🎯", name: "Risk vs Reward Calculator", left: "Play It Safe", right: "Calculated Gambler", forceCalc: "pirate", description: "You take risks, but only after doing the math" },
+                    { icon: "🔧", name: "System Gaming Ability", left: "Follow All Rules", right: "Find All Loopholes", forceCalc: "pirate", description: "You read the fine print to find the advantages everyone else missed" },
+                    { icon: "🧠", name: "Strategic Thinking Depth", left: "Wing It Daily", right: "Chess Master Mind", forceCalc: "wizard", description: "You're already planning move three while others are making move one" },
+                    { icon: "💰", name: "Value Extraction Skills", left: "Leave Money on Table", right: "Squeeze Every Drop", forceCalc: "pirate", description: "You maximize returns from everything you touch" }
+                ],
+                predictions: [
+                    { icon: "💼", title: "Career Moves", text: "You've probably negotiated at least one deal that made people go 'wait, how did you swing that?'" },
+                    { icon: "🛒", title: "Shopping Strategy", text: "You know about sales, cashback apps, and reward programs that most people have never heard of" },
+                    { icon: "📱", title: "App Usage", text: "Your phone has weird productivity apps and tools that give you small advantages" },
+                    { icon: "🏠", title: "Resource Management", text: "Your space is optimized for efficiency in ways that aren't immediately obvious" },
+                    { icon: "🤝", title: "Relationships", text: "You maintain connections strategically but genuinely care about mutual benefit" },
+                    { icon: "📈", title: "Side Hustles", text: "You've tried at least three different ways to monetize your skills or interests" }
+                ],
+                survival: {
+                    kryptonite: "Bureaucracy and situations where you can't negotiate or optimize",
+                    superpower: "Turning constraints into competitive advantages",
+                    warning: "You're calculating whether this conversation has ROI while the other person is still talking",
+                    emergency: "When stuck, look for the angle or opportunity that everyone else is missing"
+                }
+            },
+
+            // The Wayfinder (rogue-balanced) - Moderate Pirate + Moderate Wizard
+            'rogue-balanced': {
+                name: "The Wayfinder", 
+                tagline: "Navigates Complexity",
+                titleAdjectives: ["Balanced", "Adaptive", "Thoughtful", "Independent", "Flexible", "Analytical", "Self-directed", "Pragmatic", "Insightful", "Autonomous"],
+                titleNouns: ["Path Navigator", "Solution Finder", "Balance Keeper", "Complexity Handler", "Insight Generator", "Direction Setter", "Problem Solver", "Choice Architect", "Route Planner", "Wisdom Seeker"],
+                attributes: [
+                    { icon: "🧭", name: "Independence vs Collaboration", left: "Team Dependent", right: "Solo Operator", forceCalc: "pirate", description: "You work well with others but need space to think" },
+                    { icon: "🎯", name: "Analysis vs Action Balance", left: "Analysis Paralysis", right: "Ready, Fire, Aim", forceCalc: "cowboy", description: "You think enough to be smart, act enough to make progress" },
+                    { icon: "📊", name: "Information Processing Style", left: "Go With Gut", right: "Data-Driven Everything", forceCalc: "wizard", description: "You like facts but trust intuition when data is incomplete" },
+                    { icon: "🚪", name: "Conventional Path Resistance", left: "Follow the Crowd", right: "Forge Own Way", forceCalc: "pirate", description: "You'll take the beaten path if it's efficient, create new ones if it's not" },
+                    { icon: "⚖️", name: "Decision Making Process", left: "Quick Gut Calls", right: "Careful Deliberation", forceCalc: "wizard", description: "You balance speed with thoroughness depending on what's at stake" }
+                ],
+                predictions: [
+                    { icon: "🎯", title: "Goal Setting", text: "You have both short-term flexibility and long-term direction figured out" },
+                    { icon: "💼", title: "Work Approach", text: "You're the person who finds the efficient middle ground between different approaches" },
+                    { icon: "📚", title: "Learning Style", text: "You combine multiple information sources and form your own synthesis" },
+                    { icon: "🤝", title: "Social Balance", text: "You're selective about social energy but deeply engaged when you choose to be" },
+                    { icon: "🏠", title: "Life Organization", text: "Your systems work for you without being obsessively rigid" },
+                    { icon: "🗺️", title: "Travel Style", text: "You plan enough to avoid disasters, leave enough open for discoveries" }
+                ],
+                survival: {
+                    kryptonite: "Extreme pressure to choose sides when both have valid points",
+                    superpower: "Finding the third option that combines the best of competing approaches",
+                    warning: "You're explaining why everyone else's binary choice is a false dichotomy",
+                    emergency: "When overwhelmed, step back and map out all the options before choosing your path"
+                }
+            },
+
+            // The Seeker (rogue-individualist) - High Wizard + Moderate Pirate
+            'rogue-individualist': {
+                name: "The Seeker",
+                tagline: "Pursues Personal Truth", 
+                titleAdjectives: ["Seeking", "Curious", "Independent", "Philosophical", "Questioning", "Introspective", "Thoughtful", "Exploring", "Contemplative", "Self-directed"],
+                titleNouns: ["Truth Finder", "Knowledge Explorer", "Wisdom Seeker", "Understanding Builder", "Insight Gatherer", "Learning Adventurer", "Question Asker", "Discovery Maker", "Meaning Creator", "Purpose Hunter"],
+                attributes: [
+                    { icon: "🔍", name: "Personal Truth Quest Level", left: "Accept What's Given", right: "Question Everything", forceCalc: "wizard", description: "You need to understand things for yourself, not just accept them" },
+                    { icon: "📖", name: "Learning Obsession Intensity", left: "Basics Are Fine", right: "Master Every Detail", forceCalc: "wizard", description: "You don't just learn subjects, you inhabit them completely" },
+                    { icon: "🏛️", name: "Institution Trust Factor", left: "Respect Authority", right: "Verify Everything", forceCalc: "pirate", description: "You respect expertise but insist on understanding the reasoning" },
+                    { icon: "🤔", name: "Philosophical Depth Meter", left: "Surface Level", right: "Existential Explorer", forceCalc: "wizard", description: "You think about the meaning behind the meaning behind the meaning" },
+                    { icon: "🎭", name: "Social Conformity Resistance", left: "Blend In Easily", right: "Stand Apart Proudly", forceCalc: "pirate", description: "You're comfortable being different when your convictions require it" }
+                ],
+                predictions: [
+                    { icon: "📚", title: "Reading Habits", text: "You have books on wildly different topics because you follow your curiosity wherever it leads" },
+                    { icon: "💭", title: "Thought Process", text: "You've probably had at least one major belief shift after deep investigation" },
+                    { icon: "🗣️", title: "Conversations", text: "You ask the questions that make people really think about what they believe" },
+                    { icon: "📱", title: "Digital Life", text: "Your saved articles and bookmarks reveal a mind that connects unexpected dots" },
+                    { icon: "🎯", title: "Life Choices", text: "You make decisions based on your own research and reflection, not social pressure" },
+                    { icon: "🌱", title: "Personal Growth", text: "You're constantly evolving your understanding and aren't afraid to change your mind" }
+                ],
+                survival: {
+                    kryptonite: "Pressure to accept answers without understanding and 'that's just how it is' explanations",
+                    superpower: "Synthesizing knowledge from multiple sources into unique insights",
+                    warning: "You're about to spend a month researching something most people accept without question",
+                    emergency: "When confused, retreat into learning mode until you understand the deeper patterns"
+                }
+            },
+
+            // CHAMPION QUADRANT (Knight + Cowboy) - Service & Action
+
+            // The Paladin (champion-pure) - Maximum Knight + Maximum Cowboy
+            'champion-pure': {
+                name: "The Paladin",
+                tagline: "Ultimate Service Warrior",
+                titleAdjectives: ["Heroic", "Dedicated", "Righteous", "Passionate", "Loyal", "Courageous", "Determined", "Noble", "Fearless", "Unwavering"],
+                titleNouns: ["Justice Warrior", "Service Champion", "Cause Fighter", "Mission Driver", "Dedication Master", "Impact Creator", "Change Agent", "Hope Bringer", "Action Hero", "Purpose Warrior"],
+                attributes: [
+                    { icon: "⚔️", name: "Injustice Rage Activation", left: "Mild Annoyance", right: "Righteous Fury Mode", forceCalc: "(knight + cowboy) / 2", description: "You see unfairness and your inner superhero starts suiting up" },
+                    { icon: "🔥", name: "Cause Commitment Intensity", left: "Casual Support", right: "Life Mission Level", forceCalc: "knight", description: "When you believe in something, you don't just support it, you become it" },
+                    { icon: "🚀", name: "Action Taking Speed", left: "Committee Meeting", right: "Already On It", forceCalc: "cowboy", description: "You don't wait for permission to start helping" },
+                    { icon: "🛡️", name: "Others-First Tendency", left: "Self-Preservation", right: "Human Shield Mode", forceCalc: "knight", description: "You instinctively put others' needs before your own comfort" },
+                    { icon: "⚡", name: "Burnout Prevention Skills", left: "Sustainable Pace", right: "What's Self-Care?", forceCalc: "100 - (knight + cowboy) / 2", description: "You give until it hurts, then give a little more" }
+                ],
+                predictions: [
+                    { icon: "💼", title: "Career Path", text: "You're probably in a field where you directly help people or fight for causes" },
+                    { icon: "📱", title: "Social Media", text: "Your posts are 80% sharing important causes, 20% frustrated rants about injustice" },
+                    { icon: "🕐", title: "Time Management", text: "You say yes to helping so often that your calendar looks like Tetris gone wrong" },
+                    { icon: "💸", title: "Money Habits", text: "You donate more than financially advisors recommend and feel good about it" },
+                    { icon: "🏠", title: "Home Life", text: "Your space has at least three items related to causes you support" },
+                    { icon: "🤝", title: "Relationships", text: "People call you when they need someone who will actually do something about problems" }
+                ],
+                survival: {
+                    kryptonite: "Apathy, corruption, and people who say 'that's just how the world works'",
+                    superpower: "Inspiring others to care about things they didn't know they cared about",
+                    warning: "You're about to volunteer for something else when you're already overcommitted",
+                    emergency: "When overwhelmed, remember you can't save everyone if you don't save yourself first"
+                }
+            },
+
+            // The Crusader (champion-warrior) - High Cowboy + Moderate Knight
+            'champion-warrior': {
+                name: "The Crusader",
+                tagline: "Battles for What's Right",
+                titleAdjectives: ["Fighting", "Determined", "Bold", "Fierce", "Relentless", "Driven", "Passionate", "Forceful", "Dynamic", "Aggressive"],
+                titleNouns: ["Justice Fighter", "Change Warrior", "Rights Defender", "System Challenger", "Barrier Breaker", "Status Quo Disruptor", "Action Catalyst", "Reform Driver", "Battle Commander", "Victory Seeker"],
+                attributes: [
+                    { icon: "⚔️", name: "Fight Mode Activation Speed", left: "Peaceful Negotiator", right: "Instant Battle Ready", forceCalc: "cowboy", description: "When you see injustice, your first instinct is to charge" },
+                    { icon: "🎯", name: "Target Focus Intensity", left: "Scattered Attention", right: "Laser Guided Missile", forceCalc: "cowboy", description: "When you pick a fight, you see it through to the end" },
+                    { icon: "🔥", name: "Righteous Anger Fuel Level", left: "Mild Concern", right: "Nuclear Power Plant", forceCalc: "knight", description: "Your anger at injustice could power a small city" },
+                    { icon: "🚀", name: "Diplomatic Patience Reserve", left: "Endless Negotiations", right: "Talk Time Over", forceCalc: "100 - cowboy", description: "You prefer action to endless meetings about maybe taking action" },
+                    { icon: "🛡️", name: "Underdog Protection Instinct", left: "Mind Own Business", right: "Automatic Defender", forceCalc: "knight", description: "You can't watch someone get picked on without intervening" }
+                ],
+                predictions: [
+                    { icon: "💬", title: "Arguments", text: "You've probably gotten into at least one heated debate about fairness this month" },
+                    { icon: "📱", title: "Social Engagement", text: "You share posts about injustice with passionate commentary that your friends respect" },
+                    { icon: "💼", title: "Work Dynamics", text: "You're the one who speaks up in meetings when something isn't right" },
+                    { icon: "🏃", title: "Response Time", text: "When crisis hits, you're already moving while others are still processing" },
+                    { icon: "🤝", title: "Advocacy", text: "You've stood up for someone even when it was uncomfortable or risky" },
+                    { icon: "📺", title: "Media Consumption", text: "You watch the news and get genuinely angry about problems you want to fix" }
+                ],
+                survival: {
+                    kryptonite: "Bureaucracy and people who enable injustice through inaction",
+                    superpower: "Getting things done when everyone else is stuck in analysis paralysis",
+                    warning: "You're about to take on a fight that's bigger than you but you're doing it anyway",
+                    emergency: "When frustrated, channel that energy into concrete action rather than just anger"
+                }
+            },
+
+            // The Guardian (champion-balanced) - Moderate Knight + Moderate Cowboy  
+            'champion-balanced': {
+                name: "The Guardian",
+                tagline: "Protects and Serves",
+                titleAdjectives: ["Protective", "Reliable", "Steady", "Responsible", "Caring", "Vigilant", "Supportive", "Dependable", "Nurturing", "Watchful"],
+                titleNouns: ["Community Protector", "Safety Creator", "Stability Keeper", "Support Provider", "Security Builder", "Care Coordinator", "Strength Anchor", "Peace Keeper", "Foundation Layer", "Shield Bearer"],
+                attributes: [
+                    { icon: "🛡️", name: "Protection Instinct Strength", left: "Live and Let Live", right: "Guardian Angel Mode", forceCalc: "knight", description: "You naturally watch out for people's safety and wellbeing" },
+                    { icon: "⚖️", name: "Action vs Planning Balance", left: "Think Forever", right: "Act Immediately", forceCalc: "cowboy", description: "You think enough to be smart, act fast enough to be helpful" },
+                    { icon: "🤝", name: "Community Investment Level", left: "Passing Through", right: "Deeply Rooted", forceCalc: "knight", description: "You build lasting connections and contribute to group stability" },
+                    { icon: "🚨", name: "Crisis Response Reliability", left: "Call Someone Else", right: "First Responder", forceCalc: "(knight + cowboy) / 2", description: "When things go wrong, people instinctively turn to you" },
+                    { icon: "💪", name: "Personal Sacrifice Willingness", left: "Self-Care First", right: "Others Before Me", forceCalc: "knight", description: "You'll give up your comfort to ensure others are okay" }
+                ],
+                predictions: [
+                    { icon: "🏠", title: "Living Space", text: "Your home is the place friends come when they need safety, food, or a couch to crash on" },
+                    { icon: "📱", title: "Contact List", text: "You're in everyone's phone as the person to call in emergencies" },
+                    { icon: "💼", title: "Work Role", text: "You naturally become the reliable team member who keeps everything running smoothly" },
+                    { icon: "🎯", title: "Life Choices", text: "You make decisions by considering how they'll affect the people you care about" },
+                    { icon: "🤝", title: "Relationships", text: "You're the friend who remembers birthdays and checks in when people are struggling" },
+                    { icon: "⏰", title: "Daily Routine", text: "Your schedule includes buffer time because you know people will need your help" }
+                ],
+                survival: {
+                    kryptonite: "Watching people you care about make obviously bad decisions you can't fix",
+                    superpower: "Creating stability and safety that allows others to take risks and grow",
+                    warning: "You're taking on someone else's problem as if it's your responsibility to solve",
+                    emergency: "When overwhelmed, remember that taking care of yourself is taking care of everyone who depends on you"
+                }
+            },
+
+            // The Activist (champion-activist) - High Knight + Moderate Wizard
+            'champion-activist': {
+                name: "The Activist",
+                tagline: "Dedicated Social Reformer", 
+                titleAdjectives: ["Reforming", "Dedicated", "Strategic", "Persistent", "Organized", "Thoughtful", "Committed", "Systematic", "Patient", "Focused"],
+                titleNouns: ["Social Reformer", "Change Architect", "Movement Builder", "Policy Advocate", "System Reformer", "Progress Driver", "Justice Planner", "Cause Organizer", "Rights Defender", "Future Shaper"],
+                attributes: [
+                    { icon: "📋", name: "Cause Research Depth", left: "Surface Passion", right: "Policy Expert Level", forceCalc: "wizard", description: "You don't just care about issues, you study them until you could teach a class" },
+                    { icon: "⏳", name: "Long-term Commitment Ability", left: "Short Attention Span", right: "Generational Thinking", forceCalc: "knight", description: "You measure progress in years and decades, not weeks" },
+                    { icon: "🏗️", name: "System Change Strategy", left: "Individual Action Only", right: "Institutional Reform", forceCalc: "wizard", description: "You think about changing the rules, not just playing by them better" },
+                    { icon: "🤝", name: "Coalition Building Skills", left: "Lone Wolf Activist", right: "Movement Organizer", forceCalc: "knight", description: "You understand that real change requires bringing people together" },
+                    { icon: "📊", name: "Data-Driven Advocacy Level", left: "Pure Passion", right: "Statistics Arsenal", forceCalc: "wizard", description: "You come to arguments with facts, figures, and peer-reviewed studies" }
+                ],
+                predictions: [
+                    { icon: "📚", title: "Information Diet", text: "You read policy papers and research studies that most people find incredibly boring" },
+                    { icon: "📱", title: "Digital Activism", text: "Your social media is a carefully curated mix of education and calls to action" },
+                    { icon: "🗓️", title: "Time Commitment", text: "You block out time for causes like other people block out time for hobbies" },
+                    { icon: "💼", title: "Career Integration", text: "Your work either directly serves your causes or funds your ability to serve them" },
+                    { icon: "🤝", title: "Network", text: "You know people in government, nonprofits, and grassroots organizations" },
+                    { icon: "📊", title: "Progress Tracking", text: "You measure social change the way others measure fitness goals" }
+                ],
+                survival: {
+                    kryptonite: "Cynicism and people who think systemic problems can't be changed",
+                    superpower: "Turning frustration with injustice into concrete plans for improvement",
+                    warning: "You're about to cite statistics about social issues in casual conversation",
+                    emergency: "When discouraged, remember that all progress started with someone who refused to accept the status quo"
+                }
+            },
+
+            // SAGE QUADRANT (Knight + Wizard) - Service & Wisdom
+
+            // The Archon (sage-pure) - Maximum Knight + Maximum Wizard
+            'sage-pure': {
+                name: "The Archon",
+                tagline: "Philosopher-King Leader",
+                titleAdjectives: ["Wise", "Visionary", "Philosophical", "Strategic", "Principled", "Thoughtful", "Enlightened", "Profound", "Contemplative", "Transcendent"],
+                titleNouns: ["Wisdom Keeper", "Vision Holder", "Truth Seeker", "Knowledge Guardian", "Understanding Builder", "Insight Provider", "Guidance Giver", "Philosophy Teacher", "Reality Shaper", "Future Architect"],
+                attributes: [
+                    { icon: "🧠", name: "Philosophical Depth Scanner", left: "Surface Thinking", right: "Meaning of Life Daily", forceCalc: "wizard", description: "You think about the big questions so much that small talk feels painful" },
+                    { icon: "⚖️", name: "Ethical Framework Rigidity", left: "Situational Ethics", right: "Unshakeable Principles", forceCalc: "(knight + wizard) / 2", description: "You have a moral compass so strong it could navigate ships" },
+                    { icon: "🎯", name: "Long-term Vision Clarity", left: "Wing It Daily", right: "Century Planning", forceCalc: "wizard", description: "You think in decades while others think in quarters" },
+                    { icon: "👑", name: "Natural Authority Presence", left: "Blend Into Crowd", right: "Obvious Leader", forceCalc: "knight", description: "People naturally turn to you for guidance even when you don't ask for it" },
+                    { icon: "📚", name: "Knowledge Integration Ability", left: "Compartmentalized", right: "Universal Connection", forceCalc: "wizard", description: "You see how everything connects to everything else" }
+                ],
+                predictions: [
+                    { icon: "💭", title: "Thought Process", text: "You've probably solved major philosophical problems while doing mundane tasks" },
+                    { icon: "🗣️", title: "Conversations", text: "People seek you out for advice on life decisions and meaning-making" },
+                    { icon: "📚", title: "Learning Style", text: "You read across disciplines and synthesize insights that surprise experts" },
+                    { icon: "🎯", title: "Decision Making", text: "You consider the ethical implications and long-term consequences of everything" },
+                    { icon: "👥", title: "Leadership", text: "You lead through wisdom and example rather than force or manipulation" },
+                    { icon: "🌟", title: "Life Purpose", text: "You feel responsible for leaving the world better than you found it" }
+                ],
+                survival: {
+                    kryptonite: "Superficiality and people who mistake cynicism for wisdom",
+                    superpower: "Seeing the deeper patterns and helping others understand their place in the bigger picture",
+                    warning: "You're about to explain the philosophical implications of something everyone else thinks is simple",
+                    emergency: "When overwhelmed, retreat into contemplation until you can see the higher purpose again"
+                }
+            },
+
+            // The Oracle (sage-counselor) - High Wizard + Moderate Knight
+            'sage-counselor': {
+                name: "The Oracle",
+                tagline: "Knowledge-Focused Helper",
+                titleAdjectives: ["Insightful", "Perceptive", "Analytical", "Intuitive", "Wise", "Discerning", "Observant", "Understanding", "Illuminating", "Revealing"],
+                titleNouns: ["Insight Provider", "Truth Revealer", "Pattern Reader", "Wisdom Sharer", "Understanding Bridge", "Knowledge Translator", "Clarity Bringer", "Perspective Giver", "Connection Maker", "Light Bringer"],
+                attributes: [
+                    { icon: "🔮", name: "Pattern Recognition Sensitivity", left: "Miss the Obvious", right: "See All Connections", forceCalc: "wizard", description: "You spot patterns and trends that others won't see for months" },
+                    { icon: "💡", name: "Insight Delivery Timing", left: "Blurt Out Everything", right: "Perfect Moment Sense", forceCalc: "knight", description: "You know exactly when people are ready to hear difficult truths" },
+                    { icon: "📖", name: "Information Processing Depth", left: "Skim the Surface", right: "Absorb Everything", forceCalc: "wizard", description: "You don't just read information, you metabolize it into wisdom" },
+                    { icon: "🤲", name: "Wisdom Sharing Compulsion", left: "Keep to Self", right: "Must Help Others", forceCalc: "knight", description: "You feel compelled to share insights that could help people" },
+                    { icon: "🧭", name: "Complexity Navigation Skills", left: "Overwhelmed Easily", right: "Complexity Master", forceCalc: "wizard", description: "You thrive in situations that confuse everyone else" }
+                ],
+                predictions: [
+                    { icon: "💬", title: "Conversation Style", text: "People tell you things they've never told anyone else because you really listen" },
+                    { icon: "📱", title: "Information Habits", text: "You consume news and analysis from sources most people have never heard of" },
+                    { icon: "🎯", title: "Problem Solving", text: "You ask the one question that reframes the entire situation" },
+                    { icon: "📚", title: "Learning Approach", text: "You connect ideas across fields in ways that create new understanding" },
+                    { icon: "🤝", title: "Helping Style", text: "You don't just give advice, you help people discover their own answers" },
+                    { icon: "🔍", title: "Research Mode", text: "You dig into topics until you understand not just what but why and how" }
+                ],
+                survival: {
+                    kryptonite: "Information overload and people who won't listen to wisdom they asked for",
+                    superpower: "Synthesizing complex information into clear, actionable insights",
+                    warning: "You're about to share an insight that will change how someone sees everything",
+                    emergency: "When overwhelmed by complexity, step back and look for the simple truth underneath"
+                }
+            },
+
+            // The Advisor (sage-advisor) - High Knight + Moderate Wizard
+            'sage-advisor': {
+                name: "The Advisor",
+                tagline: "Loyal Intellectual Counselor",
+                titleAdjectives: ["Loyal", "Trusted", "Reliable", "Thoughtful", "Dedicated", "Wise", "Supportive", "Steady", "Faithful", "Dependable"],
+                titleNouns: ["Trusted Counsel", "Loyal Guide", "Faithful Advisor", "Reliable Mentor", "Steady Support", "Dedicated Helper", "Committed Guide", "Faithful Companion", "Loyal Servant", "Trusted Friend"],
+                attributes: [
+                    { icon: "🤝", name: "Loyalty Commitment Level", left: "Fair Weather Friend", right: "Ride or Die", forceCalc: "knight", description: "When you commit to someone, you're in it for the long haul" },
+                    { icon: "🧠", name: "Strategic Thinking for Others", left: "Wing It Support", right: "Master Plan Helper", forceCalc: "wizard", description: "You think harder about other people's problems than they do" },
+                    { icon: "👂", name: "Deep Listening Capacity", left: "Waiting to Talk", right: "Professional Listener", forceCalc: "knight", description: "You hear not just words but the feelings and needs underneath" },
+                    { icon: "💡", name: "Advice Quality Control", left: "Quick Opinions", right: "Considered Wisdom", forceCalc: "wizard", description: "You don't just give advice, you craft solutions" },
+                    { icon: "🛡️", name: "Protective Instinct for Advisees", left: "Hands Off Approach", right: "Guardian Mode", forceCalc: "knight", description: "You feel personally invested in the success of people you advise" }
+                ],
+                predictions: [
+                    { icon: "📱", title: "Phone Usage", text: "Your contacts are full of people who call you when making major life decisions" },
+                    { icon: "⏰", title: "Time Management", text: "You block out time to really think about problems people bring to you" },
+                    { icon: "💼", title: "Professional Role", text: "You naturally become the go-to person for guidance in your workplace" },
+                    { icon: "🤔", title: "Problem Approach", text: "You research and consider multiple angles before giving advice" },
+                    { icon: "📚", title: "Knowledge Building", text: "You study topics that help you better serve the people who depend on you" },
+                    { icon: "🎯", title: "Success Measurement", text: "You measure your success by how well the people you advise are doing" }
+                ],
+                survival: {
+                    kryptonite: "Watching people ignore good advice and make obviously bad decisions",
+                    superpower: "Combining deep care with strategic thinking to genuinely help people succeed",
+                    warning: "You're about to spend more time thinking about someone else's problem than they are",
+                    emergency: "When feeling unappreciated, remember that good advice often takes time to be recognized"
+                }
+            },
+
+            // The Mentor (sage-balanced) - Moderate Knight + Moderate Wizard
+            'sage-balanced': {
+                name: "The Mentor",
+                tagline: "Wise Guide and Teacher",
+                titleAdjectives: ["Teaching", "Nurturing", "Patient", "Wise", "Guiding", "Supportive", "Encouraging", "Understanding", "Balanced", "Growth-focused"],
+                titleNouns: ["Growth Guide", "Learning Facilitator", "Development Coach", "Wisdom Teacher", "Progress Helper", "Potential Unlocking", "Skill Builder", "Knowledge Sharer", "Success Enabler", "Future Shaper"],
+                attributes: [
+                    { icon: "🌱", name: "Growth Mindset Intensity", left: "Fixed Abilities", right: "Everything Learnable", forceCalc: "wizard", description: "You see potential everywhere and believe everyone can improve" },
+                    { icon: "⏳", name: "Teaching Patience Reserve", left: "Quick Frustration", right: "Infinite Patience", forceCalc: "knight", description: "You can explain the same thing seventeen different ways without losing enthusiasm" },
+                    { icon: "🎯", name: "Individual Adaptation Skills", left: "One Size Fits All", right: "Personalized Approach", forceCalc: "(knight + wizard) / 2", description: "You automatically adjust your teaching style to match how each person learns" },
+                    { icon: "📈", name: "Progress Celebration Frequency", left: "Only Big Wins", right: "Every Small Step", forceCalc: "knight", description: "You notice and celebrate improvement that others might miss" },
+                    { icon: "🧠", name: "Knowledge Transfer Effectiveness", left: "Information Dump", right: "Wisdom Osmosis", forceCalc: "wizard", description: "You don't just share what you know, you help others understand how to think" }
+                ],
+                predictions: [
+                    { icon: "💬", title: "Conversation Style", text: "You ask questions that help people discover their own answers" },
+                    { icon: "📚", title: "Learning Habits", text: "You're constantly learning new things so you can teach them better" },
+                    { icon: "🤝", title: "Relationship Pattern", text: "You naturally become the person others turn to for guidance and support" },
+                    { icon: "🎯", title: "Success Definition", text: "You measure your success by how much you've helped others grow" },
+                    { icon: "⏰", title: "Time Investment", text: "You spend time preparing to help others even when they don't know you're doing it" },
+                    { icon: "🌟", title: "Legacy Focus", text: "You think about the long-term impact of what you're teaching people" }
+                ],
+                survival: {
+                    kryptonite: "People who don't want to grow and environments that punish learning",
+                    superpower: "Helping others discover capabilities they didn't know they had",
+                    warning: "You're about to turn this casual conversation into a learning opportunity",
+                    emergency: "When frustrated with slow progress, remember that real growth takes time and patience"
                 }
             }
         };
@@ -925,83 +1301,42 @@
 
         let currentArchetypeData = null;
 
-        // Calculate personality type from forces
-        function calculatePersonalityType(forces) {
-            const { cowboy, wizard, pirate, knight } = forces;
-            
-            // Convert percentages back to the 1-7 scale for compatibility
-            const cowboyWizardAvg = ((cowboy / 100) * 6) + 1;
-            const pirateKnightAvg = ((pirate / 100) * 6) + 1;
-            
-            // Use the same logic as the original take_quiz.html
-            let personalityKey;
-            
-            if (pirateKnightAvg <= 3.5) { // More Pirate
-                if (cowboyWizardAvg <= 2.5) {
-                    personalityKey = 'maverick-pure'; // The Wildcard
-                } else if (cowboyWizardAvg <= 3.5) {
-                    personalityKey = 'maverick-free-spirit'; // The Drifter
-                } else if (cowboyWizardAvg <= 4.5) {
-                    personalityKey = 'maverick-balanced'; // The Maverick
-                } else if (cowboyWizardAvg <= 5.5) {
-                    personalityKey = 'maverick-rebel-thinker'; // The Contrarian
-                } else {
-                    personalityKey = 'rogue-strategic'; // The Treasure Hunter
-                }
-            } else { // More Knight
-                if (cowboyWizardAvg <= 2.5) {
-                    personalityKey = 'champion-warrior'; // The Crusader
-                } else if (cowboyWizardAvg <= 3.5) {
-                    personalityKey = 'champion-pure'; // The Paladin
-                } else if (cowboyWizardAvg <= 4.5) {
-                    personalityKey = 'champion-balanced'; // The Guardian
-                } else if (cowboyWizardAvg <= 5.5) {
-                    personalityKey = 'champion-activist'; // The Activist
-                } else {
-                    personalityKey = 'sage-advisor'; // The Advisor
-                }
-            }
-
-            // More nuanced mapping for extreme scores
-            if (pirateKnightAvg <= 2) { // Very Pirate
-                if (cowboyWizardAvg >= 6) {
-                    personalityKey = 'rogue-pure'; // The Mapmaker
-                } else if (cowboyWizardAvg >= 5) {
-                    personalityKey = 'rogue-individualist'; // The Seeker
-                }
-            } else if (pirateKnightAvg >= 6) { // Very Knight
-                if (cowboyWizardAvg >= 6) {
-                    personalityKey = 'sage-pure'; // The Archon
-                } else if (cowboyWizardAvg >= 5) {
-                    personalityKey = 'sage-counselor'; // The Oracle
-                } else if (cowboyWizardAvg <= 3) {
-                    personalityKey = 'champion-pure'; // The Paladin
-                }
-            }
-
-            // Handle balanced middle scores
-            if (pirateKnightAvg > 3.5 && pirateKnightAvg < 4.5) {
-                if (cowboyWizardAvg > 3.5 && cowboyWizardAvg < 4.5) {
-                    personalityKey = 'sage-balanced'; // The Mentor (most balanced)
-                } else if (cowboyWizardAvg >= 5) {
-                    personalityKey = 'rogue-balanced'; // The Wayfinder
-                }
-            }
-            
-            return personalityKey;
-        }
-
         // Update archetype display with image
         function updateArchetypeDisplay(archetypeKey, archetypeData) {
             // Update text content
             document.getElementById('archetypeName').textContent = archetypeData.name;
             document.getElementById('archetypeTagline').textContent = archetypeData.tagline;
             
-            // Update portrait image
+            // Update portrait image with error handling
             const imageElement = document.getElementById('archetypeImage');
-            const imagePath = `images/${archetypeImages[archetypeKey]}`;
-            imageElement.src = imagePath;
-            imageElement.alt = `${archetypeData.name} - ${archetypeData.tagline}`;
+            const imageFilename = archetypeImages[archetypeKey];
+            
+            if (imageFilename) {
+                const imagePath = `images/${imageFilename}`;
+                console.log(`Loading image: ${imagePath} for archetype: ${archetypeKey}`);
+                
+                // Set up error handling for image loading
+                imageElement.onerror = function() {
+                    console.warn(`Failed to load image: ${imagePath}`);
+                    // Fallback to a default image or hide image
+                    this.style.display = 'none';
+                    console.log('Image hidden due to loading error');
+                };
+                
+                imageElement.onload = function() {
+                    console.log(`Successfully loaded image: ${imagePath}`);
+                    this.style.display = 'block';
+                };
+                
+                imageElement.src = imagePath;
+                imageElement.alt = `${archetypeData.name} - ${archetypeData.tagline}`;
+                
+                // Show the image initially (in case it was hidden)
+                imageElement.style.display = 'block';
+            } else {
+                console.warn(`No image filename found for archetype: ${archetypeKey}`);
+                imageElement.style.display = 'none';
+            }
         }
 
         // Random title generator
@@ -1031,12 +1366,14 @@
             document.getElementById('generatedTitle').textContent = randomTitle;
         }
 
-        // Populate attributes section
-        function populateAttributes(attributes) {
+        // Populate attributes section with dynamic calculations
+        function populateAttributes(attributes, forces) {
             const container = document.getElementById('attributeContainer');
             container.innerHTML = '';
             
             attributes.forEach((attr, index) => {
+                const position = calculateAttributePosition(attr.forceCalc, forces);
+                
                 const attributeDiv = document.createElement('div');
                 attributeDiv.className = 'attribute-item';
                 attributeDiv.style.animationDelay = `${index * 0.1}s`;
@@ -1045,18 +1382,15 @@
                         <span class="attribute-icon">${attr.icon}</span>
                         <span class="attribute-name">${attr.name}</span>
                     </div>
-                    <div class="spectrum-container">
-                        <div class="spectrum-labels">
-                            <span>${attr.left}</span>
-                            <span>${attr.right}</span>
+                    <div class="attribute-scale">
+                        <div class="scale-label">${attr.left}</div>
+                        <div class="scale-bar">
+                            <div class="scale-fill" style="width: ${position}%;"></div>
+                            <div class="scale-indicator" style="left: ${position}%;"></div>
                         </div>
-                        <div class="spectrum-bar">
-                            <div class="spectrum-indicator" style="left: ${attr.position}%"></div>
-                        </div>
+                        <div class="scale-label right">${attr.right}</div>
                     </div>
-                    <div class="attribute-description">
-                        ${attr.description}
-                    </div>
+                    <div class="attribute-description">${attr.description}</div>
                 `;
                 container.appendChild(attributeDiv);
             });
@@ -1067,75 +1401,72 @@
             const container = document.getElementById('predictionContainer');
             container.innerHTML = '';
             
-            predictions.forEach((pred, index) => {
-                const predDiv = document.createElement('div');
-                predDiv.className = 'prediction-item';
-                predDiv.style.animationDelay = `${index * 0.1}s`;
-                predDiv.innerHTML = `
-                    <div class="prediction-icon">${pred.icon}</div>
-                    <div class="prediction-title">${pred.title}</div>
-                    <div class="prediction-text">${pred.text}</div>
+            predictions.forEach(prediction => {
+                const predictionDiv = document.createElement('div');
+                predictionDiv.className = 'prediction-item';
+                predictionDiv.innerHTML = `
+                    <div class="prediction-header">
+                        <span class="prediction-icon">${prediction.icon}</span>
+                        <span class="prediction-title">${prediction.title}</span>
+                    </div>
+                    <div class="prediction-text">${prediction.text}</div>
                 `;
-                container.appendChild(predDiv);
+                container.appendChild(predictionDiv);
             });
         }
 
-        // Populate survival guide
-        function populateSurvival(survival) {
+        // Populate survival guide section
+        function populateSurvivalGuide(survival) {
             const container = document.getElementById('survivalContainer');
-            container.innerHTML = `
-                <div class="survival-item">
-                    <div class="survival-icon">🎯</div>
-                    <div class="survival-title">Your Kryptonite</div>
-                    <div class="survival-text">${survival.kryptonite}</div>
-                </div>
-                <div class="survival-item">
-                    <div class="survival-icon">🚀</div>
-                    <div class="survival-title">Your Superpower</div>
-                    <div class="survival-text">${survival.superpower}</div>
-                </div>
-                <div class="survival-item">
-                    <div class="survival-icon">⚠️</div>
-                    <div class="survival-title">Warning Signs</div>
-                    <div class="survival-text">${survival.warning}</div>
-                </div>
-                <div class="survival-item">
-                    <div class="survival-icon">🎪</div>
-                    <div class="survival-title">Emergency Protocol</div>
-                    <div class="survival-text">${survival.emergency}</div>
-                </div>
-            `;
+            container.innerHTML = '';
+            
+            const survivalItems = [
+                { key: 'kryptonite', label: '🚫 Kryptonite', class: 'kryptonite' },
+                { key: 'superpower', label: '⚡ Superpower', class: 'superpower' },
+                { key: 'warning', label: '⚠️ Warning Sign', class: 'warning' },
+                { key: 'emergency', label: '🆘 Emergency Protocol', class: 'emergency' }
+            ];
+            
+            survivalItems.forEach(item => {
+                const survivalDiv = document.createElement('div');
+                survivalDiv.className = `survival-item ${item.class}`;
+                survivalDiv.innerHTML = `
+                    <div class="survival-label">${item.label}</div>
+                    <div class="survival-text">${survival[item.key]}</div>
+                `;
+                container.appendChild(survivalDiv);
+            });
         }
 
-        // Force mixer functionality
+        // Setup force mixer
         function setupForceMixer() {
-            const sliders = ['mixerCowboy', 'mixerWizard', 'mixerPirate', 'mixerKnight'];
+            const sliders = ['cowboy', 'wizard', 'pirate', 'knight'];
             
-            sliders.forEach(sliderId => {
-                const slider = document.getElementById(sliderId);
-                const valueDisplay = document.getElementById(sliderId + 'Value');
+            sliders.forEach(force => {
+                const slider = document.getElementById(`${force}Mixer`);
+                const valueSpan = document.getElementById(`${force}MixerValue`);
                 
                 slider.addEventListener('input', function() {
-                    valueDisplay.textContent = this.value + '%';
+                    valueSpan.textContent = this.value;
                     updateMixerPrediction();
                 });
             });
         }
 
+        // Update mixer prediction based on slider values
         function updateMixerPrediction() {
-            const cowboy = parseInt(document.getElementById('mixerCowboy').value);
-            const wizard = parseInt(document.getElementById('mixerWizard').value);
-            const pirate = parseInt(document.getElementById('mixerPirate').value);
-            const knight = parseInt(document.getElementById('mixerKnight').value);
+            const cowboy = parseInt(document.getElementById('cowboyMixer').value);
+            const wizard = parseInt(document.getElementById('wizardMixer').value);
+            const pirate = parseInt(document.getElementById('pirateMixer').value);
+            const knight = parseInt(document.getElementById('knightMixer').value);
             
             let prediction = "";
             
-            if (wizard > 70) {
-                prediction = "With high Wizard energy, you'd probably overthink your rebellions and create elaborate strategic plans for disruption instead of just winging it.";
-            } else if (knight > 70) {
-                prediction = "With high Knight energy, you'd channel your rebellious spirit into fighting for justice and protecting others rather than just challenging the system.";
-            } else if (cowboy > 80) {
-                prediction = "With maximum Cowboy energy, you'd be even more action-oriented, probably starting revolutions before thinking them through completely.";
+            // Generate dynamic predictions based on force combinations
+            if (cowboy > 80 && pirate > 80) {
+                prediction = "With maximum Cowboy and Pirate forces, you'd be pure chaos in motion - the type of person who starts revolutions accidentally.";
+            } else if (wizard > 80 && knight > 80) {
+                prediction = "With high Wizard and Knight forces, you'd be the wise counselor everyone turns to - probably ending up as the mentor figure in every group.";
             } else if (pirate > 90) {
                 prediction = "With maximum Pirate energy, you'd be pure chaos - breaking every rule just because it exists, probably starting your own company just to avoid having a boss.";
             } else if (wizard < 30 && knight < 30) {
@@ -1169,6 +1500,9 @@
                 forces = quizResults.forces;
             }
             
+            console.log(`Populating results for archetype: ${archetype}`);
+            console.log('Forces:', forces);
+            
             // Check if archetype exists in our data
             if (!archetypeData[archetype]) {
                 console.warn(`Archetype ${archetype} not found, using maverick-balanced`);
@@ -1176,6 +1510,7 @@
             }
             
             currentArchetypeData = archetypeData[archetype];
+            console.log('Current archetype data:', currentArchetypeData);
             
             // Update header with image
             updateArchetypeDisplay(archetype, currentArchetypeData);
@@ -1187,44 +1522,39 @@
             document.getElementById('knightPercentage').textContent = forces.knight + '%';
             
             // Update force description
-            const sortedForces = Object.entries(forces).sort((a, b) => b[1] - a[1]);
-            const highest = sortedForces[0];
-            const second = sortedForces[1];
+            const sortedForces = Object.entries(forces).sort(([,a], [,b]) => b - a);
+            const dominantForce = sortedForces[0][0];
+            const secondaryForce = sortedForces[1][0];
             
-            document.getElementById('forceDescription').textContent = 
-                `You're feeling ${highest[1]}% ${highest[0]} and ${second[1]}% ${second[0]}!`;
+            const forceDescriptions = {
+                cowboy: "action-oriented and bold",
+                wizard: "reflective and strategic", 
+                pirate: "independent and freedom-seeking",
+                knight: "service-oriented and loyal"
+            };
             
-            // Update mixer
-            document.getElementById('mixerCowboy').value = forces.cowboy;
-            document.getElementById('mixerWizard').value = forces.wizard;
-            document.getElementById('mixerPirate').value = forces.pirate;
-            document.getElementById('mixerKnight').value = forces.knight;
+            document.getElementById('forceDescription').innerHTML = `
+                <p style="text-align: center; color: rgba(255,255,255,0.8); font-size: 1.1rem; margin-top: 20px;">
+                    You are primarily <strong>${forceDescriptions[dominantForce]}</strong> with strong 
+                    <strong>${forceDescriptions[secondaryForce]}</strong> tendencies.
+                </p>
+            `;
             
-            document.getElementById('mixerCowboyValue').textContent = forces.cowboy + '%';
-            document.getElementById('mixerWizardValue').textContent = forces.wizard + '%';
-            document.getElementById('mixerPirateValue').textContent = forces.pirate + '%';
-            document.getElementById('mixerKnightValue').textContent = forces.knight + '%';
-            
-            // Populate content sections
-            populateAttributes(currentArchetypeData.attributes);
-            populatePredictions(currentArchetypeData.predictions);
-            populateSurvival(currentArchetypeData.survival);
+            // Populate all sections with dynamic data
+            if (currentArchetypeData) {
+                populateAttributes(currentArchetypeData.attributes, forces);
+                populatePredictions(currentArchetypeData.predictions);
+                populateSurvivalGuide(currentArchetypeData.survival);
+            }
             
             // Animate force bars
             animateForceBars(forces);
-            
-            return true;
         }
 
-        // Initialize everything when page loads
+        // Initialize page
         document.addEventListener('DOMContentLoaded', function() {
-            // Show loading initially
-            document.getElementById('loadingState').style.display = 'block';
-            document.getElementById('mainResults').style.display = 'none';
-            document.getElementById('errorState').style.display = 'none';
-            
             setTimeout(() => {
-                // Try to load quiz results from sessionStorage
+                // Try to get quiz results from sessionStorage
                 const savedResults = sessionStorage.getItem('quizResults');
                 
                 if (savedResults) {

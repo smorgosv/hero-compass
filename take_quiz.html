@@ -909,61 +909,8 @@
             const piratePercent = Math.round(((pirateKnightAvg - 1) / 6) * 100);
             const knightPercent = 100 - piratePercent;
 
-            // Determine archetype based on dominant forces with more nuanced logic
-            let archetypeKey = 'maverick-balanced'; // default
-            
-            // Use the same logic as the results page expects
-            if (pirateKnightAvg <= 3.5) { // More Pirate
-                if (cowboyWizardAvg <= 2.5) {
-                    archetypeKey = 'maverick-pure'; // The Wildcard
-                } else if (cowboyWizardAvg <= 3.5) {
-                    archetypeKey = 'maverick-free-spirit'; // The Drifter
-                } else if (cowboyWizardAvg <= 4.5) {
-                    archetypeKey = 'maverick-balanced'; // The Maverick
-                } else if (cowboyWizardAvg <= 5.5) {
-                    archetypeKey = 'maverick-rebel-thinker'; // The Contrarian
-                } else {
-                    archetypeKey = 'rogue-strategic'; // The Treasure Hunter
-                }
-            } else { // More Knight
-                if (cowboyWizardAvg <= 2.5) {
-                    archetypeKey = 'champion-warrior'; // The Crusader
-                } else if (cowboyWizardAvg <= 3.5) {
-                    archetypeKey = 'champion-pure'; // The Paladin
-                } else if (cowboyWizardAvg <= 4.5) {
-                    archetypeKey = 'champion-balanced'; // The Guardian
-                } else if (cowboyWizardAvg <= 5.5) {
-                    archetypeKey = 'champion-activist'; // The Activist
-                } else {
-                    archetypeKey = 'sage-advisor'; // The Advisor
-                }
-            }
-
-            // More nuanced mapping for extreme scores
-            if (pirateKnightAvg <= 2) { // Very Pirate
-                if (cowboyWizardAvg >= 6) {
-                    archetypeKey = 'rogue-pure'; // The Mapmaker
-                } else if (cowboyWizardAvg >= 5) {
-                    archetypeKey = 'rogue-individualist'; // The Seeker
-                }
-            } else if (pirateKnightAvg >= 6) { // Very Knight
-                if (cowboyWizardAvg >= 6) {
-                    archetypeKey = 'sage-pure'; // The Archon
-                } else if (cowboyWizardAvg >= 5) {
-                    archetypeKey = 'sage-counselor'; // The Oracle
-                } else if (cowboyWizardAvg <= 3) {
-                    archetypeKey = 'champion-pure'; // The Paladin
-                }
-            }
-
-            // Handle balanced middle scores
-            if (pirateKnightAvg > 3.5 && pirateKnightAvg < 4.5) {
-                if (cowboyWizardAvg > 3.5 && cowboyWizardAvg < 4.5) {
-                    archetypeKey = 'sage-balanced'; // The Mentor (most balanced)
-                } else if (cowboyWizardAvg >= 5) {
-                    archetypeKey = 'rogue-balanced'; // The Wayfinder
-                }
-            }
+            // Determine archetype based on proper percentage ranges
+            const archetypeKey = determineProperArchetype(cowboyPercent, wizardPercent, piratePercent, knightPercent);
 
             return {
                 archetype: archetypeKey,
@@ -975,6 +922,152 @@
                 },
                 responses: answers
             };
+        }
+
+        function determineProperArchetype(cowboyPercent, wizardPercent, piratePercent, knightPercent) {
+            // Define force dominance levels
+            function getDominanceLevel(percentage) {
+                if (percentage >= 76) return 'extreme';     // 76-100% - Pure/Extreme types
+                if (percentage >= 51) return 'dominant';    // 51-75% - Balanced but leaning types
+                return 'weak';                              // 0-50% - Opposite force is dominant
+            }
+
+            const cowboyLevel = getDominanceLevel(cowboyPercent);
+            const wizardLevel = getDominanceLevel(wizardPercent);
+            const pirateLevel = getDominanceLevel(piratePercent);
+            const knightLevel = getDominanceLevel(knightPercent);
+
+            // MAVERICK QUADRANT - Based on corrected mappings
+            
+            // The Wildcard: 76%+ Cowboy + 76%+ Pirate
+            if (cowboyLevel === 'extreme' && pirateLevel === 'extreme') {
+                return 'maverick-pure';
+            }
+            
+            // The Maverick: 51-75% Cowboy + 51-75% Pirate
+            if (cowboyLevel === 'dominant' && pirateLevel === 'dominant') {
+                return 'maverick-balanced';
+            }
+            
+            // The Drifter: 76%+ Cowboy + 51-75% Pirate
+            if (cowboyLevel === 'extreme' && pirateLevel === 'dominant') {
+                return 'maverick-free-spirit';
+            }
+            
+            // The Contrarian: 76%+ Pirate + 51-75% Wizard
+            if (pirateLevel === 'extreme' && wizardLevel === 'dominant') {
+                return 'maverick-rebel-thinker';
+            }
+
+            // ROGUE QUADRANT - Based on corrected mappings
+            
+            // The Mapmaker: 76%+ Wizard + 76%+ Pirate
+            if (wizardLevel === 'extreme' && pirateLevel === 'extreme') {
+                return 'rogue-pure';
+            }
+            
+            // The Treasure Hunter: 76%+ Pirate + 51-75% Wizard
+            if (pirateLevel === 'extreme' && wizardLevel === 'dominant') {
+                return 'rogue-strategic';
+            }
+            
+            // The Wayfinder: 51-75% Wizard + 51-75% Pirate
+            if (wizardLevel === 'dominant' && pirateLevel === 'dominant') {
+                return 'rogue-balanced';
+            }
+            
+            // The Seeker: 76%+ Wizard + 51-75% Pirate
+            if (wizardLevel === 'extreme' && pirateLevel === 'dominant') {
+                return 'rogue-individualist';
+            }
+
+            // CHAMPION QUADRANT - Based on corrected mappings
+            
+            // The Crusader: 76%+ Cowboy + 51-75% Knight
+            if (cowboyLevel === 'extreme' && knightLevel === 'dominant') {
+                return 'champion-warrior';
+            }
+            
+            // The Paladin: 76%+ Cowboy + 76%+ Knight
+            if (cowboyLevel === 'extreme' && knightLevel === 'extreme') {
+                return 'champion-pure';
+            }
+            
+            // The Guardian: 51-75% Cowboy + 51-75% Knight
+            if (cowboyLevel === 'dominant' && knightLevel === 'dominant') {
+                return 'champion-balanced';
+            }
+            
+            // The Activist: 76%+ Knight + 51-75% Wizard
+            if (knightLevel === 'extreme' && wizardLevel === 'dominant') {
+                return 'champion-activist';
+            }
+
+            // SAGE QUADRANT - Based on corrected mappings
+            
+            // The Archon: 76%+ Wizard + 76%+ Knight
+            if (wizardLevel === 'extreme' && knightLevel === 'extreme') {
+                return 'sage-pure';
+            }
+            
+            // The Oracle: 76%+ Wizard + 51-75% Knight
+            if (wizardLevel === 'extreme' && knightLevel === 'dominant') {
+                return 'sage-counselor';
+            }
+            
+            // The Advisor: 76%+ Knight + 51-75% Wizard
+            if (knightLevel === 'extreme' && wizardLevel === 'dominant') {
+                return 'sage-advisor';
+            }
+            
+            // The Mentor: 51-75% Knight + 51-75% Wizard
+            if (knightLevel === 'dominant' && wizardLevel === 'dominant') {
+                return 'sage-balanced';
+            }
+
+            // FALLBACK LOGIC - Handle edge cases and determine best fit
+            
+            // If someone has extreme forces but doesn't match exact patterns above
+            if (cowboyLevel === 'extreme') {
+                if (pirateLevel === 'weak' && knightLevel === 'weak') {
+                    // High cowboy but balanced/low service → lean toward action-oriented types
+                    return knightPercent > piratePercent ? 'champion-warrior' : 'maverick-free-spirit';
+                }
+            }
+            
+            if (wizardLevel === 'extreme') {
+                if (pirateLevel === 'weak' && knightLevel === 'weak') {
+                    // High wizard but balanced/low service → lean toward strategic types
+                    return knightPercent > piratePercent ? 'sage-counselor' : 'rogue-individualist';
+                }
+            }
+            
+            if (pirateLevel === 'extreme') {
+                if (cowboyLevel === 'weak' && wizardLevel === 'weak') {
+                    // High pirate but balanced action → lean toward independent types
+                    return cowboyPercent > wizardPercent ? 'maverick-free-spirit' : 'rogue-strategic';
+                }
+            }
+            
+            if (knightLevel === 'extreme') {
+                if (cowboyLevel === 'weak' && wizardLevel === 'weak') {
+                    // High knight but balanced action → lean toward service types
+                    return cowboyPercent > wizardPercent ? 'champion-warrior' : 'sage-advisor';
+                }
+            }
+
+            // FINAL FALLBACK - Determine quadrant by strongest force
+            const maxPercent = Math.max(cowboyPercent, wizardPercent, piratePercent, knightPercent);
+            
+            if (maxPercent === piratePercent) {
+                return 'maverick-balanced';  // Default Maverick quadrant
+            } else if (maxPercent === knightPercent) {
+                return 'champion-balanced';  // Default Champion quadrant
+            } else if (maxPercent === wizardPercent) {
+                return 'sage-balanced';      // Default Sage quadrant
+            } else {
+                return 'maverick-balanced';  // Default to action-oriented
+            }
         }
 
         function showResults() {
