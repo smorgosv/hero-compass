@@ -1492,14 +1492,38 @@
             animateForceBars(forces);
         }
 
-        // Initialize page with demo functionality
+        // Initialize page with quiz results or demo functionality
         document.addEventListener('DOMContentLoaded', function() {
             setTimeout(() => {
-                // Check URL parameters for demo functionality
+                // First, try to get quiz results from sessionStorage
+                const storedResults = sessionStorage.getItem('quizResults');
+                
+                if (storedResults) {
+                    try {
+                        const quizResults = JSON.parse(storedResults);
+                        console.log('Found stored quiz results:', quizResults);
+                        
+                        // Validate that we have the required data
+                        if (quizResults.archetype && quizResults.forces) {
+                            populateResults(quizResults);
+                            document.getElementById('loadingState').style.display = 'none';
+                            document.getElementById('mainResults').style.display = 'block';
+                            generateRandomTitle();
+                            return; // Successfully loaded quiz results
+                        } else {
+                            console.warn('Invalid quiz results structure:', quizResults);
+                        }
+                    } catch (error) {
+                        console.error('Error parsing stored quiz results:', error);
+                    }
+                }
+                
+                // If no valid stored results, check URL parameters for demo functionality
                 const urlParams = new URLSearchParams(window.location.search);
                 const archetypeParam = urlParams.get('archetype');
                 
                 if (archetypeParam && archetypeData[archetypeParam]) {
+                    console.log('Loading demo for archetype:', archetypeParam);
                     // Load demo with predefined forces
                     const forces = demoForces[archetypeParam] || { cowboy: 50, wizard: 50, pirate: 50, knight: 50 };
                     populateResults({ 
@@ -1509,10 +1533,10 @@
                     
                     document.getElementById('loadingState').style.display = 'none';
                     document.getElementById('mainResults').style.display = 'block';
-                    
                     generateRandomTitle();
                 } else {
-                    // Show error state since no valid archetype specified
+                    // No valid data found - show error state
+                    console.log('No quiz results found in sessionStorage and no valid archetype parameter');
                     showErrorState();
                 }
             }, 1500); // Simulated loading time
