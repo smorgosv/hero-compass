@@ -372,8 +372,8 @@
             height: 100%;
             background: linear-gradient(90deg, #ff6b6b, #ffd700, #4ecdc4);
             border-radius: 6px;
-            transition: width 0.8s ease;
-            width: 0%;
+            transition: all 0.8s ease;
+            position: absolute;
         }
 
         .scale-indicator {
@@ -719,6 +719,27 @@
             
             // Ensure value stays within 0-100 range
             return Math.max(0, Math.min(100, Math.round(mappedValue)));
+        }
+
+        // Function to calculate bar position and width for center-origin bars
+        function calculateCenterBar(percentage) {
+            const centerPoint = 50;
+            
+            if (percentage >= centerPoint) {
+                // Bar extends from center to the right
+                return {
+                    left: centerPoint,
+                    width: percentage - centerPoint,
+                    direction: 'right'
+                };
+            } else {
+                // Bar extends from left edge to center
+                return {
+                    left: percentage,
+                    width: centerPoint - percentage,
+                    direction: 'left'
+                };
+            }
         }
         
         // Helper function to map a value from one range to another
@@ -1339,6 +1360,7 @@
             
             attributes.forEach((attr, index) => {
                 const position = calculateAttributePosition(attr, forces);
+                const barInfo = calculateCenterBar(position);
                 
                 console.log(`Attribute: ${attr.name}`);
                 console.log(`  Formula: ${attr.forceCalc}`);
@@ -1356,7 +1378,7 @@
                     <div class="attribute-scale">
                         <div class="scale-label">${attr.left}</div>
                         <div class="scale-bar">
-                            <div class="scale-fill" style="width: ${position}%;"></div>
+                            <div class="scale-fill" style="left: ${barInfo.left}%; width: ${barInfo.width}%;"></div>
                             <div class="scale-indicator" style="left: ${position}%;"></div>
                         </div>
                         <div class="scale-label right">${attr.right}</div>
