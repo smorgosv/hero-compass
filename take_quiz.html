@@ -262,71 +262,113 @@
             padding: 0 20px;
         }
 
-        .slider-container {
+        /* Enhanced Scale Container */
+        .scale-container {
             margin-bottom: 30px;
+            padding: 20px;
         }
 
-        .slider-labels {
+        .scale-labels {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 20px;
-            font-size: 1rem;
-            color: rgba(255,255,255,0.8);
-            font-weight: 500;
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.9);
+            font-weight: 600;
         }
 
         .left-label {
             text-align: left;
             flex: 1;
             padding-right: 20px;
+            color: #ff6b6b;
         }
 
         .right-label {
             text-align: right;
             flex: 1;
             padding-left: 20px;
+            color: #4ecdc4;
         }
 
-        .slider {
-            width: 100%;
-            height: 10px;
-            border-radius: 5px;
-            background: linear-gradient(90deg, #ff6b6b, #ffd700, #4ecdc4);
-            outline: none;
-            opacity: 0.8;
-            transition: opacity 0.2s;
+        /* Clickable Scale */
+        .clickable-scale {
+            display: flex;
+            justify-content: space-between;
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 8px;
+            gap: 4px;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.3);
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+
+        .scale-zone {
+            flex: 1;
+            height: 50px;
+            border-radius: 10px;
             cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+            position: relative;
+            border: 2px solid transparent;
+            background: rgba(255,255,255,0.05);
         }
 
-        .slider:hover {
-            opacity: 1;
+
+
+        /* Zone colors - gradient from left (red) to right (teal) */
+        .scale-zone:nth-child(1) { background: linear-gradient(135deg, #ff6b6b, #ff5252); }
+        .scale-zone:nth-child(2) { background: linear-gradient(135deg, #ff7043, #ff6b6b); }
+        .scale-zone:nth-child(3) { background: linear-gradient(135deg, #ffab40, #ff8a65); }
+        .scale-zone:nth-child(4) { 
+            background: linear-gradient(135deg, #ffd700, #ffb74d); 
+            border-color: rgba(255,215,0,0.5);
+            box-shadow: 0 0 15px rgba(255,215,0,0.3);
+        }
+        .scale-zone:nth-child(5) { background: linear-gradient(135deg, #66bb6a, #4caf50); }
+        .scale-zone:nth-child(6) { background: linear-gradient(135deg, #4ecdc4, #26a69a); }
+        .scale-zone:nth-child(7) { background: linear-gradient(135deg, #26c6da, #00acc1); }
+
+        .scale-zone:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+            border-color: rgba(255,255,255,0.5);
         }
 
-        .slider::-webkit-slider-thumb {
-            appearance: none;
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            background: #f4f4f4;
-            cursor: pointer;
-            border: 4px solid #ffd700;
-            box-shadow: 0 3px 15px rgba(0,0,0,0.4);
-            transition: all 0.2s ease;
+        .scale-zone.selected {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 10px 30px rgba(255,215,0,0.6);
+            border-color: #ffd700;
+            z-index: 10;
+            position: relative;
         }
 
-        .slider::-webkit-slider-thumb:hover {
-            transform: scale(1.1);
-            border-color: #ff6b6b;
+        .scale-zone.selected::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
         }
 
-        .slider::-moz-range-thumb {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            background: #f4f4f4;
-            cursor: pointer;
-            border: 4px solid #ffd700;
-            box-shadow: 0 3px 15px rgba(0,0,0,0.4);
+
+
+        /* Instruction text */
+        .scale-instruction {
+            text-align: center;
+            color: rgba(255,255,255,0.7);
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            font-style: italic;
         }
 
         .navigation {
@@ -440,6 +482,15 @@
                 min-height: 60px;
             }
             
+            .scale-zone {
+                height: 45px;
+                font-size: 0.8rem;
+            }
+            
+            .scale-labels {
+                font-size: 1rem;
+            }
+            
             .navigation {
                 flex-direction: column;
                 gap: 20px;
@@ -451,12 +502,17 @@
         }
 
         @media (max-width: 480px) {
-            .slider-labels {
+            .scale-labels {
                 font-size: 0.9rem;
             }
             
             .left-label, .right-label {
                 padding: 0 10px;
+            }
+            
+            .scale-zone {
+                height: 40px;
+                font-size: 0.7rem;
             }
             
             .navigation {
@@ -523,7 +579,7 @@
                     <div class="instruction-item">Consider how you typically behave across different situations</div>
                     <div class="instruction-item">There are no right or wrong answers—every archetype has its strengths</div>
                     <div class="instruction-item">The quiz takes about 5-7 minutes to complete</div>
-                    <div class="instruction-item">Questions are intentionally simple—trust your first instinct</div>
+                    <div class="instruction-item">Click on the zones to indicate your preference strength</div>
                 </div>
                 
                 <button class="start-btn" onclick="startQuiz()">Begin Your Journey</button>
@@ -533,7 +589,7 @@
             <div class="quiz-section" id="quizSection">
                 <div class="quiz-header">
                     <h2>Your Heroic Assessment</h2>
-                    <p>Answer based on your natural instincts and typical behavior</p>
+                    <p>Click on the scale to indicate your preference strength</p>
                 </div>
 
                 <div id="quizQuestions">
@@ -790,12 +846,22 @@
                 questionDiv.innerHTML = `
                     <div class="question-number">Question ${newIndex + 1} of 30</div>
                     <div class="question-text">${questionData[originalIndex].text}</div>
-                    <div class="slider-container">
-                        <div class="slider-labels">
+                    <div class="scale-container">
+                        <div class="scale-labels">
                             <span class="left-label">${leftLabel}</span>
                             <span class="right-label">${rightLabel}</span>
                         </div>
-                        <input type="range" min="1" max="7" value="4" class="slider" data-axis="${questionData[originalIndex].axis}">
+                        <div class="scale-instruction">Click on a zone to indicate your preference strength</div>
+                        <div class="clickable-scale" data-axis="${questionData[originalIndex].axis}">
+                            <div class="scale-zone" data-value="1" onclick="selectZone(this, 1)"></div>
+                            <div class="scale-zone" data-value="2" onclick="selectZone(this, 2)"></div>
+                            <div class="scale-zone" data-value="3" onclick="selectZone(this, 3)"></div>
+                            <div class="scale-zone" data-value="4" onclick="selectZone(this, 4)"></div>
+                            <div class="scale-zone" data-value="5" onclick="selectZone(this, 5)"></div>
+                            <div class="scale-zone" data-value="6" onclick="selectZone(this, 6)"></div>
+                            <div class="scale-zone" data-value="7" onclick="selectZone(this, 7)"></div>
+                        </div>
+
                     </div>
                 `;
                 
@@ -803,14 +869,39 @@
             });
         }
 
+        function selectZone(zoneElement, value) {
+            // Remove previous selection in this question
+            const currentScale = zoneElement.parentElement;
+            const zones = currentScale.querySelectorAll('.scale-zone');
+            zones.forEach(zone => zone.classList.remove('selected'));
+            
+            // Add selection to clicked zone
+            zoneElement.classList.add('selected');
+            
+            // Store the value for this question
+            const currentQuestionDiv = document.querySelector('.question.active');
+            currentQuestionDiv.setAttribute('data-selected-value', value);
+        }
+
         function changeQuestion(direction) {
             if (direction === 1 && currentQuestion < 29) {
-                // Save current answer
-                const currentSlider = document.querySelector('.question.active .slider');
+                // Check if an answer was selected
                 const currentQuestionDiv = document.querySelector('.question.active');
-                const originalIndex = parseInt(currentQuestionDiv.getAttribute('data-original-index'));
+                const selectedValue = currentQuestionDiv.getAttribute('data-selected-value');
                 
-                let answer = parseInt(currentSlider.value);
+                if (!selectedValue) {
+                    // Flash the scale to indicate they need to select
+                    const scale = currentQuestionDiv.querySelector('.clickable-scale');
+                    scale.style.animation = 'shake 0.5s ease-in-out';
+                    setTimeout(() => {
+                        scale.style.animation = '';
+                    }, 500);
+                    return;
+                }
+                
+                // Save current answer
+                const originalIndex = parseInt(currentQuestionDiv.getAttribute('data-original-index'));
+                let answer = parseInt(selectedValue);
                 
                 // Flip answer if question direction was flipped
                 if (questionData[originalIndex].flipped) {
@@ -848,17 +939,32 @@
                         displayAnswer = 8 - displayAnswer;
                     }
                     
-                    document.querySelector('.question.active .slider').value = displayAnswer;
+                    // Select the appropriate zone
+                    const zones = currentQuestionDiv.querySelectorAll('.scale-zone');
+                    zones.forEach(zone => zone.classList.remove('selected'));
+                    zones[displayAnswer - 1].classList.add('selected');
+                    currentQuestionDiv.setAttribute('data-selected-value', displayAnswer);
                 }
                 
                 document.getElementById('nextBtn').textContent = 'Next';
             } else if (direction === 1 && currentQuestion === 29) {
-                // Save final answer and show results
-                const currentSlider = document.querySelector('.question.active .slider');
+                // Check if final answer was selected
                 const currentQuestionDiv = document.querySelector('.question.active');
-                const originalIndex = parseInt(currentQuestionDiv.getAttribute('data-original-index'));
+                const selectedValue = currentQuestionDiv.getAttribute('data-selected-value');
                 
-                let answer = parseInt(currentSlider.value);
+                if (!selectedValue) {
+                    // Flash the scale to indicate they need to select
+                    const scale = currentQuestionDiv.querySelector('.clickable-scale');
+                    scale.style.animation = 'shake 0.5s ease-in-out';
+                    setTimeout(() => {
+                        scale.style.animation = '';
+                    }, 500);
+                    return;
+                }
+                
+                // Save final answer and show results
+                const originalIndex = parseInt(currentQuestionDiv.getAttribute('data-original-index'));
+                let answer = parseInt(selectedValue);
                 
                 // Flip answer if question direction was flipped
                 if (questionData[originalIndex].flipped) {
@@ -1096,6 +1202,17 @@
                 window.location.href = 'enhanced_results.html';
             }, 2500);
         }
+
+        // Add shake animation for validation feedback
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                25% { transform: translateX(-5px); }
+                75% { transform: translateX(5px); }
+            }
+        `;
+        document.head.appendChild(style);
 
         // Initialize on page load - show pre-quiz by default
         document.addEventListener('DOMContentLoaded', function() {
