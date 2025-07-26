@@ -500,8 +500,6 @@
             line-height: 1.5;
         }
 
-        /* Force Mixer - REMOVED */
-
         .btn-primary {
             background: linear-gradient(45deg, #ffd700, #ffed4e);
             color: #1a1a2e;
@@ -532,10 +530,6 @@
             }
             
             .survival-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .mixer-controls {
                 grid-template-columns: repeat(2, 1fr);
             }
         }
@@ -601,8 +595,8 @@
         <!-- Error State -->
         <div id="errorState" class="error-state" style="display: none;">
             <div class="error-icon">🤔</div>
-            <div class="error-title">No Quiz Results Found</div>
-            <div class="error-text">It looks like you haven't taken the quiz yet, or your results have expired.</div>
+            <div class="error-title">No Archetype Data Available</div>
+            <div class="error-text">The archetype data is not yet loaded into the system.</div>
             <a href="take_quiz.html" class="btn-primary">Take the Quiz</a>
         </div>
 
@@ -610,8 +604,8 @@
         <div id="mainResults" style="display: none;">
             <!-- Header Section -->
             <div class="results-header">
-                <h1 class="archetype-name" id="archetypeName">The Maverick</h1>
-                <p class="archetype-tagline" id="archetypeTagline">Strategic Independent</p>
+                <h1 class="archetype-name" id="archetypeName">Your Archetype</h1>
+                <p class="archetype-tagline" id="archetypeTagline">Loading...</p>
                 
                 <!-- Archetype Portrait -->
                 <div class="archetype-portrait">
@@ -620,7 +614,7 @@
                 
                 <div class="title-generator">
                     <div class="generator-label">🎲 Today you are the:</div>
-                    <div class="generated-title" id="generatedTitle">Strategic Corporate Culture Disruptor</div>
+                    <div class="generated-title" id="generatedTitle">Loading your unique title...</div>
                     <button class="regenerate-btn" onclick="generateRandomTitle()">🎯 Generate New Title</button>
                 </div>
             </div>
@@ -696,39 +690,112 @@
     </div>
 
     <script>
-        // Function to calculate attribute position based on force percentages
-        function calculateAttributePosition(forceCalc, forces) {
+        // Function to calculate attribute position with custom mapping ranges
+        function calculateAttributePosition(attribute, forces) {
             const { cowboy, wizard, pirate, knight } = forces;
             
-            // Handle different calculation types
+            // First calculate the raw value using the force calculation
+            let rawValue;
+            const forceCalc = attribute.forceCalc;
+            
             if (forceCalc.includes('/')) {
                 // Handle averaging like "(pirate + cowboy) / 2"
-                return Math.round(eval(forceCalc.replace(/cowboy/g, cowboy).replace(/wizard/g, wizard).replace(/pirate/g, pirate).replace(/knight/g, knight)));
+                rawValue = eval(forceCalc.replace(/cowboy/g, cowboy).replace(/wizard/g, wizard).replace(/pirate/g, pirate).replace(/knight/g, knight));
             } else if (forceCalc.includes('-')) {
                 // Handle subtraction like "100 - pirate"
-                return Math.round(eval(forceCalc.replace(/cowboy/g, cowboy).replace(/wizard/g, wizard).replace(/pirate/g, pirate).replace(/knight/g, knight)));
+                rawValue = eval(forceCalc.replace(/cowboy/g, cowboy).replace(/wizard/g, wizard).replace(/pirate/g, pirate).replace(/knight/g, knight));
             } else {
                 // Simple force reference like "pirate"
-                return Math.round(forces[forceCalc]);
+                rawValue = forces[forceCalc];
             }
+            
+            // Apply custom mapping if the attribute has one, otherwise use default 1:1 mapping
+            let mappedValue = rawValue;
+            
+            if (attribute.mapRange) {
+                const { min, max } = attribute.mapRange;
+                mappedValue = mapRange(rawValue, min, max, 0, 100);
+            }
+            
+            // Ensure value stays within 0-100 range
+            return Math.max(0, Math.min(100, Math.round(mappedValue)));
+        }
+        
+        // Helper function to map a value from one range to another
+        function mapRange(value, inMin, inMax, outMin, outMax) {
+            // Clamp input value to the input range
+            const clampedValue = Math.max(inMin, Math.min(inMax, value));
+            
+            // Map to output range
+            const mapped = (clampedValue - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
+            
+            return mapped;
         }
 
-        // Complete archetype data with all 16 types
+        // Image filename mapping for each archetype
+        const archetypeImages = {
+            // MAVERICK QUADRANT (Pirate + Cowboy - Chaos & Freedom)
+            'maverick-pure': 'wildcard.jpeg',
+            'maverick-balanced': 'maverick.jpeg',
+            'maverick-free-spirit': 'drifter.jpeg',
+            'maverick-rebel-thinker': 'contrarian.jpeg',
+            // ROGUE QUADRANT (Pirate + Wizard - Strategic Independence)
+            'rogue-pure': 'mapmaker.jpeg',
+            'rogue-strategic': 'treasure_hunter.jpeg',
+            'rogue-balanced': 'wayfinder.jpeg',
+            'rogue-individualist': 'seeker.jpeg',
+            // CHAMPION QUADRANT (Knight + Cowboy - Service & Action)
+            'champion-pure': 'paladin.jpeg',
+            'champion-warrior': 'crusader.jpeg',
+            'champion-balanced': 'guardian.jpeg',
+            'champion-activist': 'activist.jpeg',
+            // SAGE QUADRANT (Knight + Wizard - Service & Wisdom)
+            'sage-pure': 'archon.jpeg',
+            'sage-counselor': 'oracle.jpeg',
+            'sage-advisor': 'advisor.jpeg',
+            'sage-balanced': 'mentor.jpeg'
+        };
+
+        // Demo force values for all 16 archetypes
+        const demoForces = {
+            // MAVERICK QUADRANT (Pirate + Cowboy - Chaos & Freedom)
+            'maverick-pure': { cowboy: 85, wizard: 25, pirate: 90, knight: 15 },
+            'maverick-balanced': { cowboy: 65, wizard: 35, pirate: 80, knight: 20 },
+            'maverick-free-spirit': { cowboy: 70, wizard: 20, pirate: 85, knight: 25 },
+            'maverick-rebel-thinker': { cowboy: 45, wizard: 75, pirate: 80, knight: 30 },
+            // ROGUE QUADRANT (Pirate + Wizard - Strategic Independence)
+            'rogue-pure': { cowboy: 25, wizard: 90, pirate: 85, knight: 15 },
+            'rogue-strategic': { cowboy: 35, wizard: 70, pirate: 85, knight: 25 },
+            'rogue-balanced': { cowboy: 45, wizard: 60, pirate: 65, knight: 35 },
+            'rogue-individualist': { cowboy: 30, wizard: 85, pirate: 70, knight: 20 },
+            // CHAMPION QUADRANT (Knight + Cowboy - Service & Action)
+            'champion-pure': { cowboy: 90, wizard: 20, pirate: 15, knight: 85 },
+            'champion-warrior': { cowboy: 85, wizard: 30, pirate: 25, knight: 70 },
+            'champion-balanced': { cowboy: 65, wizard: 35, pirate: 30, knight: 75 },
+            'champion-activist': { cowboy: 45, wizard: 65, pirate: 25, knight: 80 },
+            // SAGE QUADRANT (Knight + Wizard - Service & Wisdom)
+            'sage-pure': { cowboy: 20, wizard: 90, pirate: 15, knight: 85 },
+            'sage-counselor': { cowboy: 30, wizard: 85, pirate: 25, knight: 70 },
+            'sage-advisor': { cowboy: 35, wizard: 70, pirate: 20, knight: 80 },
+            'sage-balanced': { cowboy: 40, wizard: 70, pirate: 25, knight: 75 }
+        };
+
+        // Complete archetype data with custom mapping ranges
         const archetypeData = {
-            // MAVERICK QUADRANT (Pirate + Cowboy) - Chaos & Freedom
+            // MAVERICK QUADRANT (Pirate + Cowboy - Chaos & Freedom)
             
-            // The Wildcard (maverick-pure) - Maximum Pirate + Maximum Cowboy
+            // The Wildcard (maverick-pure) - Maximum Chaos & Freedom
             'maverick-pure': {
                 name: "The Wildcard",
-                tagline: "Maximum Pirate + Maximum Cowboy",
+                tagline: "Maximum Chaos & Freedom",
                 titleAdjectives: ["Chaotic", "Unpredictable", "Spontaneous", "Wild", "Free-spirited", "Anarchic", "Random", "Hurricane", "Tornado", "Lightning"],
                 titleNouns: ["Adventure Generator", "Chaos Theory", "Random Events", "Surprise Parties", "Impulse Decisions", "Spontaneous Combustion", "Plot Twists", "Wild Cards"],
                 attributes: [
-                    { icon: "🎲", name: "Life Randomizer", left: "Scheduled Chaos", right: "Pure Hurricane", forceCalc: "(pirate + cowboy) / 2", description: "Your calendar looks like a toddler drew it" },
-                    { icon: "⚡", name: "Impulse Purchase Probability", left: "Budgeting Master", right: "Cart Full of Regrets", forceCalc: "pirate", description: "You own at least three things you bought at 2 AM" },
-                    { icon: "🎪", name: "Party Catalyst Level", left: "Quiet Observer", right: "Human Fireworks Show", forceCalc: "cowboy", description: "You're the reason parties either become legendary or get shut down" },
-                    { icon: "🌪️", name: "Chaos Comfort Level", left: "Need Structure", right: "Thrive in Madness", forceCalc: "(pirate + cowboy) / 2", description: "You're most productive when everything is falling apart" },
-                    { icon: "🎯", name: "Planning Approach", left: "Detailed Itinerary", right: "Wing It Completely", forceCalc: "pirate", description: "Your idea of planning is checking if your phone is charged" }
+                    { icon: "🎲", name: "Life Randomizer", left: "Scheduled Chaos", right: "Pure Hurricane", forceCalc: "(pirate + cowboy) / 2", mapRange: { min: 70, max: 95 }, description: "Your calendar looks like a toddler drew it" },
+                    { icon: "⚡", name: "Impulse Purchase Probability", left: "Budgeting Master", right: "Cart Full of Regrets", forceCalc: "pirate", mapRange: { min: 65, max: 100 }, description: "You own at least three things you bought at 2 AM" },
+                    { icon: "🎪", name: "Party Catalyst Level", left: "Quiet Observer", right: "Human Fireworks Show", forceCalc: "cowboy", mapRange: { min: 60, max: 100 }, description: "You're the reason parties either become legendary or get shut down" },
+                    { icon: "🌪️", name: "Chaos Comfort Level", left: "Need Structure", right: "Thrive in Madness", forceCalc: "(pirate + cowboy) / 2", mapRange: { min: 55, max: 95 }, description: "You're most productive when everything is falling apart" },
+                    { icon: "🎯", name: "Planning Approach", left: "Detailed Itinerary", right: "Wing It Completely", forceCalc: "pirate", mapRange: { min: 75, max: 100 }, description: "Your idea of planning is checking if your phone is charged" }
                 ],
                 predictions: [
                     { icon: "🌪️", title: "Daily Life", text: "Your day plans are more like gentle suggestions to the universe" },
@@ -753,11 +820,11 @@
                 titleAdjectives: ["Strategic", "Independent", "Unconventional", "Bold", "Creative", "Flexible", "Original", "Adaptable", "Innovative", "Self-directed"],
                 titleNouns: ["Path Finder", "Rule Bender", "Creative Solutions", "Independent Thinking", "Strategic Rebellion", "Alternative Routes", "Outside-the-Box Living", "Personal Freedom", "Calculated Risks", "Smart Defiance"],
                 attributes: [
-                    { icon: "🎯", name: "Planning vs Winging It Balance", left: "Five-Year Plans", right: "What's Tomorrow?", forceCalc: "pirate", description: "You plan just enough to not be completely chaotic" },
-                    { icon: "🏢", name: "Corporate Tolerance Level", left: "Company Man", right: "Allergic to Cubicles", forceCalc: "pirate", description: "You can play the game but always with one foot out the door" },
-                    { icon: "💡", name: "Creative Problem Solving", left: "By the Book", right: "Invent New Book", forceCalc: "(pirate + cowboy) / 2", description: "Why solve problems normally when you can be clever about it?" },
-                    { icon: "🤝", name: "Team Player Capability", left: "Lone Wolf Only", right: "Natural Collaborator", forceCalc: "100 - pirate", description: "You work well with others when they respect your independence" },
-                    { icon: "⚡", name: "Change Adaptation Speed", left: "Slow Adjuster", right: "Chaos Surfer", forceCalc: "cowboy", description: "You thrive on change but prefer to see it coming" }
+                    { icon: "🎯", name: "Planning vs Winging It Balance", left: "Five-Year Plans", right: "What's Tomorrow?", forceCalc: "pirate", mapRange: { min: 30, max: 85 }, description: "You plan just enough to not be completely chaotic" },
+                    { icon: "🏢", name: "Corporate Tolerance Level", left: "Company Man", right: "Allergic to Cubicles", forceCalc: "pirate", mapRange: { min: 50, max: 75 }, description: "You can play the game but always with one foot out the door" },
+                    { icon: "💡", name: "Creative Problem Solving", left: "By the Book", right: "Invent New Book", forceCalc: "(pirate + cowboy) / 2", mapRange: { min: 40, max: 90 }, description: "Why solve problems normally when you can be clever about it?" },
+                    { icon: "🤝", name: "Team Player Capability", left: "Lone Wolf Only", right: "Natural Collaborator", forceCalc: "knight", mapRange: { min: 45, max: 95 }, description: "You work well with others when they respect your independence" },
+                    { icon: "⚡", name: "Change Adaptation Speed", left: "Slow Adjuster", right: "Chaos Surfer", forceCalc: "cowboy", mapRange: { min: 35, max: 80 }, description: "You thrive on change but prefer to see it coming" }
                 ],
                 predictions: [
                     { icon: "💼", title: "Career Path", text: "You've probably changed industries at least twice and somehow it all makes sense" },
@@ -782,11 +849,11 @@
                 titleAdjectives: ["Wandering", "Free-spirited", "Experiential", "Nomadic", "Adventurous", "Spontaneous", "Flowing", "Exploratory", "Unbound", "Journey-focused"],
                 titleNouns: ["Experience Collector", "Path Walker", "Adventure Seeker", "Moment Chaser", "Freedom Fighter", "Life Explorer", "Journey Maker", "Story Gatherer", "Memory Creator", "Experience Hunter"],
                 attributes: [
-                    { icon: "🎒", name: "Attachment to Stuff Level", left: "Hoarder Tendencies", right: "Owns Three Things", forceCalc: "pirate", description: "Your entire life fits in a backpack and you like it that way" },
-                    { icon: "📍", name: "Location Commitment Ability", left: "Deep Roots", right: "Permanent Nomad", forceCalc: "pirate", description: "Home is wherever you happen to be sleeping tonight" },
-                    { icon: "⏰", name: "Schedule Adherence Rate", left: "Time Nazi", right: "Time Is Illusion", forceCalc: "100 - cowboy", description: "You show up when the universe aligns, which is surprisingly often" },
-                    { icon: "💸", name: "Financial Planning Skills", left: "Retirement Fund", right: "YOLO Economics", forceCalc: "cowboy", description: "Money is for experiences, not savings accounts" },
-                    { icon: "🌊", name: "Go With Flow Factor", left: "Rigid Structure", right: "Human River", forceCalc: "(pirate + cowboy) / 2", description: "You adapt to circumstances like water flowing around rocks" }
+                    { icon: "🎒", name: "Attachment to Stuff Level", left: "Hoarder Tendencies", right: "Owns Three Things", forceCalc: "pirate", mapRange: { min: 55, max: 90 }, description: "Your entire life fits in a backpack and you like it that way" },
+                    { icon: "📍", name: "Location Commitment Ability", left: "Deep Roots", right: "Permanent Nomad", forceCalc: "pirate", mapRange: { min: 50, max: 75 }, description: "Home is wherever you happen to be sleeping tonight" },
+                    { icon: "⏰", name: "Schedule Adherence Rate", left: "Time Nazi", right: "Time Is Illusion", forceCalc: "100 - wizard", mapRange: { min: 45, max: 85 }, description: "You show up when the universe aligns, which is surprisingly often" },
+                    { icon: "💸", name: "Financial Planning Skills", left: "Retirement Fund", right: "YOLO Economics", forceCalc: "cowboy", mapRange: { min: 60, max: 95 }, description: "Money is for experiences, not savings accounts" },
+                    { icon: "🌊", name: "Go With Flow Factor", left: "Rigid Structure", right: "Human River", forceCalc: "(pirate + cowboy) / 2", mapRange: { min: 40, max: 80 }, description: "You adapt to circumstances like water flowing around rocks" }
                 ],
                 predictions: [
                     { icon: "🗺️", title: "Travel Style", text: "You've slept in at least 5 different types of accommodation in the past year" },
@@ -811,11 +878,11 @@
                 titleAdjectives: ["Contrarian", "Skeptical", "Questioning", "Critical", "Analytical", "Provocative", "Challenging", "Independent", "Rebellious", "Thoughtful"],
                 titleNouns: ["Question Asker", "Assumption Challenger", "Status Quo Disruptor", "Critical Thinker", "Perspective Shifter", "Authority Questioner", "Conventional Wisdom Destroyer", "Devil's Advocate", "System Challenger", "Thought Provocateur"],
                 attributes: [
-                    { icon: "🤔", name: "Automatic Skepticism Level", left: "Trusting Soul", right: "Question Everything", forceCalc: "wizard", description: "You hear 'everyone knows' and immediately think 'do they though?'" },
-                    { icon: "💬", name: "Devil's Advocate Frequency", left: "Agreeable Type", right: "Professional Contrarian", forceCalc: "(pirate + wizard) / 2", description: "You can't help but point out the other side of every argument" },
-                    { icon: "📚", name: "Research Rabbit Hole Depth", left: "Surface Skimmer", right: "Wikipedia Black Hole", forceCalc: "wizard", description: "You started researching coffee and somehow ended up reading about 16th-century trade routes" },
-                    { icon: "🎯", name: "Authority Respect Meter", left: "Rule Follower", right: "Question Authority", forceCalc: "pirate", description: "You respect expertise but refuse to accept 'because I said so' as reasoning" },
-                    { icon: "🧠", name: "Contrarian Thought Speed", left: "Go With Crowd", right: "Instant Opposition", forceCalc: "pirate", description: "Your brain automatically generates counterarguments faster than most people can finish sentences" }
+                    { icon: "🤔", name: "Automatic Skepticism Level", left: "Trusting Soul", right: "Question Everything", forceCalc: "wizard", mapRange: { min: 40, max: 90 }, description: "You hear 'everyone knows' and immediately think 'do they though?'" },
+                    { icon: "💬", name: "Devil's Advocate Frequency", left: "Agreeable Type", right: "Professional Contrarian", forceCalc: "(pirate + wizard) / 2", mapRange: { min: 35, max: 85 }, description: "You can't help but point out the other side of every argument" },
+                    { icon: "📚", name: "Research Rabbit Hole Depth", left: "Surface Skimmer", right: "Wikipedia Black Hole", forceCalc: "wizard", mapRange: { min: 45, max: 70 }, description: "You started researching coffee and somehow ended up reading about 16th-century trade routes" },
+                    { icon: "🎯", name: "Authority Respect Meter", left: "Rule Follower", right: "Question Authority", forceCalc: "pirate", mapRange: { min: 45, max: 95 }, description: "You respect expertise but refuse to accept 'because I said so' as reasoning" },
+                    { icon: "🧠", name: "Contrarian Thought Speed", left: "Go With Crowd", right: "Instant Opposition", forceCalc: "pirate", mapRange: { min: 25, max: 75 }, description: "Your brain automatically generates counterarguments faster than most people can finish sentences" }
                 ],
                 predictions: [
                     { icon: "💭", title: "Thought Process", text: "You've probably changed your mind on major topics after diving deep into research" },
@@ -833,20 +900,20 @@
                 }
             },
 
-            // ROGUE QUADRANT (Pirate + Wizard) - Strategic Independence
+            // ROGUE QUADRANT (Pirate + Wizard - Strategic Independence)
 
-            // The Mapmaker (rogue-pure) - Maximum Pirate + Maximum Wizard
+            // The Mapmaker (rogue-pure) - Maximum Strategic Independence
             'rogue-pure': {
                 name: "The Mapmaker",
                 tagline: "Charts Unknown Territory",
                 titleAdjectives: ["Uncharted", "Mysterious", "Independent", "Strategic", "Analytical", "Pioneering", "Methodical", "Self-reliant", "Calculating", "Investigative"],
                 titleNouns: ["Territory Explorer", "Knowledge Seeker", "Pattern Finder", "System Hacker", "Information Architect", "Research Maverick", "Data Detective", "Strategy Builder", "Wisdom Gatherer", "Path Creator"],
                 attributes: [
-                    { icon: "🧭", name: "Information Hoarding Tendency", left: "Share Everything", right: "Knowledge Vault", forceCalc: "pirate", description: "You collect information like a digital dragon hoarding treasure" },
-                    { icon: "🔍", name: "Conspiracy Detection Radar", left: "Face Value Believer", right: "Pattern Recognition Master", forceCalc: "wizard", description: "You see connections others miss, sometimes even when they're not there" },
-                    { icon: "🏴‍☠️", name: "Authority Figure Allergy", left: "Respect Chain of Command", right: "Question Everything", forceCalc: "pirate", description: "You automatically distrust anyone who says 'because I'm in charge'" },
-                    { icon: "📚", name: "Research Obsession Level", left: "Surface Knowledge", right: "PhD in Everything", forceCalc: "wizard", description: "You've fallen down Wikipedia rabbit holes that lasted entire weekends" },
-                    { icon: "🤐", name: "Social Sharing Frequency", left: "Open Book", right: "Mysterious Enigma", forceCalc: "100 - (knight + cowboy) / 2", description: "You share just enough to be helpful, keep enough to stay interesting" }
+                    { icon: "🧭", name: "Information Hoarding Tendency", left: "Share Everything", right: "Knowledge Vault", forceCalc: "pirate", mapRange: { min: 65, max: 95 }, description: "You collect information like a digital dragon hoarding treasure" },
+                    { icon: "🔍", name: "Conspiracy Detection Radar", left: "Face Value Believer", right: "Pattern Recognition Master", forceCalc: "wizard", mapRange: { min: 60, max: 100 }, description: "You see connections others miss, sometimes even when they're not there" },
+                    { icon: "🏴‍☠️", name: "Authority Figure Allergy", left: "Respect Chain of Command", right: "Question Everything", forceCalc: "pirate", mapRange: { min: 55, max: 100 }, description: "You automatically distrust anyone who says 'because I'm in charge'" },
+                    { icon: "📚", name: "Research Obsession Level", left: "Surface Knowledge", right: "PhD in Everything", forceCalc: "wizard", mapRange: { min: 70, max: 95 }, description: "You've fallen down Wikipedia rabbit holes that lasted entire weekends" },
+                    { icon: "🤐", name: "Social Sharing Frequency", left: "Open Book", right: "Mysterious Enigma", forceCalc: "100 - knight", mapRange: { min: 50, max: 95 }, description: "You share just enough to be helpful, keep enough to stay interesting" }
                 ],
                 predictions: [
                     { icon: "💻", title: "Digital Life", text: "Your browser bookmarks are organized in a system only you understand but it's surprisingly logical" },
@@ -864,18 +931,18 @@
                 }
             },
 
-            // The Treasure Hunter (rogue-strategic) - High Pirate + Moderate Wizard  
+            // The Treasure Hunter (rogue-strategic) - Seeks Hidden Value  
             'rogue-strategic': {
                 name: "The Treasure Hunter",
                 tagline: "Seeks Hidden Value",
                 titleAdjectives: ["Strategic", "Opportunistic", "Clever", "Resourceful", "Calculating", "Tactical", "Sharp", "Cunning", "Enterprising", "Astute"],
                 titleNouns: ["Opportunity Finder", "Value Creator", "Resource Hunter", "Strategic Thinker", "Market Disruptor", "Advantage Seeker", "Profit Maximizer", "Deal Maker", "Asset Hunter", "Leverage Expert"],
                 attributes: [
-                    { icon: "💎", name: "Hidden Opportunity Radar", left: "Obvious Path Only", right: "X-Ray Vision for Value", forceCalc: "(pirate + wizard) / 2", description: "You spot potential where others see problems" },
-                    { icon: "🎯", name: "Risk vs Reward Calculator", left: "Play It Safe", right: "Calculated Gambler", forceCalc: "pirate", description: "You take risks, but only after doing the math" },
-                    { icon: "🔧", name: "System Gaming Ability", left: "Follow All Rules", right: "Find All Loopholes", forceCalc: "pirate", description: "You read the fine print to find the advantages everyone else missed" },
-                    { icon: "🧠", name: "Strategic Thinking Depth", left: "Wing It Daily", right: "Chess Master Mind", forceCalc: "wizard", description: "You're already planning move three while others are making move one" },
-                    { icon: "💰", name: "Value Extraction Skills", left: "Leave Money on Table", right: "Squeeze Every Drop", forceCalc: "pirate", description: "You maximize returns from everything you touch" }
+                    { icon: "💎", name: "Hidden Opportunity Radar", left: "Obvious Path Only", right: "X-Ray Vision for Value", forceCalc: "(pirate + wizard) / 2", mapRange: { min: 45, max: 90 }, description: "You spot potential where others see problems" },
+                    { icon: "🎯", name: "Risk vs Reward Calculator", left: "Play It Safe", right: "Calculated Gambler", forceCalc: "pirate", mapRange: { min: 55, max: 80 }, description: "You take risks, but only after doing the math" },
+                    { icon: "🔧", name: "System Gaming Ability", left: "Follow All Rules", right: "Find All Loopholes", forceCalc: "pirate", mapRange: { min: 55, max: 90 }, description: "You read the fine print to find the advantages everyone else missed" },
+                    { icon: "🧠", name: "Strategic Thinking Depth", left: "Wing It Daily", right: "Chess Master Mind", forceCalc: "wizard", mapRange: { min: 40, max: 85 }, description: "You're already planning move three while others are making move one" },
+                    { icon: "💰", name: "Value Extraction Skills", left: "Leave Money on Table", right: "Squeeze Every Drop", forceCalc: "pirate", mapRange: { min: 35, max: 80 }, description: "You maximize returns from everything you touch" }
                 ],
                 predictions: [
                     { icon: "💼", title: "Career Moves", text: "You've probably negotiated at least one deal that made people go 'wait, how did you swing that?'" },
@@ -893,18 +960,18 @@
                 }
             },
 
-            // The Wayfinder (rogue-balanced) - Moderate Pirate + Moderate Wizard
+            // The Wayfinder (rogue-balanced) - Navigates Complexity
             'rogue-balanced': {
                 name: "The Wayfinder", 
                 tagline: "Navigates Complexity",
                 titleAdjectives: ["Balanced", "Adaptive", "Thoughtful", "Independent", "Flexible", "Analytical", "Self-directed", "Pragmatic", "Insightful", "Autonomous"],
                 titleNouns: ["Path Navigator", "Solution Finder", "Balance Keeper", "Complexity Handler", "Insight Generator", "Direction Setter", "Problem Solver", "Choice Architect", "Route Planner", "Wisdom Seeker"],
                 attributes: [
-                    { icon: "🧭", name: "Independence vs Collaboration", left: "Team Dependent", right: "Solo Operator", forceCalc: "pirate", description: "You work well with others but need space to think" },
-                    { icon: "🎯", name: "Analysis vs Action Balance", left: "Analysis Paralysis", right: "Ready, Fire, Aim", forceCalc: "cowboy", description: "You think enough to be smart, act enough to make progress" },
-                    { icon: "📊", name: "Information Processing Style", left: "Go With Gut", right: "Data-Driven Everything", forceCalc: "wizard", description: "You like facts but trust intuition when data is incomplete" },
-                    { icon: "🚪", name: "Conventional Path Resistance", left: "Follow the Crowd", right: "Forge Own Way", forceCalc: "pirate", description: "You'll take the beaten path if it's efficient, create new ones if it's not" },
-                    { icon: "⚖️", name: "Decision Making Process", left: "Quick Gut Calls", right: "Careful Deliberation", forceCalc: "wizard", description: "You balance speed with thoroughness depending on what's at stake" }
+                    { icon: "🧭", name: "Independence vs Collaboration", left: "Team Dependent", right: "Solo Operator", forceCalc: "pirate", mapRange: { min: 30, max: 80 }, description: "You work well with others but need space to think" },
+                    { icon: "🎯", name: "Analysis vs Action Balance", left: "Analysis Paralysis", right: "Ready, Fire, Aim", forceCalc: "cowboy", mapRange: { min: 50, max: 75 }, description: "You think enough to be smart, act enough to make progress" },
+                    { icon: "📊", name: "Information Processing Style", left: "Go With Gut", right: "Data-Driven Everything", forceCalc: "wizard", mapRange: { min: 40, max: 90 }, description: "You like facts but trust intuition when data is incomplete" },
+                    { icon: "🚪", name: "Conventional Path Resistance", left: "Follow the Crowd", right: "Forge Own Way", forceCalc: "pirate", mapRange: { min: 25, max: 75 }, description: "You'll take the beaten path if it's efficient, create new ones if it's not" },
+                    { icon: "⚖️", name: "Decision Making Process", left: "Quick Gut Calls", right: "Careful Deliberation", forceCalc: "wizard", mapRange: { min: 45, max: 85 }, description: "You balance speed with thoroughness depending on what's at stake" }
                 ],
                 predictions: [
                     { icon: "🎯", title: "Goal Setting", text: "You have both short-term flexibility and long-term direction figured out" },
@@ -922,18 +989,18 @@
                 }
             },
 
-            // The Seeker (rogue-individualist) - High Wizard + Moderate Pirate
+            // The Seeker (rogue-individualist) - Pursues Personal Truth
             'rogue-individualist': {
                 name: "The Seeker",
                 tagline: "Pursues Personal Truth", 
                 titleAdjectives: ["Seeking", "Curious", "Independent", "Philosophical", "Questioning", "Introspective", "Thoughtful", "Exploring", "Contemplative", "Self-directed"],
                 titleNouns: ["Truth Finder", "Knowledge Explorer", "Wisdom Seeker", "Understanding Builder", "Insight Gatherer", "Learning Adventurer", "Question Asker", "Discovery Maker", "Meaning Creator", "Purpose Hunter"],
                 attributes: [
-                    { icon: "🔍", name: "Personal Truth Quest Level", left: "Accept What's Given", right: "Question Everything", forceCalc: "wizard", description: "You need to understand things for yourself, not just accept them" },
-                    { icon: "📖", name: "Learning Obsession Intensity", left: "Basics Are Fine", right: "Master Every Detail", forceCalc: "wizard", description: "You don't just learn subjects, you inhabit them completely" },
-                    { icon: "🏛️", name: "Institution Trust Factor", left: "Respect Authority", right: "Verify Everything", forceCalc: "pirate", description: "You respect expertise but insist on understanding the reasoning" },
-                    { icon: "🤔", name: "Philosophical Depth Meter", left: "Surface Level", right: "Existential Explorer", forceCalc: "wizard", description: "You think about the meaning behind the meaning behind the meaning" },
-                    { icon: "🎭", name: "Social Conformity Resistance", left: "Blend In Easily", right: "Stand Apart Proudly", forceCalc: "pirate", description: "You're comfortable being different when your convictions require it" }
+                    { icon: "🔍", name: "Personal Truth Quest Level", left: "Accept What's Given", right: "Question Everything", forceCalc: "wizard", mapRange: { min: 50, max: 95 }, description: "You need to understand things for yourself, not just accept them" },
+                    { icon: "📖", name: "Learning Obsession Intensity", left: "Basics Are Fine", right: "Master Every Detail", forceCalc: "wizard", mapRange: { min: 45, max: 85 }, description: "You don't just learn subjects, you inhabit them completely" },
+                    { icon: "🏛️", name: "Institution Trust Factor", left: "Respect Authority", right: "Verify Everything", forceCalc: "pirate", mapRange: { min: 40, max: 90 }, description: "You respect expertise but insist on understanding the reasoning" },
+                    { icon: "🤔", name: "Philosophical Depth Meter", left: "Surface Level", right: "Existential Explorer", forceCalc: "wizard", mapRange: { min: 40, max: 65 }, description: "You think about the meaning behind the meaning behind the meaning" },
+                    { icon: "🎭", name: "Social Conformity Resistance", left: "Blend In Easily", right: "Stand Apart Proudly", forceCalc: "pirate", mapRange: { min: 30, max: 75 }, description: "You're comfortable being different when your convictions require it" }
                 ],
                 predictions: [
                     { icon: "📚", title: "Reading Habits", text: "You have books on wildly different topics because you follow your curiosity wherever it leads" },
@@ -951,20 +1018,20 @@
                 }
             },
 
-            // CHAMPION QUADRANT (Knight + Cowboy) - Service & Action
+            // CHAMPION QUADRANT (Knight + Cowboy - Service & Action)
 
-            // The Paladin (champion-pure) - Maximum Knight + Maximum Cowboy
+            // The Paladin (champion-pure) - Ultimate Service Warrior
             'champion-pure': {
                 name: "The Paladin",
                 tagline: "Ultimate Service Warrior",
                 titleAdjectives: ["Heroic", "Dedicated", "Righteous", "Passionate", "Loyal", "Courageous", "Determined", "Noble", "Fearless", "Unwavering"],
                 titleNouns: ["Justice Warrior", "Service Champion", "Cause Fighter", "Mission Driver", "Dedication Master", "Impact Creator", "Change Agent", "Hope Bringer", "Action Hero", "Purpose Warrior"],
                 attributes: [
-                    { icon: "⚔️", name: "Injustice Rage Activation", left: "Mild Annoyance", right: "Righteous Fury Mode", forceCalc: "(knight + cowboy) / 2", description: "You see unfairness and your inner superhero starts suiting up" },
-                    { icon: "🔥", name: "Cause Commitment Intensity", left: "Casual Support", right: "Life Mission Level", forceCalc: "knight", description: "When you believe in something, you don't just support it, you become it" },
-                    { icon: "🚀", name: "Action Taking Speed", left: "Committee Meeting", right: "Already On It", forceCalc: "cowboy", description: "You don't wait for permission to start helping" },
-                    { icon: "🛡️", name: "Others-First Tendency", left: "Self-Preservation", right: "Human Shield Mode", forceCalc: "knight", description: "You instinctively put others' needs before your own comfort" },
-                    { icon: "⚡", name: "Burnout Prevention Skills", left: "Sustainable Pace", right: "What's Self-Care?", forceCalc: "100 - (knight + cowboy) / 2", description: "You give until it hurts, then give a little more" }
+                    { icon: "⚔️", name: "Injustice Rage Activation", left: "Mild Annoyance", right: "Righteous Fury Mode", forceCalc: "(knight + cowboy) / 2", mapRange: { min: 70, max: 100 }, description: "You see unfairness and your inner superhero starts suiting up" },
+                    { icon: "🔥", name: "Cause Commitment Intensity", left: "Casual Support", right: "Life Mission Level", forceCalc: "knight", mapRange: { min: 65, max: 95 }, description: "When you believe in something, you don't just support it, you become it" },
+                    { icon: "🚀", name: "Action Taking Speed", left: "Committee Meeting", right: "Already On It", forceCalc: "cowboy", mapRange: { min: 75, max: 100 }, description: "You don't wait for permission to start helping" },
+                    { icon: "🛡️", name: "Others-First Tendency", left: "Self-Preservation", right: "Human Shield Mode", forceCalc: "knight", mapRange: { min: 60, max: 100 }, description: "You instinctively put others' needs before your own comfort" },
+                    { icon: "⚡", name: "Burnout Prevention Skills", left: "Sustainable Pace", right: "What's Self-Care?", forceCalc: "100 - knight", mapRange: { min: 55, max: 95 }, description: "You give until it hurts, then give a little more" }
                 ],
                 predictions: [
                     { icon: "💼", title: "Career Path", text: "You're probably in a field where you directly help people or fight for causes" },
@@ -982,18 +1049,18 @@
                 }
             },
 
-            // The Crusader (champion-warrior) - High Cowboy + Moderate Knight
+            // The Crusader (champion-warrior) - Battles for What's Right
             'champion-warrior': {
                 name: "The Crusader",
                 tagline: "Battles for What's Right",
                 titleAdjectives: ["Fighting", "Determined", "Bold", "Fierce", "Relentless", "Driven", "Passionate", "Forceful", "Dynamic", "Aggressive"],
                 titleNouns: ["Justice Fighter", "Change Warrior", "Rights Defender", "System Challenger", "Barrier Breaker", "Status Quo Disruptor", "Action Catalyst", "Reform Driver", "Battle Commander", "Victory Seeker"],
                 attributes: [
-                    { icon: "⚔️", name: "Fight Mode Activation Speed", left: "Peaceful Negotiator", right: "Instant Battle Ready", forceCalc: "cowboy", description: "When you see injustice, your first instinct is to charge" },
-                    { icon: "🎯", name: "Target Focus Intensity", left: "Scattered Attention", right: "Laser Guided Missile", forceCalc: "cowboy", description: "When you pick a fight, you see it through to the end" },
-                    { icon: "🔥", name: "Righteous Anger Fuel Level", left: "Mild Concern", right: "Nuclear Power Plant", forceCalc: "knight", description: "Your anger at injustice could power a small city" },
-                    { icon: "🚀", name: "Diplomatic Patience Reserve", left: "Endless Negotiations", right: "Talk Time Over", forceCalc: "100 - cowboy", description: "You prefer action to endless meetings about maybe taking action" },
-                    { icon: "🛡️", name: "Underdog Protection Instinct", left: "Mind Own Business", right: "Automatic Defender", forceCalc: "knight", description: "You can't watch someone get picked on without intervening" }
+                    { icon: "⚔️", name: "Fight Mode Activation Speed", left: "Peaceful Negotiator", right: "Instant Battle Ready", forceCalc: "cowboy", mapRange: { min: 50, max: 75 }, description: "When you see injustice, your first instinct is to charge" },
+                    { icon: "🎯", name: "Target Focus Intensity", left: "Scattered Attention", right: "Laser Guided Missile", forceCalc: "cowboy", mapRange: { min: 55, max: 90 }, description: "When you pick a fight, you see it through to the end" },
+                    { icon: "🔥", name: "Righteous Anger Fuel Level", left: "Mild Concern", right: "Nuclear Power Plant", forceCalc: "knight", mapRange: { min: 60, max: 100 }, description: "Your anger at injustice could power a small city" },
+                    { icon: "🚀", name: "Diplomatic Patience Reserve", left: "Endless Negotiations", right: "Talk Time Over", forceCalc: "100 - cowboy", mapRange: { min: 40, max: 80 }, description: "You prefer action to endless meetings about maybe taking action" },
+                    { icon: "🛡️", name: "Underdog Protection Instinct", left: "Mind Own Business", right: "Automatic Defender", forceCalc: "knight", mapRange: { min: 45, max: 85 }, description: "You can't watch someone get picked on without intervening" }
                 ],
                 predictions: [
                     { icon: "💬", title: "Arguments", text: "You've probably gotten into at least one heated debate about fairness this month" },
@@ -1011,18 +1078,18 @@
                 }
             },
 
-            // The Guardian (champion-balanced) - Moderate Knight + Moderate Cowboy  
+            // The Guardian (champion-balanced) - Protects and Serves  
             'champion-balanced': {
                 name: "The Guardian",
                 tagline: "Protects and Serves",
                 titleAdjectives: ["Protective", "Reliable", "Steady", "Responsible", "Caring", "Vigilant", "Supportive", "Dependable", "Nurturing", "Watchful"],
                 titleNouns: ["Community Protector", "Safety Creator", "Stability Keeper", "Support Provider", "Security Builder", "Care Coordinator", "Strength Anchor", "Peace Keeper", "Foundation Layer", "Shield Bearer"],
                 attributes: [
-                    { icon: "🛡️", name: "Protection Instinct Strength", left: "Live and Let Live", right: "Guardian Angel Mode", forceCalc: "knight", description: "You naturally watch out for people's safety and wellbeing" },
-                    { icon: "⚖️", name: "Action vs Planning Balance", left: "Think Forever", right: "Act Immediately", forceCalc: "cowboy", description: "You think enough to be smart, act fast enough to be helpful" },
-                    { icon: "🤝", name: "Community Investment Level", left: "Passing Through", right: "Deeply Rooted", forceCalc: "knight", description: "You build lasting connections and contribute to group stability" },
-                    { icon: "🚨", name: "Crisis Response Reliability", left: "Call Someone Else", right: "First Responder", forceCalc: "(knight + cowboy) / 2", description: "When things go wrong, people instinctively turn to you" },
-                    { icon: "💪", name: "Personal Sacrifice Willingness", left: "Self-Care First", right: "Others Before Me", forceCalc: "knight", description: "You'll give up your comfort to ensure others are okay" }
+                    { icon: "🛡️", name: "Protection Instinct Strength", left: "Live and Let Live", right: "Guardian Angel Mode", forceCalc: "knight", mapRange: { min: 45, max: 85 }, description: "You naturally watch out for people's safety and wellbeing" },
+                    { icon: "⚖️", name: "Action vs Planning Balance", left: "Think Forever", right: "Act Immediately", forceCalc: "cowboy", mapRange: { min: 55, max: 80 }, description: "You think enough to be smart, act fast enough to be helpful" },
+                    { icon: "🤝", name: "Community Investment Level", left: "Passing Through", right: "Deeply Rooted", forceCalc: "knight", mapRange: { min: 55, max: 95 }, description: "You build lasting connections and contribute to group stability" },
+                    { icon: "🚨", name: "Crisis Response Reliability", left: "Call Someone Else", right: "First Responder", forceCalc: "(knight + cowboy) / 2", mapRange: { min: 40, max: 80 }, description: "When things go wrong, people instinctively turn to you" },
+                    { icon: "💪", name: "Personal Sacrifice Willingness", left: "Self-Care First", right: "Others Before Me", forceCalc: "knight", mapRange: { min: 35, max: 75 }, description: "You'll give up your comfort to ensure others are okay" }
                 ],
                 predictions: [
                     { icon: "🏠", title: "Living Space", text: "Your home is the place friends come when they need safety, food, or a couch to crash on" },
@@ -1040,18 +1107,18 @@
                 }
             },
 
-            // The Activist (champion-activist) - High Knight + Moderate Wizard
+            // The Activist (champion-activist) - Dedicated Social Reformer
             'champion-activist': {
                 name: "The Activist",
                 tagline: "Dedicated Social Reformer", 
                 titleAdjectives: ["Reforming", "Dedicated", "Strategic", "Persistent", "Organized", "Thoughtful", "Committed", "Systematic", "Patient", "Focused"],
                 titleNouns: ["Social Reformer", "Change Architect", "Movement Builder", "Policy Advocate", "System Reformer", "Progress Driver", "Justice Planner", "Cause Organizer", "Rights Defender", "Future Shaper"],
                 attributes: [
-                    { icon: "📋", name: "Cause Research Depth", left: "Surface Passion", right: "Policy Expert Level", forceCalc: "wizard", description: "You don't just care about issues, you study them until you could teach a class" },
-                    { icon: "⏳", name: "Long-term Commitment Ability", left: "Short Attention Span", right: "Generational Thinking", forceCalc: "knight", description: "You measure progress in years and decades, not weeks" },
-                    { icon: "🏗️", name: "System Change Strategy", left: "Individual Action Only", right: "Institutional Reform", forceCalc: "wizard", description: "You think about changing the rules, not just playing by them better" },
-                    { icon: "🤝", name: "Coalition Building Skills", left: "Lone Wolf Activist", right: "Movement Organizer", forceCalc: "knight", description: "You understand that real change requires bringing people together" },
-                    { icon: "📊", name: "Data-Driven Advocacy Level", left: "Pure Passion", right: "Statistics Arsenal", forceCalc: "wizard", description: "You come to arguments with facts, figures, and peer-reviewed studies" }
+                    { icon: "📋", name: "Cause Research Depth", left: "Surface Passion", right: "Policy Expert Level", forceCalc: "wizard", mapRange: { min: 40, max: 85 }, description: "You don't just care about issues, you study them until you could teach a class" },
+                    { icon: "⏳", name: "Long-term Commitment Ability", left: "Short Attention Span", right: "Generational Thinking", forceCalc: "knight", mapRange: { min: 45, max: 70 }, description: "You measure progress in years and decades, not weeks" },
+                    { icon: "🏗️", name: "System Change Strategy", left: "Individual Action Only", right: "Institutional Reform", forceCalc: "wizard", mapRange: { min: 50, max: 95 }, description: "You think about changing the rules, not just playing by them better" },
+                    { icon: "🤝", name: "Coalition Building Skills", left: "Lone Wolf Activist", right: "Movement Organizer", forceCalc: "knight", mapRange: { min: 35, max: 80 }, description: "You understand that real change requires bringing people together" },
+                    { icon: "📊", name: "Data-Driven Advocacy Level", left: "Pure Passion", right: "Statistics Arsenal", forceCalc: "wizard", mapRange: { min: 30, max: 75 }, description: "You come to arguments with facts, figures, and peer-reviewed studies" }
                 ],
                 predictions: [
                     { icon: "📚", title: "Information Diet", text: "You read policy papers and research studies that most people find incredibly boring" },
@@ -1069,20 +1136,20 @@
                 }
             },
 
-            // SAGE QUADRANT (Knight + Wizard) - Service & Wisdom
+            // SAGE QUADRANT (Knight + Wizard - Service & Wisdom)
 
-            // The Archon (sage-pure) - Maximum Knight + Maximum Wizard
+            // The Archon (sage-pure) - Philosopher-King Leader
             'sage-pure': {
                 name: "The Archon",
                 tagline: "Philosopher-King Leader",
                 titleAdjectives: ["Wise", "Visionary", "Philosophical", "Strategic", "Principled", "Thoughtful", "Enlightened", "Profound", "Contemplative", "Transcendent"],
                 titleNouns: ["Wisdom Keeper", "Vision Holder", "Truth Seeker", "Knowledge Guardian", "Understanding Builder", "Insight Provider", "Guidance Giver", "Philosophy Teacher", "Reality Shaper", "Future Architect"],
                 attributes: [
-                    { icon: "🧠", name: "Philosophical Depth Scanner", left: "Surface Thinking", right: "Meaning of Life Daily", forceCalc: "wizard", description: "You think about the big questions so much that small talk feels painful" },
-                    { icon: "⚖️", name: "Ethical Framework Rigidity", left: "Situational Ethics", right: "Unshakeable Principles", forceCalc: "(knight + wizard) / 2", description: "You have a moral compass so strong it could navigate ships" },
-                    { icon: "🎯", name: "Long-term Vision Clarity", left: "Wing It Daily", right: "Century Planning", forceCalc: "wizard", description: "You think in decades while others think in quarters" },
-                    { icon: "👑", name: "Natural Authority Presence", left: "Blend Into Crowd", right: "Obvious Leader", forceCalc: "knight", description: "People naturally turn to you for guidance even when you don't ask for it" },
-                    { icon: "📚", name: "Knowledge Integration Ability", left: "Compartmentalized", right: "Universal Connection", forceCalc: "wizard", description: "You see how everything connects to everything else" }
+                    { icon: "🧠", name: "Philosophical Depth Scanner", left: "Surface Thinking", right: "Meaning of Life Daily", forceCalc: "wizard", mapRange: { min: 70, max: 95 }, description: "You think about the big questions so much that small talk feels painful" },
+                    { icon: "⚖️", name: "Ethical Framework Rigidity", left: "Situational Ethics", right: "Unshakeable Principles", forceCalc: "(knight + wizard) / 2", mapRange: { min: 65, max: 100 }, description: "You have a moral compass so strong it could navigate ships" },
+                    { icon: "🎯", name: "Long-term Vision Clarity", left: "Wing It Daily", right: "Century Planning", forceCalc: "wizard", mapRange: { min: 60, max: 100 }, description: "You think in decades while others think in quarters" },
+                    { icon: "👑", name: "Natural Authority Presence", left: "Blend Into Crowd", right: "Obvious Leader", forceCalc: "knight", mapRange: { min: 75, max: 100 }, description: "People naturally turn to you for guidance even when you don't ask for it" },
+                    { icon: "📚", name: "Knowledge Integration Ability", left: "Compartmentalized", right: "Universal Connection", forceCalc: "wizard", mapRange: { min: 55, max: 95 }, description: "You see how everything connects to everything else" }
                 ],
                 predictions: [
                     { icon: "💭", title: "Thought Process", text: "You've probably solved major philosophical problems while doing mundane tasks" },
@@ -1100,18 +1167,18 @@
                 }
             },
 
-            // The Oracle (sage-counselor) - High Wizard + Moderate Knight
+            // The Oracle (sage-counselor) - Knowledge-Focused Helper
             'sage-counselor': {
                 name: "The Oracle",
                 tagline: "Knowledge-Focused Helper",
                 titleAdjectives: ["Insightful", "Perceptive", "Analytical", "Intuitive", "Wise", "Discerning", "Observant", "Understanding", "Illuminating", "Revealing"],
                 titleNouns: ["Insight Provider", "Truth Revealer", "Pattern Reader", "Wisdom Sharer", "Understanding Bridge", "Knowledge Translator", "Clarity Bringer", "Perspective Giver", "Connection Maker", "Light Bringer"],
                 attributes: [
-                    { icon: "🔮", name: "Pattern Recognition Sensitivity", left: "Miss the Obvious", right: "See All Connections", forceCalc: "wizard", description: "You spot patterns and trends that others won't see for months" },
-                    { icon: "💡", name: "Insight Delivery Timing", left: "Blurt Out Everything", right: "Perfect Moment Sense", forceCalc: "knight", description: "You know exactly when people are ready to hear difficult truths" },
-                    { icon: "📖", name: "Information Processing Depth", left: "Skim the Surface", right: "Absorb Everything", forceCalc: "wizard", description: "You don't just read information, you metabolize it into wisdom" },
-                    { icon: "🤲", name: "Wisdom Sharing Compulsion", left: "Keep to Self", right: "Must Help Others", forceCalc: "knight", description: "You feel compelled to share insights that could help people" },
-                    { icon: "🧭", name: "Complexity Navigation Skills", left: "Overwhelmed Easily", right: "Complexity Master", forceCalc: "wizard", description: "You thrive in situations that confuse everyone else" }
+                    { icon: "🔮", name: "Pattern Recognition Sensitivity", left: "Miss the Obvious", right: "See All Connections", forceCalc: "wizard", mapRange: { min: 55, max: 100 }, description: "You spot patterns and trends that others won't see for months" },
+                    { icon: "💡", name: "Insight Delivery Timing", left: "Blurt Out Everything", right: "Perfect Moment Sense", forceCalc: "knight", mapRange: { min: 50, max: 75 }, description: "You know exactly when people are ready to hear difficult truths" },
+                    { icon: "📖", name: "Information Processing Depth", left: "Skim the Surface", right: "Absorb Everything", forceCalc: "wizard", mapRange: { min: 45, max: 90 }, description: "You don't just read information, you metabolize it into wisdom" },
+                    { icon: "🤲", name: "Wisdom Sharing Compulsion", left: "Keep to Self", right: "Must Help Others", forceCalc: "knight", mapRange: { min: 40, max: 85 }, description: "You feel compelled to share insights that could help people" },
+                    { icon: "🧭", name: "Complexity Navigation Skills", left: "Overwhelmed Easily", right: "Complexity Master", forceCalc: "wizard", mapRange: { min: 60, max: 95 }, description: "You thrive in situations that confuse everyone else" }
                 ],
                 predictions: [
                     { icon: "💬", title: "Conversation Style", text: "People tell you things they've never told anyone else because you really listen" },
@@ -1129,18 +1196,18 @@
                 }
             },
 
-            // The Advisor (sage-advisor) - High Knight + Moderate Wizard
+            // The Advisor (sage-advisor) - Loyal Intellectual Counselor
             'sage-advisor': {
                 name: "The Advisor",
                 tagline: "Loyal Intellectual Counselor",
                 titleAdjectives: ["Loyal", "Trusted", "Reliable", "Thoughtful", "Dedicated", "Wise", "Supportive", "Steady", "Faithful", "Dependable"],
                 titleNouns: ["Trusted Counsel", "Loyal Guide", "Faithful Advisor", "Reliable Mentor", "Steady Support", "Dedicated Helper", "Committed Guide", "Faithful Companion", "Loyal Servant", "Trusted Friend"],
                 attributes: [
-                    { icon: "🤝", name: "Loyalty Commitment Level", left: "Fair Weather Friend", right: "Ride or Die", forceCalc: "knight", description: "When you commit to someone, you're in it for the long haul" },
-                    { icon: "🧠", name: "Strategic Thinking for Others", left: "Wing It Support", right: "Master Plan Helper", forceCalc: "wizard", description: "You think harder about other people's problems than they do" },
-                    { icon: "👂", name: "Deep Listening Capacity", left: "Waiting to Talk", right: "Professional Listener", forceCalc: "knight", description: "You hear not just words but the feelings and needs underneath" },
-                    { icon: "💡", name: "Advice Quality Control", left: "Quick Opinions", right: "Considered Wisdom", forceCalc: "wizard", description: "You don't just give advice, you craft solutions" },
-                    { icon: "🛡️", name: "Protective Instinct for Advisees", left: "Hands Off Approach", right: "Guardian Mode", forceCalc: "knight", description: "You feel personally invested in the success of people you advise" }
+                    { icon: "🤝", name: "Loyalty Commitment Level", left: "Fair Weather Friend", right: "Ride or Die", forceCalc: "knight", mapRange: { min: 60, max: 100 }, description: "When you commit to someone, you're in it for the long haul" },
+                    { icon: "🧠", name: "Strategic Thinking for Others", left: "Wing It Support", right: "Master Plan Helper", forceCalc: "wizard", mapRange: { min: 55, max: 95 }, description: "You think harder about other people's problems than they do" },
+                    { icon: "👂", name: "Deep Listening Capacity", left: "Waiting to Talk", right: "Professional Listener", forceCalc: "knight", mapRange: { min: 40, max: 65 }, description: "You hear not just words but the feelings and needs underneath" },
+                    { icon: "💡", name: "Advice Quality Control", left: "Quick Opinions", right: "Considered Wisdom", forceCalc: "wizard", mapRange: { min: 45, max: 85 }, description: "You don't just give advice, you craft solutions" },
+                    { icon: "🛡️", name: "Protective Instinct for Advisees", left: "Hands Off Approach", right: "Guardian Mode", forceCalc: "knight", mapRange: { min: 40, max: 80 }, description: "You feel personally invested in the success of people you advise" }
                 ],
                 predictions: [
                     { icon: "📱", title: "Phone Usage", text: "Your contacts are full of people who call you when making major life decisions" },
@@ -1158,18 +1225,18 @@
                 }
             },
 
-            // The Mentor (sage-balanced) - Moderate Knight + Moderate Wizard
+            // The Mentor (sage-balanced) - Wise Guide and Teacher
             'sage-balanced': {
                 name: "The Mentor",
                 tagline: "Wise Guide and Teacher",
                 titleAdjectives: ["Teaching", "Nurturing", "Patient", "Wise", "Guiding", "Supportive", "Encouraging", "Understanding", "Balanced", "Growth-focused"],
                 titleNouns: ["Growth Guide", "Learning Facilitator", "Development Coach", "Wisdom Teacher", "Progress Helper", "Potential Unlocking", "Skill Builder", "Knowledge Sharer", "Success Enabler", "Future Shaper"],
                 attributes: [
-                    { icon: "🌱", name: "Growth Mindset Intensity", left: "Fixed Abilities", right: "Everything Learnable", forceCalc: "wizard", description: "You see potential everywhere and believe everyone can improve" },
-                    { icon: "⏳", name: "Teaching Patience Reserve", left: "Quick Frustration", right: "Infinite Patience", forceCalc: "knight", description: "You can explain the same thing seventeen different ways without losing enthusiasm" },
-                    { icon: "🎯", name: "Individual Adaptation Skills", left: "One Size Fits All", right: "Personalized Approach", forceCalc: "(knight + wizard) / 2", description: "You automatically adjust your teaching style to match how each person learns" },
-                    { icon: "📈", name: "Progress Celebration Frequency", left: "Only Big Wins", right: "Every Small Step", forceCalc: "knight", description: "You notice and celebrate improvement that others might miss" },
-                    { icon: "🧠", name: "Knowledge Transfer Effectiveness", left: "Information Dump", right: "Wisdom Osmosis", forceCalc: "wizard", description: "You don't just share what you know, you help others understand how to think" }
+                    { icon: "🌱", name: "Growth Mindset Intensity", left: "Fixed Abilities", right: "Everything Learnable", forceCalc: "wizard", mapRange: { min: 35, max: 80 }, description: "You see potential everywhere and believe everyone can improve" },
+                    { icon: "⏳", name: "Teaching Patience Reserve", left: "Quick Frustration", right: "Infinite Patience", forceCalc: "knight", mapRange: { min: 50, max: 75 }, description: "You can explain the same thing seventeen different ways without losing enthusiasm" },
+                    { icon: "🎯", name: "Individual Adaptation Skills", left: "One Size Fits All", right: "Personalized Approach", forceCalc: "(knight + wizard) / 2", mapRange: { min: 45, max: 90 }, description: "You automatically adjust your teaching style to match how each person learns" },
+                    { icon: "📈", name: "Progress Celebration Frequency", left: "Only Big Wins", right: "Every Small Step", forceCalc: "knight", mapRange: { min: 30, max: 75 }, description: "You notice and celebrate improvement that others might miss" },
+                    { icon: "🧠", name: "Knowledge Transfer Effectiveness", left: "Information Dump", right: "Wisdom Osmosis", forceCalc: "wizard", mapRange: { min: 25, max: 70 }, description: "You don't just share what you know, you help others understand how to think" }
                 ],
                 predictions: [
                     { icon: "💬", title: "Conversation Style", text: "You ask questions that help people discover their own answers" },
@@ -1186,26 +1253,6 @@
                     emergency: "When frustrated with slow progress, remember that real growth takes time and patience"
                 }
             }
-        };
-
-        // Image filename mapping for each archetype
-        const archetypeImages = {
-            'maverick-pure': 'wildcard.jpeg',
-            'maverick-rebel-thinker': 'contrarian.jpeg', 
-            'maverick-free-spirit': 'drifter.jpeg',
-            'maverick-balanced': 'maverick.jpeg',
-            'rogue-strategic': 'treasure_hunter.jpeg',
-            'rogue-pure': 'mapmaker.jpeg',
-            'rogue-balanced': 'wayfinder.jpeg',
-            'rogue-individualist': 'seeker.jpeg',
-            'champion-warrior': 'crusader.jpeg',
-            'champion-balanced': 'guardian.jpeg',
-            'champion-pure': 'paladin.jpeg',
-            'champion-activist': 'activist.jpeg',
-            'sage-balanced': 'mentor.jpeg',
-            'sage-counselor': 'oracle.jpeg',
-            'sage-advisor': 'advisor.jpeg',
-            'sage-pure': 'archon.jpeg'
         };
 
         let currentArchetypeData = null;
@@ -1250,10 +1297,13 @@
 
         // Random title generator
         function generateRandomTitle() {
-            if (!currentArchetypeData) return;
+            if (!currentArchetypeData) {
+                document.getElementById('generatedTitle').textContent = "No archetype data available";
+                return;
+            }
             
-            const adjectives = currentArchetypeData.titleAdjectives;
-            const nouns = currentArchetypeData.titleNouns;
+            const adjectives = currentArchetypeData.titleAdjectives || ["Generic"];
+            const nouns = currentArchetypeData.titleNouns || ["Placeholder"];
             
             const randomAdjective = adjectives[Math.floor(Math.random() * adjectives.length)];
             const randomNoun = nouns[Math.floor(Math.random() * nouns.length)];
@@ -1280,8 +1330,20 @@
             const container = document.getElementById('attributeContainer');
             container.innerHTML = '';
             
+            if (!attributes || attributes.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: rgba(255,255,255,0.7);">No attributes available for this archetype.</p>';
+                return;
+            }
+            
+            console.log('Populating attributes with forces:', forces);
+            
             attributes.forEach((attr, index) => {
-                const position = calculateAttributePosition(attr.forceCalc, forces);
+                const position = calculateAttributePosition(attr, forces);
+                
+                console.log(`Attribute: ${attr.name}`);
+                console.log(`  Formula: ${attr.forceCalc}`);
+                console.log(`  Map Range: ${attr.mapRange ? `${attr.mapRange.min}-${attr.mapRange.max}` : 'default'}`);
+                console.log(`  Calculated Position: ${position}%`);
                 
                 const attributeDiv = document.createElement('div');
                 attributeDiv.className = 'attribute-item';
@@ -1310,6 +1372,11 @@
             const container = document.getElementById('predictionContainer');
             container.innerHTML = '';
             
+            if (!predictions || predictions.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: rgba(255,255,255,0.7);">No predictions available for this archetype.</p>';
+                return;
+            }
+            
             predictions.forEach(prediction => {
                 const predictionDiv = document.createElement('div');
                 predictionDiv.className = 'prediction-item';
@@ -1329,6 +1396,11 @@
             const container = document.getElementById('survivalContainer');
             container.innerHTML = '';
             
+            if (!survival) {
+                container.innerHTML = '<p style="text-align: center; color: rgba(255,255,255,0.7);">No survival guide available for this archetype.</p>';
+                return;
+            }
+            
             const survivalItems = [
                 { key: 'kryptonite', label: '🚫 Kryptonite', class: 'kryptonite' },
                 { key: 'superpower', label: '⚡ Superpower', class: 'superpower' },
@@ -1341,13 +1413,11 @@
                 survivalDiv.className = `survival-item ${item.class}`;
                 survivalDiv.innerHTML = `
                     <div class="survival-label">${item.label}</div>
-                    <div class="survival-text">${survival[item.key]}</div>
+                    <div class="survival-text">${survival[item.key] || 'Not available'}</div>
                 `;
                 container.appendChild(survivalDiv);
             });
         }
-
-        // Setup force mixer - REMOVED
 
         // Animate force bars
         function animateForceBars(forces) {
@@ -1359,23 +1429,25 @@
             }, 800);
         }
 
-        // Populate results with quiz data or default to maverick
-        function populateResults(quizResults = null) {
-            let archetype = 'maverick-balanced';
-            let forces = { cowboy: 65, wizard: 35, pirate: 80, knight: 20 };
-            
-            if (quizResults) {
-                archetype = quizResults.archetype;
-                forces = quizResults.forces;
+        // Populate results with quiz data
+        function populateResults(quizResults) {
+            if (!quizResults) {
+                console.error('Missing quiz results');
+                showErrorState();
+                return;
             }
+            
+            const archetype = quizResults.archetype;
+            const forces = quizResults.forces;
             
             console.log(`Populating results for archetype: ${archetype}`);
             console.log('Forces:', forces);
             
             // Check if archetype exists in our data
             if (!archetypeData[archetype]) {
-                console.warn(`Archetype ${archetype} not found, using maverick-balanced`);
-                archetype = 'maverick-balanced';
+                console.warn(`Archetype ${archetype} not found in data`);
+                showErrorState();
+                return;
             }
             
             currentArchetypeData = archetypeData[archetype];
@@ -1420,42 +1492,28 @@
             animateForceBars(forces);
         }
 
-        // Initialize page
+        // Initialize page with demo functionality
         document.addEventListener('DOMContentLoaded', function() {
             setTimeout(() => {
-                // Try to get quiz results from sessionStorage
-                const savedResults = sessionStorage.getItem('quizResults');
+                // Check URL parameters for demo functionality
+                const urlParams = new URLSearchParams(window.location.search);
+                const archetypeParam = urlParams.get('archetype');
                 
-                if (savedResults) {
-                    try {
-                        const results = JSON.parse(savedResults);
-                        populateResults(results);
-                        
-                        // Show main results
-                        document.getElementById('loadingState').style.display = 'none';
-                        document.getElementById('mainResults').style.display = 'block';
-                        
-                        generateRandomTitle();
-                        
-                    } catch (error) {
-                        console.error('Error parsing quiz results:', error);
-                        showErrorState();
-                    }
-                } else {
-                    // Check URL parameters as fallback
-                    const urlParams = new URLSearchParams(window.location.search);
-                    const archetypeParam = urlParams.get('archetype');
+                if (archetypeParam && archetypeData[archetypeParam]) {
+                    // Load demo with predefined forces
+                    const forces = demoForces[archetypeParam] || { cowboy: 50, wizard: 50, pirate: 50, knight: 50 };
+                    populateResults({ 
+                        archetype: archetypeParam, 
+                        forces: forces 
+                    });
                     
-                    if (archetypeParam && archetypeData[archetypeParam]) {
-                        populateResults({ archetype: archetypeParam, forces: { cowboy: 50, wizard: 50, pirate: 50, knight: 50 } });
-                        
-                        document.getElementById('loadingState').style.display = 'none';
-                        document.getElementById('mainResults').style.display = 'block';
-                        
-                        generateRandomTitle();
-                    } else {
-                        showErrorState();
-                    }
+                    document.getElementById('loadingState').style.display = 'none';
+                    document.getElementById('mainResults').style.display = 'block';
+                    
+                    generateRandomTitle();
+                } else {
+                    // Show error state since no valid archetype specified
+                    showErrorState();
                 }
             }, 1500); // Simulated loading time
         });
@@ -1465,6 +1523,71 @@
             document.getElementById('errorState').style.display = 'block';
             document.getElementById('mainResults').style.display = 'none';
         }
+
+        function showResults() {
+            document.getElementById('loadingState').style.display = 'none';
+            document.getElementById('errorState').style.display = 'none';
+            document.getElementById('mainResults').style.display = 'block';
+        }
+
+        // Export functions for external use and testing
+        window.HeroCompass = {
+            populateResults,
+            showResults,
+            showErrorState,
+            generateRandomTitle,
+            archetypeData,
+            archetypeImages,
+            // Utility functions for adding data in phases
+            addArchetypeData: function(archetypeKey, data) {
+                archetypeData[archetypeKey] = data;
+                console.log(`Added archetype data for: ${archetypeKey}`);
+            },
+            addImageMapping: function(archetypeKey, imagePath) {
+                archetypeImages[archetypeKey] = imagePath;
+                console.log(`Added image mapping for: ${archetypeKey} -> ${imagePath}`);
+            },
+            listArchetypes: function() {
+                return Object.keys(archetypeData);
+            },
+            testArchetype: function(archetypeKey, forces = null) {
+                if (archetypeData[archetypeKey]) {
+                    // Use provided forces or demo forces or default
+                    const finalForces = forces || demoForces[archetypeKey] || { cowboy: 50, wizard: 50, pirate: 50, knight: 50 };
+                    
+                    populateResults({ 
+                        archetype: archetypeKey, 
+                        forces: finalForces 
+                    });
+                    showResults();
+                    generateRandomTitle();
+                } else {
+                    console.error(`Archetype ${archetypeKey} not found in data`);
+                }
+            },
+            // Demo function to load any archetype with predefined forces
+            loadDemo: function(archetypeKey) {
+                if (archetypeData[archetypeKey] && demoForces[archetypeKey]) {
+                    populateResults({ 
+                        archetype: archetypeKey, 
+                        forces: demoForces[archetypeKey]
+                    });
+                    showResults();
+                    generateRandomTitle();
+                    console.log(`Loaded demo for ${archetypeKey} with forces:`, demoForces[archetypeKey]);
+                } else {
+                    console.error(`Demo not available for archetype: ${archetypeKey}`);
+                }
+            },
+            // Get demo forces for any archetype
+            getDemoForces: function(archetypeKey) {
+                return demoForces[archetypeKey] || null;
+            },
+            // List all available demos
+            listDemos: function() {
+                return Object.keys(demoForces);
+            }
+        };
     </script>
 </body>
 </html>
